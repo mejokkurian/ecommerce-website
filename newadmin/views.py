@@ -10,9 +10,9 @@ from .models import brand
 from .models import Product
 # Create your views here.
 
+
+
 # admin login page
-
-
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def admin_login(request):
     if request.user.is_authenticated:
@@ -20,9 +20,9 @@ def admin_login(request):
     else:
         return render(request, 'adminlogin.html')
 
+
+
 # admin home page login
-
-
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def admin_home(request):
     print("hoi")
@@ -58,18 +58,18 @@ def user_list(request):
     users = MyUser.objects.all()
     return render(request, 'page-user-1.html', {'users': users})
 
+
+
 # admin user delete
-
-
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def user_del(request, id):
     user1 = MyUser.objects.get(id=id)
     user1.delete()
     return redirect(user_list)
 
+
+
 # admin user deactivate
-
-
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def user_deactive(request, username):
     user2 = MyUser.objects.get(username=username)
