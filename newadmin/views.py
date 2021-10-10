@@ -365,7 +365,4 @@ def product_edit_submit(request,id):
 
 
 
-    v
-    # else:
-    #     logout(request)
-    #     return redirect(admin_login)
+   
