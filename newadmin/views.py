@@ -309,6 +309,8 @@ def Edit_product(request,id):
     brands = brand.objects.all()
     return render(request,'edit_product.html',{'products': products,'catgs':catgs, 'subcatgry':subcatgry,'brands':brands })
 
+
+# product edit and submit
 def product_edit_submit(request,id):
     products = Product.objects.get(id = id)
 
@@ -329,8 +331,6 @@ def product_edit_submit(request,id):
     stock_qnty = request.POST['stock_qnty']
     product_price = request.POST['product_price']
     diccount_price = request.POST['diccount_price']
-
-    
 
     products.productname = productname  
     products.description = discrptin
