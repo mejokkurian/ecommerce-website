@@ -1,0 +1,148 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block contents %}
+
+
+<section class="content-main">
+     <div class="content-header">
+          <h2 class="content-title">Sub Categories</h2>
+     </div>
+     {% if messages %}
+     {% for message in messages %}
+     <div class="alert alert-{{message.tags}} m-1 p" id="msg" role="alert"
+          style="padding: 1px; background-color: rgb(0, 255, 13);">
+          {{ message }}
+     </div>
+     {% endfor %}
+     {% endif %}
+
+     <div class="card">
+          <div class="card-body">
+               <div class="row">
+                    <div class="col-md-4">
+                         <span>
+
+                         </span>
+                         <form action="create_sub_category" method="POST">
+                              {% csrf_token %}
+
+                              <label style="margin-bottom: 2em;" for="category">Please Choose category:</label>
+                              <select name="category" id="catg">
+                                   {% for catg in catgs %}
+                                   <option value="{{catg.id}}">{{catg.category_name}}</option>
+                                   {% endfor %}
+                              </select>
+
+
+                              <div class="mb-4">
+                                   <label for="sub_name" class="form-label">Name</label>
+                                   <input type="text" placeholder="Type here" name="sub_name" class="form-control"
+                                        id="product_name" />
+                              </div>
+                              <div class="mb-4">
+                                   <label for="product_slug" class="form-label">Slug</label>
+                                   <input type="text" placeholder="Type here" name="slug" class="form-control"
+                                        id="product_slug" />
+                              </div>
+                              {% comment %} <div class="mb-4">
+                                   <label class="form-label">Parent</label>
+                                   <select class="form-select">
+                                        <option>Clothes</option>
+                                        <option>T-Shirts</option>
+                                   </select>
+                              </div> {% endcomment %}
+                              <div class="mb-4">
+                                   <label class="form-label">Description</label>
+                                   <textarea placeholder="Type here" name="sub_discr" class="form-control"
+                                        rows="4"></textarea>
+                              </div>
+
+                              <div class="d-grid">
+                                   <button class="btn btn-primary">Create category</button>
+                              </div>
+                         </form>
+                    </div>
+                    <div class="col-md-8">
+
+                         <table class="table table-hover">
+                              <thead>
+
+                                   <tr>
+                                        <th>
+                                             <div class="form-check">
+
+                                             </div>
+                                        </th>
+                                        <th>ID</th>
+                                        <th> catogry Name</th>
+                                        <th> sub Name</th>
+                                        <th>Description</th>
+                                        <th>Slug</th>
+                                        <th>Order</th>
+                                        <th class="text-end">Action</th>
+                                   </tr>
+                              </thead>
+                              <tbody>
+                                   {% for subs in subcatgry %}
+                                   <tr>
+                                        <td>
+                                             <div class="form-check">
+                                                  <input class="form-check-input" type="checkbox" value="" />
+                                             </div>
+                                        </td>
+                                        <td>{{subs.id}}</td>
+                                        <td><b>{{subs.category_name}}</b></td>
+                                        <td><b>{{subs.sub_category_name}}</b></td>
+                                        <td>{{subs.description}}</td>
+                                        <td>{{subs.slug}}</td>
+                                        <td></td>
+                                        <td class="text-end">
+                                             <div class="dropdown">
+                                                  <a href="#" data-bs-toggle="dropdown" class="btn btn-light"> <i
+                                                            class="material-icons md-more_horiz"></i> </a>
+                                                  <div class="dropdown-menu">
+                                                       <a class="dropdown-item" href="subcategory_edit/{{subs.id}}">Edit
+                                                            info</a>
+                                                       <a class="dropdown-item text-danger"
+                                                            onclick="return confirm('Are you sure you want to Delete this Sub category');"
+                                                            href="subcat_delete/{{subs.id}}">Delete</a>
+                                                  </div>
+
+                                             </div>
+                                             <!-- dropdown //end -->
+                                        </td>
+
+                                   </tr>
+                                   {% endfor %}
+
+
+                                   {% comment %} <tr>
+                                        <td><i class="material-icons md-subdirectory_arrow_right text-muted"></i></td>
+                                        <td>4</td>
+                                        <td><b>Hot Gifts</b></td>
+                                        <td>Hot Gifts</td>
+                                        <td>/gifts</td>
+                                        <td>4</td>
+                                        <td class="text-end">
+                                             <div class="dropdown">
+                                                  <a href="#" data-bs-toggle="dropdown" class="btn btn-light"> <i
+                                                            class="material-icons md-more_horiz"></i> </a>
+                                                  <div class="dropdown-menu">
+                                                       <a class="dropdown-item" href="#">View detail</a>
+                                                       <a class="dropdown-item" href="#">Edit info</a>
+                                                       <a class="dropdown-item text-danger" href="#">Delete</a>
+                                                  </div>
+                                             </div>
+                                             <!-- dropdown //end -->
+                                        </td>
+                                   </tr> {% endcomment %}
+                              </tbody>
+                         </table>
+
+                    </div> <!-- .col// -->
+               </div> <!-- .row // -->
+          </div> <!-- card body .// -->
+     </div> <!-- card .// -->
+</section> <!-- content-main end// -->
+{% endblock %}

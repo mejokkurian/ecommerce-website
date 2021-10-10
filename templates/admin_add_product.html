@@ -1,0 +1,258 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+
+
+
+{% block contents %}
+
+
+
+<section class="content-main" style="max-width: 720px">
+
+	<div class="content-header">
+		<h2 class="content-title">Create product </h2>
+		<div>
+			<a href="#" class="btn btn-outline-danger"> &times; Discard</a>
+		</div>
+	</div>
+
+	<div class="card mb-4">
+		{% if messages %}
+		{% for message in messages %}
+		<div class="alert alert-{{message.tags}} m-1 p" id="msg" role="alert"
+			style="padding: 1px; background-color: rgb(0, 255, 13);">
+			{{ message }}
+		</div>
+		{% endfor %}
+		{% endif %}
+		<div class="card-body">
+			<form action="admin_add_product" method="POST" enctype="multipart/form-data">
+				{% csrf_token %}
+				<div class="mb-4">
+					<label for="product_name" n class="form-label">Product title</label>
+					<input type="text" name="productname" placeholder="Type here" class="form-control"
+						id="product_name">
+				</div>
+
+				<div class="mb-4">
+					<label class="form-label">Full description</label>
+					<textarea placeholder="Type here" name="discrptin" class="form-control" rows="4"></textarea>
+				</div>
+				<div class="row">
+					<div class="col-sm-6 mb-3">
+
+						<label class="form-label">Images</label>
+						<input class="form-control" name="img1" type="file" accept="image/*"
+							onchange="preview_image(event)">
+						<img id="output_image" />
+
+					</div>
+					<div class="col-sm-6 mb-3">
+
+						<label class="form-label">Images</label>
+						<input class="form-control" name="img2" type="file" accept="image/*"
+							onchange="preview_image1(event)">
+						<img id="output_image1" />
+
+					</div>
+
+					<div class="col-sm-6 mb-3">
+
+						<label class="form-label">Images</label>
+						<input class="form-control" type="file" name="img3" accept="image/*"
+							onchange="preview_image2(event)">
+						<img id="output_image2" />
+
+					</div>
+					<div class="col-sm-6 mb-3">
+
+						<label class="form-label">Images</label>
+						<input class="form-control" type="file" name="img4" accept="image/*"
+							onchange="preview_image3(event)">
+						<img id = "output_image3"/>
+
+					</div>
+
+				</div>
+
+
+
+
+				<div class="row gx-2">
+					<div class="col-sm-4 mb-3">
+						<label class="form-label">Category</label>
+						<select name="Category" class="form-select">
+							{% for catg in catgs %}
+							<option value="{{catg.id}}"> {{catg.category_name}}</option>
+							{% endfor %}
+						</select>
+
+					</div>
+
+					<div class="col-sm-4 mb-3">
+						<label class="form-label">Sub-category</label>
+						<select name="Sub_category" class="form-select">
+							{% for subcat in subcatgry %}
+							<option value="{{subcat.id}}">{{subcat.sub_category_name}}</option>
+							{% endfor %}
+						</select>
+					</div>
+
+					<div class="col-sm-4 mb-3">
+						<label class="form-label">Brand</label>
+						<select name="Brand" class="form-select">
+							{% for brand in brands %}
+							<option value="{{brand.id}}"> {{brand.brand_name}} </option>
+							{% endfor %}
+						</select>
+					</div>
+				</div> <!-- row.// -->
+
+				<div class="quantity">
+					<p>product stock</p>
+					<button style="margin-bottom: 2em;" class="plus-btn" type="button" name="button">
+						<i class="fas fa-plus"></i>
+					</button>
+					<input type="text" id="stockQuantity" name="stock_qnty" value=1>
+					<button class="minus-btn" type="button" name="button">
+						<i class="fas fa-minus"></i>
+					</button>
+				</div>
+
+
+				<div class="mb-4">
+					<label class="form-label">Price</label>
+					<div class="row gx-2">
+						<div class="col-4">
+							<input placeholder="Type" name="product_price" type="text" class="form-control">
+						</div>
+						<!-- <div class="col-2">
+							<select class="form-select">
+								<option > USD </option>
+							</select>
+						</div> -->
+					</div> <!-- row.// -->
+				</div>
+
+				<div class="mb-4">
+					<label class="form-label">Discount price</label>
+					<div class="row gx-2">
+						<div class="col-4">
+							<input placeholder="Type" name="diccount_price" type="text" class="form-control">
+						</div>
+						<!-- <div class="col-2">
+							<select class="form-select">
+								<option> USD </option>
+								<option> EUR </option>
+								<option> RUBL </option>
+							</select>
+						</div> -->
+					</div> <!-- row.// -->
+				</div>
+
+				<label class="form-check mb-4">
+					<input class="form-check-input" type="checkbox" value="">
+					<span class="form-check-label"> Publish on website </span>
+				</label>
+
+				<button class="btn btn-primary">Submit item</button>
+
+			</form>
+		</div>
+	</div> <!-- card end// -->
+
+	<style>
+		.buttons {
+			position: relative;
+			padding-top: 30px;
+			margin-right: 60px;
+		}
+
+		.quantity {
+			padding-top: 20px;
+			margin-right: 60px;
+		}
+
+		.quantity input {
+			-webkit-appearance: none;
+			border: none;
+			text-align: center;
+			width: 32px;
+			font-size: 16px;
+			color: #43484D;
+			font-weight: 300;
+		}
+
+		.minus-btn img {
+			margin-bottom: 3px;
+		}
+
+		.plus-btn img {
+			margin-top: 2px;
+		}
+
+		button:focus,
+		input:focus {
+			outline: 0;
+		}
+
+		button[class*=btn] {
+			border-radius: 6px;
+			border: none;
+			cursor: pointer;
+		}
+
+		.is-active {
+			animation-name: animate;
+			animation-duration: .8s;
+			animation-iteration-count: 1;
+			animation-timing-function: steps(28);
+			animation-fill-mode: forwards;
+		}
+
+		@keyframes animate {
+			0% {
+				background-position: left;
+			}
+
+			50% {
+				background-position: right;
+			}
+
+			100% {
+				background-position: right;
+			}
+		}
+	</style>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script>
+		$('.minus-btn').on('click', function (e) {
+			e.preventDefault();
+			console.log("arrived")
+
+			let value = $("#stockQuantity").val();
+			value = parseInt(value);
+			console.log(value);
+			if (value > 0) {
+				console.log("value changed");
+
+				$("#stockQuantity").val(value -= 1);
+			}
+
+		});
+
+		$('.plus-btn').on('click', function (e) {
+			e.preventDefault();
+			let value = $("#stockQuantity").val();
+			value = parseInt(value);
+			console.log(value);
+			console.log("value changed")
+			$("#stockQuantity").val(value += 1);
+		});
+	</script>
+
+
+</section> <!-- content-main end// -->
+{% endblock %}

@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+{%load static%}
+{% block contents %}
+
+
+<section class="content-main">
+
+	<div class="content-header">
+		<h2 class="content-title">Users</h2>
+		<div>
+			<a href="#" class="btn btn-primary"><i class="material-icons md-plus"></i> Create new</a>
+		</div>
+	</div>
+
+	<div class="card mb-4">
+		<header class="card-header">
+			<div class="row gx-3">
+				<div class="col-lg-4 col-md-6 me-auto">
+					<input type="text" placeholder="Search..." class="form-control">
+				</div>
+				<div class="col-lg-2 col-6 col-md-3">
+					<select class="form-select">
+						<option>Status</option>
+						<option>Active</option>
+						<option>Disabled</option>
+						<option>Show all</option>
+					</select>
+				</div>
+				<div class="col-lg-2 col-6 col-md-3">
+					<select class="form-select">
+						<option>Show 20</option>
+						<option>Show 30</option>
+						<option>Show 40</option>
+					</select>
+				</div>
+			</div>
+		</header> <!-- card-header end// -->
+		<div class="card-body">
+			<div class="table-responsive">
+				<table class="table table-hover">
+					<thead>
+						<tr>
+							<th>#ID</th>
+							<th scope="col">Name</th>
+							<th scope="col">Email</th>
+							<th scope="col">Phone</th>
+							<th scope="col">Status</th>
+							<th scope="col" class="text-end"> Action </th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for user in users%}
+						<tr>
+							<td>{{user.id}}</td>
+							<td><b>{{user.username}}</b></td>
+							<td>{{user.email}}</td>
+							<td>{{user.mobile_number}}</td>
+							{% if user.is_active %}
+							<td><span class="badge rounded-pill alert-success">Active</span></td>
+							{% else %}
+							<td><span class="badge rounded-pill alert-danger">Deactive</span></td>
+							{% endif %}
+							<td class="text-end">
+								{% if not user.is_superuser %}
+								<a href="user_del/{{user.id}}"><button class="btn btn-danger"
+										onclick="return confirm('Are you sure you want to Delete this user?');"><i
+											class="fas fa-trash-alt"></i></button></a>
+								{% endif %}
+								<div class="dropdown">
+
+									<div>
+										<!-- <a class="dropdown-item" href="#">View detail</a>
+										<a class="dropdown-item" href="#">Edit info</a> -->
+										<!-- <a class="dropdown-item text-danger" href="user_del/{{user.id}}">  Delete</a> -->
+										{% if not user.is_superuser %}
+										{% if user.is_active %}
+										<a href="user_deactive/{{user.username}}"><button class="btn btn-danger"
+												type="button"
+												onclick="return confirm('Are you sure you want to Deactive this user?');"><i
+													class="fas fa-user-lock"></i></button></a>
+										{% else %}
+
+										<a href="user_active/{{user.username}}"> <button class="btn btn-success"
+												onclick="return confirm('Are you sure you want to Active this user?');"><i
+													class="fas fa-unlock-alt"></i></button></a>
+										{% endif %}
+										{% endif %}
+									</div>
+								</div> <!-- dropdown //end -->
+							</td>
+						</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			</div> <!-- table-responsive //end -->
+		</div> <!-- card-body end// -->
+	</div> <!-- card end// -->
+
+
+</section> <!-- content-main end// -->
+
+
+{% endblock %}

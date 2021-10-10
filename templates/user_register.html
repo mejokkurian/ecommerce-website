@@ -1,0 +1,160 @@
+{% extends 'base_user.html' %}
+{% load static %}
+
+{% block contents %}
+
+<!-- login area start -->
+<div class="login-register-area pt-100px pb-100px">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-7 col-md-12 ml-auto mr-auto">
+                <div class="login-register-wrapper">
+                    <div class="login-register-tab-list nav">
+                        <a class="active" data-bs-toggle="tab" href="#lg1">
+                            <h4>register</h4>
+                        </a>
+                    </div>
+                    <div class="tab-content">
+                        <div id="lg1" class="tab-pane active">
+                            <div class="login-form-container">
+                                <div class="login-register-form">
+                                    <span>
+                                        {% if messages %}
+                                        {% for message in messages %}
+                                        <div class="alert alert-{{message.tags}} mb-5 p" id="msg" role="alert"
+                                            style="padding: 1px; background-color: red;">
+                                            {{ message }}
+                                        </div>
+                                        {% endfor %}
+                                        {% endif %}
+                                    </span>
+                                    <form action="user_register" method="post" id="userform">
+                                        {% csrf_token %}
+                                        <input type="text" id="name" name="user_name" placeholder="Username" required
+                                            oninput="$(this).val($(this).val().replace(/[^a-zA-Z\s]/gi, ''));nameFn()">
+                                        <input type="password" id="password" name="user_password" placeholder="Password"
+                                            required>
+                                        <input name="user-email" id="email" placeholder="Email" type="email" required>
+                                        <input name="user-phone" id="contact" placeholder="Phone No" type="tel" required
+                                            oninput=" this.value = (this.value.length > 10) ? this.value.slice(0,10) : this.value; /^[0-9]+(.[0-10]{1,3})?$/.test(this.value) ? this.value : this.value = this.value.slice(0,-1); ">
+                                        <div class="button-box">
+                                            <button type="submit"><span>Register</span></button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div id="lg2" class="tab-pane">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- login area end -->
+
+
+
+
+
+
+<!-- Global Vendor, plugins JS -->
+
+<!-- Vendor JS -->
+<!-- Vendor JS -->
+<!-- <script src="{% static 'js/vendor/jquery-3.6.0.min.js"></script>
+    <script src="{% static 'js/vendor/bootstrap.bundle.min.js"></script>
+    <script src="{% static 'js/vendor/jquery-migrate-3.3.2.min.js"></script>
+    <script src="{% static 'js/vendor/modernizr-3.11.2.min.js"></script> -->
+
+<!--Plugins JS-->
+<!-- <script src="{% static 'js/plugins/swiper-bundle.min.js"></script>
+    <script src="{% static 'js/plugins/jquery-ui.min.js"></script>
+    <script src="{% static 'js/plugins/jquery.nice-select.min.js"></script>
+    <script src="{% static 'js/plugins/countdown.js"></script>
+    <script src="{% static 'js/plugins/scrollup.js"></script>
+    <script src="{% static 'js/plugins/jquery.zoom.min.js"></script>
+    <script src="{% static 'js/plugins/venobox.min.js"></script>
+    <script src="{% static 'js/plugins/ajax-mail.js"></script> -->
+
+<!-- Use the minified version files listed below for better performance and remove the files listed above -->
+<script src="{% static 'js/vendor/vendor.min.js' %}"></script>
+<script src="{% static 'js/plugins/plugins.min.js' %}"></script>
+
+<!-- Main Js -->
+<script src="{% static 'js/main.js' %}"></script>
+
+<!-- jquery cdn validator  -->
+<script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.min.js"></script>
+
+<script>
+    jQuery.validator.setDefaults({
+        debug: false,
+        succsess: function (label) {
+            label.attr('id', 'valid')
+        }
+    });
+    $("#userform").validate({
+        rules: {
+            name: {
+                required: true,
+                minlength: 4
+            },
+            email: {
+                required: true,
+                email: true
+            },
+            password: "required",
+            comfirm_password: {
+                equalTo: "#password"
+            },
+
+        },
+        messages: {
+            user_name: {
+                required: "Please enter an username"
+            },
+            user_email: {
+                required: "Please provide an email"
+            },
+            user_phone: {
+                required: "Please provide an phone number"
+            },
+            user_password: {
+                required: "Please provide a password"
+            }
+
+        },
+        onfocusout: function (element) {
+            this.element(element);
+        },
+    });
+
+
+</script>
+<style>
+    label.error {
+        padding-left: 0;
+        margin-left: 0;
+        display: block;
+
+        bottom: 5px;
+        width: 100%;
+        background: none;
+        color: red;
+        font-family: 'Open Sans', sans-serif;
+        font-weight: 500;
+    }
+</style>
+</body>
+
+
+<!-- Mirrored from template.hasthemes.com/jesco/jesco/login.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 02 Oct 2021 09:57:16 GMT -->
+
+</html>
+{% endblock %}

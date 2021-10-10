@@ -1,0 +1,327 @@
+{% load static %}
+<!DOCTYPE HTML>
+<html lang="en">
+
+<!-- Mirrored from www.ecommerce-admin.com/demo/page-index-1.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 03 Sep 2021 07:00:23 GMT -->
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <title>Sample title - Ecommerce admin dashboard template</title>
+
+  <link href="{% static 'images admin/favicon.ico' %}" rel="shortcut icon" type="image/x-icon">
+
+  <link href="{% static 'css admin/bootstrapf9e3.css' %}" rel="stylesheet" type="text/css" />
+
+  <!-- custom style -->
+  <link href="{% static 'css admin/uif9e3.css' %}" rel="stylesheet" type="text/css" />
+  <link href="{% static 'css admin/responsivef9e3.css' %}" rel="stylesheet" />
+
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"
+    integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+
+  <!-- iconfont -->
+  <link rel="stylesheet" href="{% static 'fonts admin/material-icon/css/round.css' %}" />
+
+  <style>
+    body {
+      width: 100%;
+      margin: 0 auto;
+      padding: 0px;
+      font-family: helvetica;
+
+    }
+
+    #wrapper {
+      text-align: center;
+      margin: 0 auto;
+      padding: 0px;
+      width: 995px;
+    }
+
+    #output_image,
+    #output_image1,
+    #output_image2,
+    #output_image3 {
+      max-width: 100px;
+    }
+  </style>
+
+  <script type='text/javascript'>
+    function preview_image(event) {
+      var reader = new FileReader();
+      reader.onload = function () {
+        var output = document.getElementById('output_image');
+        output.src = reader.result;
+      }
+      reader.readAsDataURL(event.target.files[0]);
+    }
+  </script>
+
+  <script type='text/javascript'>
+    function preview_image1(event) {
+      var reader = new FileReader();
+      reader.onload = function () {
+        var output = document.getElementById('output_image1');
+        output.src = reader.result;
+      }
+      reader.readAsDataURL(event.target.files[0]);
+    }
+  </script>
+
+  <script type='text/javascript'>
+    function preview_image2(event) {
+      var reader = new FileReader();
+      reader.onload = function () {
+        var output = document.getElementById('output_image2');
+        output.src = reader.result;
+      }
+      reader.readAsDataURL(event.target.files[0]);
+    }
+  </script>
+
+  <script type='text/javascript'>
+    function preview_image3(event) {
+      var reader = new FileReader();
+      reader.onload = function () {
+        var output = document.getElementById('output_image3');
+        output.src = reader.result;
+      }
+      reader.readAsDataURL(event.target.files[0]);
+    }
+  </script>
+</head>
+
+<body>
+
+  <b class="screen-overlay"></b>
+
+  <aside class="navbar-aside" id="offcanvas_aside">
+    <div class="aside-top">
+      <a href="page-index-1.html" class="brand-wrap">
+        <img src="{% static 'images admin/logo.svg' %}" height="46" class="logo" alt="Ecommerce dashboard template">
+      </a>
+      <div>
+        <button class="btn btn-icon btn-aside-minimize"> <i class="text-muted material-icons md-menu_open"></i>
+        </button>
+      </div>
+    </div> <!-- aside-top.// -->
+
+    <nav>
+      <ul class="menu-aside">
+        <li class="menu-item active">
+          <a class="menu-link" href="admin_home"> <i class="icon material-icons md-home"></i>
+            <span class="text">Dashboard</span>
+          </a>
+        </li>
+        <li class="menu-item">
+          <a class="menu-link" href="user_list"> <i class="icon material-icons md-shopping_bag"></i>
+            <span class="text">Users</span>
+
+          </a>
+        </li>
+        <li class="menu-item has-submenu">
+          <a class="menu-link" href=""> <i class="icon material-icons md-shopping_bag"></i>
+            <span class="text">Products</span>
+          </a>
+          <div class="submenu">
+            <a href="product_list">Product list view</a>
+            <a href="add_product">Add Product</a>
+
+          </div>
+        </li>
+        <li class="menu-item ">
+          <a class="menu-link" href="#"> <i class="icon material-icons md-shopping_cart"></i>
+            <span class="text">Order managment</span>
+          </a>
+          <!-- <div class="submenu">
+        <a href="page-orders-1.html">Order list 1</a>
+        <a href="page-orders-2.html">Order list 2</a>
+        <a href="page-orders-detail.html">Order detail</a>
+      </div>  -->
+        </li>
+        <li class="menu-item has-submenu">
+          <a class="menu-link" href="page-sellers-cards.html"> <i class="icon material-icons md-store"></i>
+            <span class="text">Catogory Managment</span>
+          </a>
+          <div class="submenu">
+            <a href="product_catagory">Catogory</a>
+            <a href="sub_catogery">Sub Catogory</a>
+            <a href="brand">Brand</a>
+
+          </div>
+        </li>
+        <!-- <li class="menu-item has-submenu"> 
+      <a class="menu-link" href="page-form-product-1.html"> <i class="icon material-icons md-add_box"></i>  
+        <span class="text">Add product</span> 
+      </a> 
+      <div class="submenu">
+        <a href="add_product">Add product 1</a>  
+      </div>
+    </li> -->
+        <!-- <li class="menu-item has-submenu">
+      <a class="menu-link" href="page-transactions-A.html"> <i class="icon material-icons md-monetization_on"></i> 
+        <span class="text">Transactions</span> 
+      </a> 
+      <div class="submenu">
+        <a href="page-transactions-A.html">Transaction 1</a>
+        <a href="page-transactions-B.html">Transaction 2</a>
+      </div>
+    </li> -->
+        <!-- <li class="menu-item has-submenu"> 
+      <a class="menu-link" href="#"> <i class="icon material-icons md-person"></i>  
+        <span class="text">Account</span> 
+      </a> 
+      <div class="submenu">
+        <a href="page-account-login.html">User login</a>
+        <a href="page-account-register.html">User registration</a>
+        <a href="page-error-404.html">Error 404</a>
+      </div>
+    </li> -->
+        <!-- <li class="menu-item"> 
+      <a class="menu-link" href="page-reviews.html"> <i class="icon material-icons md-comment"></i> 
+        <span class="text">Reviews</span> 
+      </a> 
+    </li>
+    <li class="menu-item"> 
+      <a class="menu-link" href="page-brands.html"> <i class="icon material-icons md-stars"></i> 
+        <span class="text">Brands</span> </a> 
+    </li>
+    <li class="menu-item"> 
+      <a class="menu-link" disabled href="#"> <i class="icon material-icons md-pie_chart"></i> 
+        <span class="text">Statistics</span> 
+      </a> 
+    </li> -->
+      </ul>
+      <hr>
+      <!-- <ul class="menu-aside">
+    <li class="menu-item has-submenu"> 
+      <a class="menu-link" href="#"> <i class="icon material-icons md-settings"></i> 
+        <span class="text">Settings</span> 
+      </a>
+      <div class="submenu">
+        <a href="page-settings-1.html">Setting sample 1</a>
+        <a href="page-settings-2.html">Setting sample 2</a>
+      </div>
+    </li>
+    <li class="menu-item">
+      <a class="menu-link" href="page-0-blank.html"> <i class="icon material-icons md-local_offer"></i> 
+        <span class="text"> Starter page </span>
+      </a> 
+    </li>
+  </ul> -->
+      <br>
+      <br>
+    </nav>
+  </aside>
+
+  <main class="main-wrap">
+    <header class="main-header navbar">
+      <div class="col-search">
+        <form class="searchform">
+          <div class="input-group">
+            <input list="search_terms" type="text" class="form-control" placeholder="Search term">
+            <button class="btn btn-light bg" type="button"> <i class="material-icons md-search"></i> </button>
+          </div>
+          <datalist id="search_terms">
+            <option value="Products">
+            <option value="New orders">
+            <option value="Apple iphone">
+            <option value="Ahmed Hassan">
+          </datalist>
+        </form>
+      </div>
+      <div class="col-nav">
+        <button class="btn btn-icon btn-mobile me-auto" data-trigger="#offcanvas_aside"> <i
+            class="md-28 material-icons md-menu"></i> </button>
+        <ul class="nav">
+          <li class="nav-item">
+            <a class="nav-link btn-icon" onclick="darkmode(this)" title="Dark mode" href="#"> <i
+                class="material-icons md-nights_stay"></i> </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link btn-icon" href="#"> <i class="material-icons md-notifications_active"></i> </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#"> English </a>
+          </li>
+          <li class="dropdown nav-item">
+            <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#"> <img class="img-xs rounded-circle"
+                src="{% static 'images admin/people/avatar1.jpg' %}" alt="User"></a>
+            <div class="dropdown-menu dropdown-menu-end">
+              <a class="dropdown-item" href="#">My profile</a>
+              <a class="dropdown-item" href="#">Settings</a>
+              <a class="dropdown-item text-danger" href="admin_logout">logout</a>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+
+
+    </header>
+
+
+
+    {% block contents %}
+
+    {% endblock %}
+
+  </main>
+
+  <script type="text/javascript">
+    if (localStorage.getItem("darkmode")) {
+      var body_el = document.body;
+      body_el.className += 'dark';
+    }
+  </script>
+
+  <script src="{% static 'js_admin/jquery-3.5.0.min.js' %}"></script>
+  <script src="{% static 'js_admin/bootstrap.bundle.min.js' %}"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+  <!-- ChartJS files-->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+
+  <!-- Custom JS -->
+  <script src="{% static 'js_admin/scriptc619.js' %}" type="text/javascript"></script>
+
+  <!-- ChartJS customize-->
+  <script>
+    var ctx = document.getElementById('myChart').getContext('2d');
+    var chart = new Chart(ctx, {
+      // The type of chart we want to create
+      type: 'line',
+
+      // The data for our dataset
+      data: {
+        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+        datasets: [
+          {
+            label: 'Sales',
+            backgroundColor: 'rgb(44, 120, 220)',
+            borderColor: 'rgb(44, 120, 220)',
+            data: [18, 17, 4, 3, 2, 20, 25, 31, 25, 22, 20, 9]
+          },
+          {
+            label: 'Visitors',
+            backgroundColor: 'rgb(180, 200, 230)',
+            borderColor: 'rgb(180, 200, 230)',
+            data: [40, 20, 17, 9, 23, 35, 39, 30, 34, 25, 27, 17]
+          }
+
+        ]
+      },
+
+      // Configuration options go here
+      options: {}
+    });
+  </script>
+
+</body>
+
+<!-- Mirrored from www.ecommerce-admin.com/demo/page-index-1.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 03 Sep 2021 07:00:33 GMT -->
+
+</html>

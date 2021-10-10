@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block contents %}
+<section class="content-main">
+
+	<div class="content-header">
+		<h2 class="content-title">Products list </h2>
+		<div>
+			<a href="add_product" class="btn btn-primary"><i class="material-icons md-plus"></i> Create new</a>
+		</div>
+	</div>
+
+
+	</header> <!-- card-header end// -->
+	     {% if messages %}
+     {% for message in messages %}
+     <div class="alert alert-{{message.tags}} m-1 p" id="msg" role="alert"
+          style="padding: 1px; background-color: rgb(0, 255, 13);">
+          {{ message }}
+     </div>
+     {% endfor %}
+     {% endif %}
+
+	<div class="table-responsive">
+		<table class="table table-hover">
+			<thead>
+				<tr>
+					<th>#ID</th>
+					<th scope="col">product name</th>
+					<th scope="col">brand name</th>
+					<th scope="col">stock</th>
+					<th scope="col">image</th>
+					<th scope="col" class="text-end"> Action </th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for product in products%}
+				<tr>
+					<td>{{product.id}}</td>
+					<td><b>{{product.productname}}</b></td>
+					<td>{{product.brand_name}}</td>
+					<td>{{product.amount_in_stock}}</td>
+					<td><img style="width: 3em; " src="{{product.image.url}}" alt=""> </td>
+					<td class="text-end">
+						<div class="">
+							<a href="#" data-bs-toggle="dropdown" class="btn btn-light"> <i
+									class="material-icons md-more_horiz"></i> </a>
+							<div class="dropdown-menu">
+								<a class="dropdown-item" href="Edit_product/{{product.id}}">Edit info</a>
+								<a class="dropdown-item text-danger"
+									onclick="return confirm('Are you sure you want to Delete this user?');"
+									href="product_delete/{{product.id}}">Delete</a>
+							</div>
+
+						</div>
+						<!-- dropdown //end -->
+					</td>
+
+					{% comment %} <td><span class="badge rounded-pill alert-success">Active</span></td>
+
+					<td><span class="badge rounded-pill alert-danger">Deactive</span></td>
+
+					<td class="text-end">
+
+						<a href="user_del/{{user.id}}"><button class="btn btn-danger"
+								onclick="return confirm('Are you sure you want to Delete this user?');"><i
+									class="fas fa-trash-alt"></i></button></a>
+
+						<div class="dropdown">
+
+							<div>
+								<!-- <a class="dropdown-item" href="#">View detail</a>
+										<a class="dropdown-item" href="#">Edit info</a> -->
+								<!-- <a class="dropdown-item text-danger" href="user_del/{{user.id}}">  Delete</a> -->
+
+								<a href="user_deactive/{{user.username}}"><button class="btn btn-danger" type="button"
+										onclick="return confirm('Are you sure you want to Deactive this user?');"><i
+											class="fas fa-user-lock"></i></button></a>
+
+
+								<a href="user_active/{{user.username}}"> <button class="btn btn-success"
+										onclick="return confirm('Are you sure you want to Active this user?');"><i
+											class="fas fa-unlock-alt"></i></button></a>
+
+
+							</div>
+						</div> <!-- dropdown //end -->
+					</td> {% endcomment %}
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div> <!-- table-responsive //end -->
+	</div>
+	<!-- card-bod
+
+        </section> <!-- content-main end// -->
+	{% endblock %}
