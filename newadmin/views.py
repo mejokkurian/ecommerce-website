@@ -77,9 +77,9 @@ def user_deactive(request, username):
     user2.save()
     return redirect(user_list)
 
+
+
 # admin user active
-
-
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def user_active(request, username):
     user3 = MyUser.objects.get(username=username)
@@ -95,26 +95,26 @@ def admin_logout(request):
     logout(request)
     return redirect(admin_login)
 
+
+
 # add product page view
-
-
 def add_product(request):
     catgry = category.objects.all()
     subcatgry = subcategory.objects.all()
     brandsss = brand.objects.all()
     return render(request, 'admin_add_product.html', {'catgs': catgry, 'subcatgry': subcatgry, 'brands': brandsss})
 
+
+
 # admin product list
-
-
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def product_list(request):
     products = Product.objects.all
     return render(request, 'page-products-list.html', {'products': products})
 
+
+
 # admin product adding
-
-
 def admin_add_product(request):
     productname = request.POST['productname']
     discrptin = request.POST['discrptin']
@@ -136,24 +136,24 @@ def admin_add_product(request):
     messages.success(request, 'product added ')
     return redirect(add_product)
 
+
+
 # admin product delete
-
-
 def product_delete(request, id):
     products = Product.objects.get(id=id)
     products.delete()
     return redirect(product_list)
 
+
+
 # product catogary page view
-
-
 def product_catagory(request):
     catgry = category.objects.all()
     return render(request, 'product_categories.html', {'category': catgry})
 
+
+
 # category creations
-
-
 def create_category(request):
     cat_name = request.POST['cat_name']
     slug = request.POST['slug']
@@ -165,17 +165,16 @@ def create_category(request):
     messages.success(request, 'Sucessfully created category!!!')
     return redirect(product_catagory)
 
+
 # category delete
-
-
 def category_delete(request, id):
     catgr_dlt = category.objects.get(id=id)
     catgr_dlt.delete()
     return redirect(product_catagory)
 
+
+
 # subcategory page views
-
-
 def sub_catogery(request):
     catgs = category.objects.all()
     subcatgry = subcategory.objects.all()
@@ -210,9 +209,8 @@ def brands(request):
     brandsss = brand.objects.all()
     return render(request, 'admin_brand.html', {'catgs': catgs, 'subcatgry': subcatgry, 'brands': brandsss})
 
+
 # admin brand creations
-
-
 def create_brand(request):
     catgry = category.objects.get(id=request.POST['category'])
     subcatgry = subcategory.objects.get(id=request.POST['subcategory'])
@@ -225,24 +223,22 @@ def create_brand(request):
     brandss.save()
     return redirect(brands)
 
+
 # admin brand delete
-
-
 def brand_delete(request, id):
     branddl = brand.objects.get(id=id)
     branddl.delete()
     return redirect(brands)
 
+
 # admin category edit
-
-
 def edit_category(request, id):
     Category = category.objects.get(id=id)
     return render(request, 'edit_category.html', {'cats': Category})
 
+
+
 # category edit submit
-
-
 def category_edit_submit(request, id):
     name = request.POST['name']
     discr = request.POST['dscrptn']
@@ -264,8 +260,6 @@ def subcategory_edit(request, id):
     return render(request, 'subcat_edit.html', {'subs': subs})
 
 # subcat edit successfully
-
-
 def subcat_editsubmit(request, id):
     name = request.POST['name']
     discr = request.POST['dscrptn']
