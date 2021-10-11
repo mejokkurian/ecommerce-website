@@ -34,6 +34,7 @@
     <link rel="stylesheet" href="{% static 'css/plugins/plugins.min.css' %}" />
     <link rel="stylesheet" href="{% static 'css/style.min.css' %}">
 
+
     <!-- Main Style -->
     <!-- <link rel="stylesheet" href="{% static 'css/style.css" /> -->
 
@@ -161,8 +162,8 @@
                                 <i class="pe-7s-like"></i>
                             </a>
                             <!-- Single Wedge End -->
-                            <a href="#offcanvas-cart"
-                                class="header-action-btn header-action-btn-cart offcanvas-toggle pr-0">
+                            <a href="{% url 'cart_view' %}"
+                                 class="header-action-btn header-action-btn-cart pr-0"> 
                                 <i class="pe-7s-shopbag"></i>
                                 <span class="header-action-num">01</span>
                                 <!-- <span class="cart-amount">€30.00</span> -->
@@ -202,7 +203,7 @@
             </div>
             <div class="foot">
                 <div class="buttons">
-                    <a href="wishlist.html" class="btn btn-dark btn-hover-primary mt-30px">view wishlist</a>
+                    <a href="" class="btn btn-dark btn-hover-primary mt-30px">view wishlist</a>
                 </div>
             </div>
         </div>
@@ -232,7 +233,7 @@
             </div>
             <div class="foot">
                 <div class="buttons mt-30px">
-                    <a href="cart.html" class="btn btn-dark btn-hover-primary mb-30px">view cart</a>
+                    <a href="{% url 'cart_view' %}" class="btn btn-dark btn-hover-primary mb-30px">view cart</a>
                     <a href="checkout.html" class="btn btn-outline-dark current-btn">checkout</a>
                 </div>
             </div>
@@ -707,6 +708,8 @@
 
     <!-- Main Js -->
     <script src="{% static 'js/main.js' %}"></script>
+
+ 
 
 </body>
 

@@ -10,6 +10,7 @@ urlpatterns = [
     path('user_register',views.user_register,name='user_register'),
     path('login_user',views.login_user,name = 'login_user'),
     path('user_logout',views.user_logout,name = 'user_logout'),
-    path('user_product_view/<int:id>',views.user_product_view,name = 'user_product_view')
+    path('user_product_view/<int:id>',views.user_product_view,name = 'user_product_view'),
+    path('cart_view',views.cart_view,name = 'cart_view')
 
 ]

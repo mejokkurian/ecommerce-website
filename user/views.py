@@ -79,6 +79,9 @@ def user_product_view(request,id):
     Products = Product.objects.all()
     return render(request,'user_single_product.html',{'products':products, 'Products': Products})
 
+def cart_view(request):
+    return render(request,'cart.html')
+
 
 
 
