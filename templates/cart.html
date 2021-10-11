@@ -23,25 +23,27 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                {% for product in products %}
                                     <tr>
                                         <td class="product-thumbnail">
                                             <a href="#"><img class="img-responsive ml-15px"
-                                                    src="assets/images/product-image/1.jpg" alt="" /></a>
+                                                    src="{{product.product_id.image1.url}}" alt="" /></a>
                                         </td>
-                                        <td class="product-name"><a href="#">Product Name</a></td>
-                                        <td class="product-price-cart"><span class="amount">$60.00</span></td>
+                                        <td class="product-name"><a href="#">{{product.product_id.productname}}</a></td>
+                                        <td class="product-price-cart"><span class="amount">{{product.product_id.price}}</span></td>
                                         <td class="product-quantity">
                                             <div class="cart-plus-minus">
                                                 <input class="cart-plus-minus-box" type="text" name="qtybutton"
                                                     value="1" />
                                             </div>
                                         </td>
-                                        <td class="product-subtotal">$70.00</td>
+                                        <td class="product-subtotal">{{product.product_stock}}</td>
                                         <td class="product-remove">
-                                            <a href="#"><i class="fa fa-pencil"></i></a>
-                                            <a href="#"><i class="fa fa-times"></i></a>
+                                            {% comment %} <a href=""><i class="fa fa-pencil"></i></a> {% endcomment %}
+                                            <a href="{% url 'cartitem_dlt' product.id %}"><i class="fa fa-times"></i></a>
                                         </td>
                                     </tr>
+                                {% endfor %}    
                                   
                                   
                                 </tbody>

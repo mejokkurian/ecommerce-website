@@ -2,6 +2,7 @@
 {% load static %}
 
 {% block contents %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 
 <!-- Hero/Intro Slider Start -->
@@ -234,7 +235,7 @@
                                         <a href="compare.html" class="action compare" title="Compare"><i
                                                 class="pe-7s-refresh-2"></i></a>
                                     </div>
-                                    <button title="Add To Cart" class=" add-to-cart">Add
+                                  <button title="Add To Cart"  onclick="cart('{{product.id}}')" class=" add-to-cart">Add
                                         To Cart</button>
                                 </div>
                                 <div class="content">
@@ -330,6 +331,25 @@
     </div>
 </div>
 <!-- Brand area end -->
+
+
+<script>
+    function cart(id){
+        var data = {'id' : id, "csrf_token": '{{csrf_token}}'}
+        $.ajax({
+            url : "{% url 'add_cart'  %}",
+            method: "POST",
+            data : data,
+            success : function(data){
+                alert('item added to cart')
+            }
+        })
+    } 
+
+        
+
+
+</script>
 
 
 {% endblock %}
