@@ -11,7 +11,6 @@ from .models import Product
 # Create your views here.
 
 
-
 # admin login page
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def admin_login(request):
@@ -19,7 +18,6 @@ def admin_login(request):
         return redirect(admin_home)
     else:
         return render(request, 'adminlogin.html')
-
 
 
 # admin home page login
@@ -59,14 +57,12 @@ def user_list(request):
     return render(request, 'page-user-1.html', {'users': users})
 
 
-
 # admin user delete
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def user_del(request, id):
     user1 = MyUser.objects.get(id=id)
     user1.delete()
     return redirect(user_list)
-
 
 
 # admin user deactivate
@@ -130,11 +126,24 @@ def admin_add_product(request):
     product_price = request.POST['product_price']
     diccount_price = request.POST['diccount_price']
 
-    products = Product.objects.create(productname=productname, description=discrptin, image=image1, image1=image2, image2=image3, image3=image4, category_name=Category,
-                                      sub_catagory_name=Sub_category, brand_name=Brand, amount_in_stock=stock_qnty, price=product_price, discount_price=diccount_price)
+    products = Product.objects.create(
+    productname=productname, 
+    description=discrptin,
+    image=image1,
+    image1=image2,
+    image2=image3,
+    image3=image4, 
+    category_name=Category,
+    sub_catagory_name=Sub_category, 
+    brand_name=Brand, 
+    amount_in_stock=stock_qnty, 
+    price=product_price, 
+    discount_price=diccount_price)
     products.save()
+
     messages.success(request, 'product added ')
     return redirect(add_product)
+# admin product edit end
 
 
 
@@ -150,7 +159,6 @@ def product_delete(request, id):
 def product_catagory(request):
     catgry = category.objects.all()
     return render(request, 'product_categories.html', {'category': catgry})
-
 
 
 # category creations
@@ -171,7 +179,6 @@ def category_delete(request, id):
     catgr_dlt = category.objects.get(id=id)
     catgr_dlt.delete()
     return redirect(product_catagory)
-
 
 
 # subcategory page views
@@ -235,7 +242,6 @@ def brand_delete(request, id):
 def edit_category(request, id):
     Category = category.objects.get(id=id)
     return render(request, 'edit_category.html', {'cats': Category})
-
 
 
 # category edit submit

@@ -93,6 +93,10 @@
                             </div>
                         </div>
                         <p class="m-0"> {{products.description}}</p>
+                        {% if products.amount_in_stock <= 0 %}
+                        <h4 style="color: red; font-size: 20px"; > Out of Stock</h4>
+                        {% else %}
+                        
                         <div class="pro-details-quality">
                             <div class="cart-plus-minus">
                                 <input class="cart-plus-minus-box" type="text" name="qtybutton" value="1" />
@@ -108,6 +112,7 @@
                                 <a href="#"><i class="pe-7s-refresh-2"></i></a>
                             </div>
                         </div>
+                        {% endif %}
                         <div class="pro-details-sku-info pro-details-same-style  d-flex">
                             <span>SKU: </span>
                             <ul class="d-flex">

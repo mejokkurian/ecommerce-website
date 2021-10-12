@@ -1,6 +1,6 @@
-from django.db import models
 from newadmin.models import Product
 from user.models import MyUser
+from django.db import models
 
 # Create your models here.
 

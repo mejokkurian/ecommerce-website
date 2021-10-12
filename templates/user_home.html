@@ -235,8 +235,12 @@
                                         <a href="compare.html" class="action compare" title="Compare"><i
                                                 class="pe-7s-refresh-2"></i></a>
                                     </div>
+                                    {% if product.amount_in_stock <= 0 %}
+                                    <h4 style="color: red";>Out of Stock </h4>
+                                    {% else %}
                                   <button title="Add To Cart"  onclick="cart('{{product.id}}')" class=" add-to-cart">Add
                                         To Cart</button>
+                                    {% endif %}
                                 </div>
                                 <div class="content">
                                     <span class="ratings">
