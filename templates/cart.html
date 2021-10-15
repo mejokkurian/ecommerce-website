@@ -17,6 +17,7 @@
                                         <th>Image</th>
                                         <th>Product Name</th>
                                         <th>Unit Price</th>
+                                        <th>stock</th>
                                         <th>Qty</th>
                                         <th>Sub total</th>
                                         <th>Action</th>
@@ -30,23 +31,33 @@
                                             <a href="#"><img class="img-responsive ml-15px"
                                                     src="{{product.product_id.image1.url}}" alt="" /></a>
                                         </td>
-                                        <td class="product-name"><a href="#">{{product.product_id.productname}}</a></td>
+                                        <td class="product-name"><a href="#">{{product.product_id.productname}} </a></td>
                                         <td class="product-price-cart"><span class="amount">{{product.product_id.price}}</span></td>
+                                        {% if product.product_id.amount_in_stock < 5 %}
+                                        <td class="product-name" ><a  href="#">{{product.product_id.amount_in_stock}} <br><span style="color: red; font-size: small;"> <small><p>Hurry!! <br> only few items left</p> </small> </span> </a></td>
+                                       
+                                        {% else %}
+                                             <!-- {% if product.product_id.amount_in_stock == 0 %}
+                                                 <td class="product-name" ><a  href="#">{{product.product_id.amount_in_stock}} <br><span style="color: red; font-size: small;"> <small><p>Out of stock</p> </small> </span> </a></td>
+                                             {% endif %} -->
+                                        <td class="product-name" ><a style="color:rgb(33, 230, 33);"  href="#">{{product.product_id.amount_in_stock}} </a></td>
+                                        {% endif %}
                                         <td class="product-quantity">
                                             <div class="cart-plus-minus">
-                                                <div class="dec qtybutton minbtn" onclick="prdDecrement('{{product.product_id.id}}')">-</div>
-                                                
-                                                <input class="cart-plus-minus-box" type="text" name="qtybutton"
-                                                    value="{{product.product_stock}}" />
+                                               
+                                                <div class="dec qtybutton minbtn"   onclick="prdDecrement('{{product.product_id.id}}')">-</div>
+                                
+                                                <input id = 'box{{product.product_id.id}}' class="cart-plus-minus-box"  type="text" name="qtybutton" value="{{product.product_stock}}" />
                                                     
-                                                <div class="inc qtybutton plubtn" onclick="prdIncrement('{{product.product_id.id}}')">+</div>
+                                                    
+                                                <div class="inc qtybutton plubtn"   onclick="prdIncrement('{{product.product_id.id}}')">+</div>
 
                                                 <!-- <input type="hidden" class="productid" name="prdid" value="{{product.product_id.id}}"> -->
                                             </div>
                                             
                                         </td>
                                         
-                                        <td class="product-subtotal">{{product.sub_total}}</td>
+                                        <td id = 'subtotal{{product.product_id.id}}' class="product-subtotal">{{product.sub_total}}</td>
                                         <td class="product-remove">
                                             {% comment %} <a href=""><i class="fa fa-pencil"></i></a> {% endcomment %}
                                             <a href="{% url 'cartitem_dlt' product.id %}"><i class="fa fa-times"></i></a>
@@ -61,7 +72,7 @@
                                                     src="" alt="" /></a>
                                         </td>
                                         <td class="product-name"><a href="#"></a></td>
-                                        <td class="product-price-cart"><span class="amount">{{product.product_id.price}}</span></td>
+                                        <td class="product-price-cart"><span class="amount"> </span></td>
                                         <td class="product-quantity">
                                             <div class="cart-plus-minus">
                                                 <input class="cart-plus-minus-box" type="text" name="qtybutton"
@@ -157,18 +168,19 @@
                                 <div class="title-wrap">
                                     <h4 class="cart-bottom-title section-bg-gary-cart">Cart Total</h4>
                                 </div>
-                                <h5>Total products <span>$260.00</span></h5>
-                                <div class="total-shipping">
+                                <h5 >Total amount <span style="color: red;" class="total">{{grandtotal}}</span></h5>
+                                <h5 >Tax amount <span style="color: red;" class="tax"><small>{{tax}}</small></span></h5>
+                                {% comment %} <div class="total-shipping">
                                     <h5>Total shipping</h5>
                                     <ul>
                                         <li><input type="checkbox" /> Standard <span>$20.00</span></li>
                                         <li><input type="checkbox" /> Express <span>$30.00</span></li>
                                     </ul>
-                                </div>
+                                </div> {% endcomment %}
                                
-                                <h4 class="grand-totall-title">Grand Total <span></span></h4>
+                                <h4 class="grand-totall-title"> <span></span></h4>
                               
-                                <a href="checkout.html">Proceed to Checkout</a>
+                                <a href="{% url 'checkout' %}">Proceed to Checkout</a>
                             </div>
                         </div>
                     </div>
@@ -179,45 +191,77 @@
     <!-- Cart Area End -->
 
     <script>
-        var x = {"success" : '[{"model": "cart.cart", "pk": 15, "fields": {"product_id": 23, "username": 48, "product_stock": 2, "sub_total": 2998, "date": "2021-10-12T11:34:20.417Z"}}]'}
-        var iterator = x.success
-        console.log(iterator)
-        for()
-
-
-        function prdDecrement(id) {
-            var data = {'id' : id, "csrf_token": '{{csrf_token}}'}
-            $.ajax({
-                url : "{% url 'product_decrement'  %}",
-                method: "POST",
-                data : data,
-                success : function(data){
-                    console.log("data",data)
-
-                    // for (let dt of iterator.values()) {
-                    //     var productStock = dt.fields.product_stock
-                    //     var subTotal = dt.fields.sub_total
-                    //     console.log("productStock", productStock);
-                    //     console.log("subTotal", subTotal);
-                    // } 
-
-                    //document.getElementsByClassName("cart-page-title")[0].innerHTML = "mejo"
-                    
-                }
-            })
-            console.log(id);
-
+        //increment fuction
+            function prdDecrement(id) {
+                let quantity = document.getElementById('box'+id).value
+                //console.log( document.getElementById("box"+id) )
+                console.log(quantity)
+                if (quantity == 1){
+                    console.log("quantity", quantity)
+                } else {
+                var data = {'id' : id, "csrf_token": '{{csrf_token}}'}
+                $.ajax({
+                    url : "{% url 'product_decrement'  %}",
+                    method: "POST",
+                    data : data,
+                    success : function(resp){
+                        console.log("data",resp)
+                        var productStock = resp.product_stock
+                        var subTotal = resp.sub_total
+                        var grand_Ttoal = resp.grandtotal 
+                        var tax = resp.tax 
+                        console.log(productStock,'---------')
+                        console.log(subTotal,'++++++')
+                        console.log(grand_Ttoal,'++++++')
+                        console.log(tax,'tax')
     
+                        document.getElementById("box"+id).value = productStock;
+                        document.getElementById("subtotal"+id).innerHTML = subTotal;
+                        document.getElementsByClassName("total")[0].innerHTML = grand_Ttoal;
+                        document.getElementsByClassName("tax")[0].innerHTML = tax;
+                        if (productStock == 1) {
+                            document.getElementById("mySelect").style.pointerEvents = 'none';
+                        
+                        //document.getElementsByClassName("cart-page-title")[0].innerHTML = "dsafsdf";
+    
+                        // for (let dt of iterator.values()) {
+                        //     
+                        //     console.log("productStock", productStock);
+                        //     console.log("subTotal", subTotal);
+                        // } 
+                        }
+    
+                        
+                    }
+                })
+            }
+        
         }
-    
+
+
+    //decrement function
         function prdIncrement(id) {
+            console.log('prdIncrement')
             var data = {'id' : id, "csrf_token": '{{csrf_token}}'}
             $.ajax({
                 url : "{% url 'product_increment'  %}",
                 method: "POST",
                 data : data,
-                success : function(data){
-                    console.log(data)
+                success : function(resp){
+                    console.log("data",resp)
+                    var productStock = resp.product_stock
+                    var subTotal = resp.sub_total
+                    var grand_Ttoal = resp.grandtotal 
+                    var tax = resp.tax 
+                    console.log(productStock,'---------')
+                    console.log(subTotal,'++++++')
+                    console.log(grand_Ttoal,'++++++')
+                    console.log(tax,'tax')
+
+                    document.getElementById("box"+id).value = productStock;
+                    document.getElementById("subtotal"+id).innerHTML = subTotal;
+                    document.getElementsByClassName("total")[0].innerHTML = grand_Ttoal;
+                    document.getElementsByClassName("tax")[0].innerHTML = tax;
                 }
             })
             console.log(id);

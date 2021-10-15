@@ -18,6 +18,7 @@ from django.urls import path
 from django.urls.conf import include
 import user
 import newadmin
+import order
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -25,7 +26,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('',include('user.urls')),
     path('newadmin/',include('newadmin.urls')),
-    path('cart/',include('cart.urls'))
+    path('cart/',include('cart.urls')),
+    path('address/',include('order.urls'))
 
 ]
 

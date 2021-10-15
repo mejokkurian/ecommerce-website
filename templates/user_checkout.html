@@ -1,0 +1,132 @@
+{% extends 'base_user.html' %}
+{% load static %}
+
+{% block contents %}
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet">
+
+<style></style>
+    <!-- checkout area start -->
+    <div class="checkout-area pt-100px pb-100px">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-7">
+                    <h3 style="font-family: '#offcanvas-mobile-menu';" >Billing address</h3>
+                      <hr>
+
+                      <div class="form-check">
+                        <input class="form-check-input p-2"  type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+                        <label class="form-check-label" for="flexRadioDefault1">
+                             Default radio <a href=""><i  class="fas fa-pen " style="margin-right: 1em; margin-left: 1em; color: blue;" ></i></a>        <a href=""><i class="fas fa-times" style="color: red;"></i></a>  
+                        </label>
+                     
+                      </div>
+                        
+                      <div class="form-check">
+                        <input class="form-check-input p-2"  type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked>
+                        <label class="form-check-label" for="flexRadioDefault2">
+                          Default checked radio
+                        </label>
+                      </div>
+
+                      <div class="form-check">
+                        <input class="form-check-input p-2"  type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked>
+                        <label class="form-check-label" for="flexRadioDefault2">
+                          Default checked radio
+                        </label>
+                      </div>
+
+                     <a href="{% url 'address' %}"><button type="button" style="border-radius: 80; height: 3em;" class="btn btn-primary">ADD NEW ADDRESS</button></a> 
+
+
+                      <h3 style="font-family: '#offcanvas-mobile-menu';  margin-top: 3em;" >Payments</h3>
+                      
+
+                      <div class="form-check">
+                        <input class="form-check-input p-2"  type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+                        <label class="form-check-label" for="flexRadioDefault1">
+                             Default radio 
+                        </label>
+                     
+                      </div>
+                        
+                      <div class="form-check">
+                        <input class="form-check-input p-2"  type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked>
+                        <label class="form-check-label" for="flexRadioDefault2">
+                          Default checked radio
+                        </label>
+                      </div>
+
+                      <div class="form-check">
+                        <input class="form-check-input p-2"  type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked>
+                        <label class="form-check-label" for="flexRadioDefault2">
+                          Default checked radio
+                        </label>
+                      </div>
+                     
+
+                      <button type="button" style="border-radius: 80; height: 3em; width: 500px; margin-left: 22em;" class="btn btn-primary">Place Order</button>
+                </div>
+
+
+                
+                    
+
+                
+                
+                <div class="col-lg-5 mt-md-30px mt-lm-30px ">
+                    <div class="your-order-area">
+                        <h3>Your order</h3>
+                        <div class="your-order-wrap gray-bg-4">
+                            <div class="your-order-product-info">
+                                <div class="your-order-top">
+                                    <ul>
+                                        <li>Product</li>
+                                        <li>Total</li>
+                                    </ul>
+                                </div>
+                                <div class="your-order-middle">
+                                    <ul>
+                                    {% for prd in product %}
+                                        <li><span style="color: rgb(190, 30, 164);" class="order-middle-left">{{prd.product_id.productname}}  ({{prd.product_stock}})</span>
+                                            
+                                          {% for item,value in total %} 
+                                          <!-- {% if item == prd.product_id.productname %}  -->
+                                            <span style="color: red;"    class="order-price">{{value}}</span></li>
+                                            <!-- {% endif %} -->
+                                        {% endfor %}
+
+                                    {% endfor %}
+                                        
+                                    </ul>
+                                </div>
+                                <div class="your-order-bottom">
+                                    <ul>
+                                        <li  class="your-order-shipping">Shipping</li>
+                                        <li style="color: rgb(24, 184, 24);" >Free shipping</li>
+                                    </ul>
+                                </div>
+                                <div class="your-order-total">
+                                    <ul>
+                                        <li class="order-total">Total</li>
+                                        <li>{{grandtotal}}</li>
+                                    </ul>
+                                </div>
+                            </div>
+                          
+                        </div>
+                        <!-- <div class="Place-order mt-25">
+                            <a class="btn-hover" href="#">Place Order</a>
+                        </div> -->
+                    </div>
+                    
+                </div>
+                
+            </div>
+            <hr>
+        </div>
+        
+    </div>
+    <!-- checkout area end -->
+
+{% endblock %}
+   

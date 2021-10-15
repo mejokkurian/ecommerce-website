@@ -4,6 +4,8 @@
 {% block contents %}
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
 
 <!-- Hero/Intro Slider Start -->
 <div class="section ">
@@ -345,7 +347,20 @@
             method: "POST",
             data : data,
             success : function(data){
-                alert('item added to cart')
+                swal({
+                    position :'top-end',
+                    icon: "success",
+                    text: "Item added to cart!",
+                    timer:1500
+                  });
+                
+                Toastify({
+
+                    text: "This is a toast",
+                    
+                    duration: 3000
+                    
+                    }).showToast();
             }
         })
     } 
