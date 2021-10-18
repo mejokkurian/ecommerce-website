@@ -31,5 +31,7 @@ urlpatterns = [
     path('brand_edit/<int:id>',views.brand_edit, name = 'brand_edit'),
     path('brand_eddit_submit/<int:id>',views.brand_eddit_submit, name = 'brand_eddit_submit'),
     path('Edit_product/<int:id>',views.Edit_product, name = 'Edit_product'),
-    path('product_edit_submit/<int:id>',views.product_edit_submit, name = 'product_edit_submit')  
+    path('product_edit_submit/<int:id>',views.product_edit_submit, name = 'product_edit_submit'),  
+    path('order_managment',views.order_managment, name = 'order_managment'),  
 ]
+

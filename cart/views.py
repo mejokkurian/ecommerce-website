@@ -1,32 +1,42 @@
+from django.views.decorators.cache import cache_control
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import redirect, render
+from newadmin.views import user_active
 from django.http import JsonResponse
 from newadmin.models import Product
+from order.models import Address
 from user.models import MyUser
 from .models import Cart
-from django.core import serializers
+
+
 
 
 # Create your views here.
 
-
 # cart view
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def cart_view(request):
     if request.user.is_authenticated:
         cartid = Cart.objects.filter(username=request.user).order_by('id')
         total = 0
         item = 0
         stock = 0
+        grand_total = 0
+        tax = 0
         for i in cartid:
+            print(i.product_id.productname,'product name')
             total = i.product_id.price * i.product_stock
             print(total, "________________")
             i.sub_total = total
             i.save()
             item += i.product_id.price
             stock += i.product_stock
-        grand_total = item * stock
-        tax = (grand_total/100)*5
+            print(i.product_stock,'product stock')
+            print(i.product_id.price,'product price')
+            grand_total += total
+            tax = (grand_total/100)*5
         print(tax, 'tax')
+        print(item,stock)
         print(grand_total)
 
         return render(request, 'cart.html', {'products': cartid, 'grandtotal': grand_total, 'tax': tax})
@@ -35,6 +45,7 @@ def cart_view(request):
 
 
 # add product to cart
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 @csrf_exempt
 def add_cart(request):
     print("buttton clicked")
@@ -71,15 +82,16 @@ def add_cart(request):
 
 
 # delete prodcut from the cart
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def cartitem_dlt(request, id):
     cart_items = Cart.objects.get(id=id)
     cart_items.delete()
     return redirect(cart_view)
 
 
-
- # product increment in cart
+# product increment in cart
 @csrf_exempt
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def product_increment(request):
     if request.method == 'POST':
         id = request.POST['id']
@@ -111,12 +123,16 @@ def product_increment(request):
         cart_by_user = Cart.objects.filter(username=request.user)
         print(cart_by_user, 'totalitem')
         item = 0
-        stock = 0
+        stock = 0 
+        total = 0 
+        grand_total = 0
+        tax = 0
         for x in cart_by_user:
+            total = x.product_id.price * x.product_stock
             item += x.product_id.price
             stock += x.product_stock
-        grand_total = item * stock
-        tax = (grand_total/100)*5
+            grand_total += total 
+            tax = (grand_total/100)*5
         print(tax, 'tax')
 
         print(item, stock, "full amount")
@@ -124,10 +140,9 @@ def product_increment(request):
         return JsonResponse({"product_stock": data.product_stock, "sub_total": data.sub_total, "grandtotal": grand_total, 'tax': tax})
 
 
-
-
 # product decrement in cart
 @csrf_exempt
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def product_decrement(request):
     if request.method == 'POST':
         id = request.POST['id']
@@ -148,17 +163,20 @@ def product_decrement(request):
         b = data.sub_total
         print(a)
         print(b)
-
         # grand total
         cart_by_user = Cart.objects.filter(username=request.user)
         print(cart_by_user, 'totalitem')
         item = 0
         stock = 0
+        total = 0
+        grand_total = 0
+        tax = 0  
         for x in cart_by_user:
             item += x.product_id.price
             stock += x.product_stock
-        grand_total = item * stock
-        tax = (grand_total/100)*5
+            total = x.product_id.price * x.product_stock
+            grand_total += total
+            tax = (grand_total/100)*5
         print(tax, 'tax')
 
         print(item, stock, "full amount")
@@ -167,25 +185,32 @@ def product_decrement(request):
 
 
 #checkout view
-def checkout(request):
-    cart = Cart.objects.filter(username = request.user)
-    print(cart)
-    price = 0
-    stock = 0
-    a_dict = {}
-    total = 0
-   
-    for c in cart:
-        price += c.product_id.price
-        stock += c.product_stock
-        total = c.product_id.price * c.product_stock
-        a_dict[c.product_id.productname] = (total)
-        print(total,'single')
-        print(price,stock,total)
-    grand_total = price * stock
-    print(a_dict.values(),"dictionary values")
-    # values = a_dict.values()
-    # values_list = list(values)
-    # print(values_list)
-    print(grand_total)
-    return render(request,'user_checkout.html',{'grandtotal':grand_total, 'product':cart, 'total':a_dict.items()})
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+def checkout(request,id):
+    if request.user.is_authenticated:
+        cart = Cart.objects.filter(username = request.user)
+        print(cart)
+        price = 0
+        stock = 0
+        a_dict = {}
+        total = 0
+        grand_total = 0
+        for c in cart:
+            price += c.product_id.price
+            stock += c.product_stock
+            total = c.product_id.price * c.product_stock
+            a_dict[c.product_id.productname] = (total)
+            print(total,'single')
+            print(price,stock,total)
+            grand_total += total
+        print(a_dict.values(),"dictionary values")
+        print(grand_total)
+        
+        #address displaying
+        addrs = Address.objects.filter(user = id).order_by('-id')[:3]
+        print(addrs,'address user')
+        for i in addrs:
+             print(i,'nothinf')
+        return render(request,'user_checkout.html',{'grandtotal':grand_total, 'product':cart, 'total':a_dict.items(),'address':addrs})
+    else:
+        return render(request,'user_login.html')

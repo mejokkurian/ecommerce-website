@@ -1,0 +1,244 @@
+
+{% extends 'base_user.html' %}
+{% load static %}
+
+{% block contents %}
+
+<head>
+    <style>
+
+
+label.cabinet{
+	display: block;
+	cursor: pointer;
+}
+
+label.cabinet input.file{
+	position: relative;
+	height: 100%;
+	width: auto;
+	opacity: 0;
+	-moz-opacity: 0;
+  filter:progid:DXImageTransform.Microsoft.Alpha(opacity=0);
+  margin-top:-30px;
+}
+
+#upload-demo{
+	width: 250px;
+	height: 250px;
+  padding-bottom:25px;
+}
+
+
+         a {
+      color: inherit;
+    }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            height: 100vh;
+            width: 100%;
+        }
+
+        h1 {
+            font-family: sans-serif;
+            text-align: center;
+            font-size: 30px;
+            color: #222;
+        }
+
+        .profile-pic-div {
+            height: 150px;
+            width: 150px;
+            position: absolute;
+            top: -4%;
+            left: 87%;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            overflow: hidden;
+            border: 1px solid grey;
+        }
+
+        #photo {
+            height: 100%;
+            width: 100%;
+        }
+
+        #file {
+            display: none;
+        }
+
+        #uploadBtn {
+            height: 40px;
+            width: 100%;
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+            background: rgba(0, 0, 0, 0.7);
+            color: wheat;
+            line-height: 30px;
+            font-family: sans-serif;
+            font-size: 15px;
+            cursor: pointer;
+            display: none;
+        }
+    </style>
+
+
+    <!-- account area start -->
+    <div class="account-dashboard pt-100px pb-100px">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12 col-md-3 col-lg-3">
+                    <!-- Nav tabs -->
+                    <div class="dashboard_tab_button" data-aos="fade-up" data-aos-delay="0">
+                        <ul role="tablist" class="nav flex-column dashboard-list">
+                            <li> <a href="#orders" data-bs-toggle="tab" class="nav-link active">Orders</a></li>
+                            <li><a href="#account-details" data-bs-toggle="tab" class="nav-link">Account details</a>
+                            </li>
+                            <li><a href="#change_password" data-bs-toggle="tab" class="nav-link">Change Password</a>
+                            </li>
+
+
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-9 col-lg-9">
+                    <!-- Tab panes -->
+                    <div class="tab-content dashboard_content" data-aos="fade-up" data-aos-delay="200">
+                        <div class="tab-pane fade show active" id="orders">
+                            <h4>Orders</h4>
+                            <div class="table_page table-responsive">
+                                <table>
+                                    <thead>
+
+                                        <tr>
+
+                                            
+                                            <th>Date</th>
+                                            <th>Payment method</th>
+                                            <th>Total</th>
+                                            <th>Status</th>
+                                            <th>Actions</th>
+                                           
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for k in order_dtl %}
+                                        <tr>
+                                            
+                                            <td style="color: blue;" >{{k.date}}</td>
+                                            <td style="color: green;" >{{k.payment_method}}</td>
+                                            <td style="color: red;" >{{k.total}}</td>
+                                            <td><span class="badge rounded-pill alert-danger">{{k.status}}</span></td>
+                                            <td><a href="{% url 'order_dlt' k.id %}"><button type="button"  style="height: 2em; width: 8em;" class="btn btn-primary" onclick="return confirm('Are you sure you want to cancel this order?');" >Cancel</button></a></td>
+                                           
+                                        </tr>
+                                        {% endfor %}
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="tab-pane fade" id="account-details">
+
+
+
+                            <h3>Account details </h3>
+                            <div class="login">
+                                <div class="login_form_container">
+
+                                    <div class="account_login_form">
+                                        <form action="/order-details" method="POST" enctype="multipart/form-data">
+                                            <div>
+                                                <div class="container">
+	                        <div class="row">
+								<div class="col-xs-12">
+									<label class="cabinet center-block">
+										<figure>
+											<img src="/user-image/616aeed99fbdf42d8a3a09b5.jpg" class="gambar img-responsive img-thumbnail" id="photo" />
+										  <figcaption><i class="fa fa-camera"></i></figcaption>
+								    </figure>
+										<input type="file" class="item-img file center-block" name="userImage"/>
+									</label>
+								</div>
+							</div>
+                        </div>
+
+
+
+                                            </div>
+                                            <div class="default-form-box mb-20">
+                                                <label>Name</label>
+                                                <input type="text" name="Name" value="Mejo K Kurian" required>
+                                            </div>
+                                            <div class="default-form-box mb-20">
+                                                <label>User Name</label>
+                                                <input type="text" name="Username" value="Mejo"
+                                                    required>
+                                            </div>
+                                            <div class="default-form-box mb-20">
+                                                <label>Email</label>
+                                                <input type="text" name="Email" value="mjokkurian06@gmail.com" required>
+                                            </div>
+                                            <div class="default-form-box mb-20">
+                                                <label>Mobile No</label>
+                                                <input type="text" name="MobileNo" value="9526467702"
+                                                    required>
+                                            </div>
+
+                                            <br>
+
+
+
+
+
+
+
+                                            <div class="save_button mt-3">
+                                                <button class="btn" type="submit">Save</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tab-pane fade" id="change_password"  >
+                            <form action="/change-password" method="POST">
+
+
+                                <div class="default-form-box mb-20">
+                                    <label>Password</label>
+                                    <input type="password" name="password" id="password" placeholder="Password" onchange='onChange()'>
+                                </div>
+                                <div class="default-form-box mb-20">
+                                    <label>Confirm Password</label>
+                                    <input type="password" name="confirm_password" id="confirm_password"
+                                        placeholder="confirm password" onchange='onChange()'>
+                                    <span id='message'></span>
+                                </div>
+                                <button class="btn1 btn-primary1" id="" type="submit" >Change Password</button>
+                            </div>
+                            </form>
+                        </div>
+
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- account area start -->
+
+     {% endblock %}
+
+ 

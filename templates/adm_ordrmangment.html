@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% load humanize %}
+
+
+{% block contents %}
+
+<section class="content-main">
+
+
+
+    <div class="content-header">
+        <h2 class="content-title"> Order managment </h2>
+        <div>
+            <a href="add_product" class="btn btn-primary"><i class="material-icons md-plus"></i> Create new</a>
+        </div>
+    </div>
+
+
+    </header> <!-- card-header end// -->
+
+
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <thead>
+
+                <tr>
+
+                    <th>User</th>
+                    <th>Date</th>
+                    <th>Payment method</th>
+                    <th>Total</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                    
+
+                </tr>
+            </thead>
+            <tbody>
+                {% for k in order_dtl %}
+                <tr>
+                    <td>{{k.username.username}}</td>
+                    <td style="color: blue;">{{k.date|naturaltime }}</td>
+                    <td><span class="badge rounded-pill alert-success">{{k.payment_method}}</span></td>
+                    <td style="color: red;">{{k.total}}</td>
+                    <td><span class="badge rounded-pill alert-danger">{{k.status}}</span></td>
+                        
+                    <td><a href="{% url 'order_dlt' k.id %}"><button type="button" class="btn btn-danger"
+                                onclick="return confirm('Are you sure you want to cancel this order?');">Cancel</button></a>
+                    </td>
+
+                </tr>
+                {% endfor %}
+
+            </tbody>
+        </table>
+    </div>
+    </div>
+
+
+</section>
+
+
+</main>
+{% endblock %}

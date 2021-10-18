@@ -12,28 +12,25 @@
                 <div class="col-lg-7">
                     <h3 style="font-family: '#offcanvas-mobile-menu';" >Billing address</h3>
                       <hr>
-
+                      {% for addr in address %}
+                     
                       <div class="form-check">
-                        <input class="form-check-input p-2"  type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-                        <label class="form-check-label" for="flexRadioDefault1">
-                             Default radio <a href=""><i  class="fas fa-pen " style="margin-right: 1em; margin-left: 1em; color: blue;" ></i></a>        <a href=""><i class="fas fa-times" style="color: red;"></i></a>  
+
+                    <form action="{% url 'order_placed' addr.id  %}" method="post">
+                        {% csrf_token %}
+                        <input class="form-check-input p-2" value={{addr.id}}   type="radio" name="flexRadioDefault" id="flexRadioDefault1" required>
+                        <label  class="form-check-label" for="flexRadioDefault1">
+                            <p ><strong style="color: black;" >  {{addr.full_name}} </strong>    <a href="" ><i  class="fas fa-pen " style="margin-right: 1em; margin-left: 1em; color: blue;" ></i></a>      <a href="{% url 'address_dlt' addr.id %}"   onclick="return confirm('Are you sure you want to Active this user?');"><i class="fas fa-times" style="color: red;"></i></a>  </p>      
+                             <p>{{addr.address_line1}},{{addr.state}},{{addr.district}},{{addr.city}},{{addr.pincode}},</p>
+                             <p><strong style="color: black;" >Mobile No:  {{addr.mobile}}</strong> </p>
                         </label>
+                        
                      
                       </div>
+                      {% endfor %}
                         
-                      <div class="form-check">
-                        <input class="form-check-input p-2"  type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked>
-                        <label class="form-check-label" for="flexRadioDefault2">
-                          Default checked radio
-                        </label>
-                      </div>
+                    
 
-                      <div class="form-check">
-                        <input class="form-check-input p-2"  type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked>
-                        <label class="form-check-label" for="flexRadioDefault2">
-                          Default checked radio
-                        </label>
-                      </div>
 
                      <a href="{% url 'address' %}"><button type="button" style="border-radius: 80; height: 3em;" class="btn btn-primary">ADD NEW ADDRESS</button></a> 
 
@@ -42,29 +39,15 @@
                       
 
                       <div class="form-check">
-                        <input class="form-check-input p-2"  type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+                        <input class="form-check-input p-2" value="cod"  type="radio" name="flexRadio" id="flexRadioDefault1" required>
                         <label class="form-check-label" for="flexRadioDefault1">
-                             Default radio 
+                             Cash On Delivery
                         </label>
                      
                       </div>
-                        
-                      <div class="form-check">
-                        <input class="form-check-input p-2"  type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked>
-                        <label class="form-check-label" for="flexRadioDefault2">
-                          Default checked radio
-                        </label>
-                      </div>
 
-                      <div class="form-check">
-                        <input class="form-check-input p-2"  type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked>
-                        <label class="form-check-label" for="flexRadioDefault2">
-                          Default checked radio
-                        </label>
-                      </div>
-                     
-
-                      <button type="button" style="border-radius: 80; height: 3em; width: 500px; margin-left: 22em;" class="btn btn-primary">Place Order</button>
+                     <button type="submit" style="border-radius: 80; height: 3em; width: 500px; margin-left: 22em;" class="btn btn-primary">Place Order</button>
+                 </form>
                 </div>
 
 

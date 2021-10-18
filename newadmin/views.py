@@ -1,13 +1,14 @@
 from django.contrib import messages
 from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import REDIRECT_FIELD_NAME, authenticate, login, logout
 from django.views.decorators.cache import cache_control
 from user.models import MyUser
 from .models import category
 from .models import subcategory
 from .models import brand
 from .models import Product
+from order.models import Order
 # Create your views here.
 
 
@@ -94,6 +95,7 @@ def admin_logout(request):
 
 
 # add product page view
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def add_product(request):
     catgry = category.objects.all()
     subcatgry = subcategory.objects.all()
@@ -111,6 +113,7 @@ def product_list(request):
 
 
 # admin product adding
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def admin_add_product(request):
     productname = request.POST['productname']
     discrptin = request.POST['discrptin']
@@ -148,6 +151,7 @@ def admin_add_product(request):
 
 
 # admin product delete
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def product_delete(request, id):
     products = Product.objects.get(id=id)
     products.delete()
@@ -156,12 +160,14 @@ def product_delete(request, id):
 
 
 # product catogary page view
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def product_catagory(request):
     catgry = category.objects.all()
     return render(request, 'product_categories.html', {'category': catgry})
 
 
 # category creations
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def create_category(request):
     cat_name = request.POST['cat_name']
     slug = request.POST['slug']
@@ -175,6 +181,7 @@ def create_category(request):
 
 
 # category delete
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def category_delete(request, id):
     catgr_dlt = category.objects.get(id=id)
     catgr_dlt.delete()
@@ -182,6 +189,7 @@ def category_delete(request, id):
 
 
 # subcategory page views
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def sub_catogery(request):
     catgs = category.objects.all()
     subcatgry = subcategory.objects.all()
@@ -189,6 +197,7 @@ def sub_catogery(request):
 
 
 # create subcategory
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def create_sub_category(request):
     catgry = category.objects.get(id=request.POST['category'])
     sub_name = request.POST['sub_name']
@@ -203,6 +212,7 @@ def create_sub_category(request):
 
 
 # def delete subCategory
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def subcat_delete(request, id):
     subcatgry = subcategory.objects.get(id=id)
     subcatgry.delete()
@@ -210,6 +220,7 @@ def subcat_delete(request, id):
 
 
 # brand creations
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def brands(request):
     catgs = category.objects.all()
     subcatgry = subcategory.objects.all()
@@ -218,6 +229,7 @@ def brands(request):
 
 
 # admin brand creations
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def create_brand(request):
     catgry = category.objects.get(id=request.POST['category'])
     subcatgry = subcategory.objects.get(id=request.POST['subcategory'])
@@ -232,6 +244,7 @@ def create_brand(request):
 
 
 # admin brand delete
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def brand_delete(request, id):
     branddl = brand.objects.get(id=id)
     branddl.delete()
@@ -239,12 +252,14 @@ def brand_delete(request, id):
 
 
 # admin category edit
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def edit_category(request, id):
     Category = category.objects.get(id=id)
     return render(request, 'edit_category.html', {'cats': Category})
 
 
 # category edit submit
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def category_edit_submit(request, id):
     name = request.POST['name']
     discr = request.POST['dscrptn']
@@ -261,11 +276,13 @@ def category_edit_submit(request, id):
 
 
 # subcat editpage
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def subcategory_edit(request, id):
     subs = subcategory.objects.get(id=id)
     return render(request, 'subcat_edit.html', {'subs': subs})
 
 # subcat edit successfully
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def subcat_editsubmit(request, id):
     name = request.POST['name']
     discr = request.POST['dscrptn']
@@ -283,11 +300,13 @@ def subcat_editsubmit(request, id):
 
 
 # admin brand edit
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def brand_edit(request,id):
     Brand = brand.objects.get(id = id)
     return render(request,'brand_edit.html', {'brand':Brand})
 
 # brand edit submit
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def brand_eddit_submit(request, id):
     name = request.POST['name']
     slug = request.POST['slug']
@@ -301,6 +320,7 @@ def brand_eddit_submit(request, id):
     return redirect(brands)
 
 # product edit
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def Edit_product(request,id):
     products = Product.objects.get(id = id)
     # print("-...--", products)
@@ -311,6 +331,7 @@ def Edit_product(request,id):
 
 
 # product edit and submit
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def product_edit_submit(request,id):
     products = Product.objects.get(id = id)
 
@@ -362,6 +383,13 @@ def product_edit_submit(request,id):
     products.save()
     messages.success(request,'Sucessfully Edited products!!!')
     return redirect(product_list)
+
+
+#Admin order managent
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+def order_managment(request):
+    orders_details = Order.objects.filter(username = request.user.id)
+    return render(request,'adm_ordrmangment.html',{'order_dtl': orders_details})
 
 
 

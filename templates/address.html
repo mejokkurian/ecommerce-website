@@ -28,54 +28,55 @@
 							<div class="col-md-12">
 								<div class="contact-wrap w-100 p-md-5 p-4">
 									
-									<div id="form-message-warning" class="mb-4"></div> 
-				      		<div id="form-message-success" class="mb-4">
-				            Your message was sent, thank you!
+									<div  class="mb-4"></div> 
+				      		<div  class="mb-4">
+				            
 				      		</div>
-									<form method="POST" id="contactForm" name="contactForm" class="contactForm">
+									<form method="POST"  action="{% url 'address_submit' user.id %}" class="contactForm">
+										{% csrf_token %}
 										<div class="row">
 											<div class="col-md-6">
 												<div class="form-group">
 													<label class="label" for="name">Full Name</label>
-													<input type="text" class="form-control" name="name" id="name" placeholder="Name" required>
+													<input type="text" class="form-control" name="fullname"  placeholder="Name" required>
 												</div>
 											</div>
 											<div class="col-md-6"> 
 												<div class="form-group">
 													<label class="label" for="moblile">Mobile</label>
-													<input type="tel" class="form-control" name="email" id="phone" placeholder="phone" required>
+													<input type="tel" class="form-control" name="phone"  placeholder="phone" required>
 												</div>
 											</div>
 											<div class="col-md-6">
 												<div class="form-group">
 													<label class="label" for="name">Pincode</label>
-													<input type="text" class="form-control" name="pin" id="name" placeholder="zip" required>
+													<input type="text" class="form-control" name="pin"  placeholder="zip" required>
 												</div>
 											</div>
 											<div class="col-md-6"> 
 												<div class="form-group">
 													<label class="label" for="email">State</label>
-													<input type="text" class="form-control" name="state" id="phone" placeholder="state" required>
+													<input type="text" class="form-control" name="state"  placeholder="state" required>
 												</div>
 											</div>
 											<div class="col-md-6">
 												<div class="form-group">
 													<label class="label" for="name">City</label>
-													<input type="text" class="form-control" name="city" id="name" placeholder="city" required>
+													<input type="text" class="form-control" name="city"  placeholder="city" required>
 												</div>
 											</div>
 											<div class="col-md-6"> 
 												<div class="form-group">
 													<label class="label" for="email">Dist</label>
-													<input type="text" class="form-control" name="district" id="phone" placeholder="" required>
+													<input type="text" class="form-control" name="district"  placeholder="" required>
 												</div>
 											</div>
 
 											<div class="col-md-12">
 												<div class="form-group">
 													<label class="label" for="subject">Address(Area and Street)</label>
-													<input type="text" class="form-control" name="address
-													" id="subject" placeholder="Address" required>
+													<input type="text" class="form-control" name="address"
+													placeholder="Address" required>
 												</div>
 											</div>
 										
@@ -102,7 +103,7 @@
 	<script src="{% static 'js_contact/jquery.min.js' %}"></script>
   <script src="{% static 'js_contact/popper.js' %}"></script>
   <script src="{% static 'js_contact/bootstrap.min.js' %}"></script>
-  <script src="{% static 'js_contact/jquery.validate.min.js' %}"></script>
+  <!-- <script src="{% static 'js_contact/jquery.validate.min.js' %}"></script> -->
   {% comment %} <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script> {% endcomment %}
   <script src="{% static 'js_contact/google-map.js' %}"></script>
   <script src="{% static 'js_contact/main.js' %}"></script>
