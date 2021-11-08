@@ -1,0 +1,124 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block contents %}
+{% load humanize %}
+
+
+
+<section class="content-main">
+     <div class="content-header">
+          <h2 class="content-title">Catogory Offer managment</h2>
+     </div>
+     {% if messages %}
+     {% for message in messages %}
+     <div class="row">
+     <div class="col-md-6  alert alert-{{message.tags}} m-1 p text-center" id="msg" role="alert"
+          style="padding: 1px; background-color: rgb(0, 255, 13);">
+          {{ message }}
+          
+     </div>
+     </div>
+     {% endfor %}
+     {% endif %}
+
+     <div class="card">
+          <div class="card-body">
+               <div class="row">
+                    <div class="col-md-6">
+                         <span>
+
+                         </span>
+                         <form action="{% url 'banners_submit' %}"  method="post"  enctype="multipart/form-data">
+                              {% csrf_token %}
+                              <div class="row">
+
+                              <div class="mb-4 col-md-12">
+                                   <label for="sub_cat_name" class="form-label">Banner name</label>
+                                   <div><span  style="color: red; " id="error1"></span></div>
+                                       
+                                   <input type="text" placeholder="Type here" id="offerName" onkeyup="nme()" name="banner_name" class="form-control"
+                                        id="product_name" />
+                              </div>
+                              <div class="mb-4 col-md-12">
+                                   <label for="product_slug" class="form-label">banner image</label>
+                                   <div><span  style="color: red; " id="error2"></span></div>
+                                   <input type="file" accept="image/*" placeholder="Type here" id="offervalue" name="pic" onkeyup="val()" class="form-control"
+                                        id="value" />
+                              </div>
+                            </div>
+                              
+                             
+                              <div class="row">
+                                  <div class="col-md-6 mb-4">
+                                    <label class="form-label">Expiry</label>
+                                    <div><span  style="color: red; " id="error4"></span></div>
+                                    <input type="date" placeholder="Type here" id="expiry" onchange="exp()" name="expiry" class="form-control">
+                                  </div>
+
+                                  <!-- <div class="col-md-6">
+                                    <label class="form-label">Minimum purchace Amount</label>
+                                    <input type="text" placeholder="Type here" name="min_amount" class="form-control">
+                                  </div>  -->
+                              </div>
+
+                              <div class="d-grid">
+                                   <button style="width: fit-content;" x id="button" onclick="category()" class="btn btn-primary">Create offer</button>
+                              </div>
+                         </form>
+                    </div>
+                    <div class="col-md-6">
+
+                         <table class="table table-hover">
+                              <thead>
+                             
+                                   <tr>
+                                        <th> banner name</th>
+                                        <th>expiry</th>
+                                        <th class="text-end">Action</th>
+                                   </tr>
+                              </thead>
+                              <tbody>
+                                  {% for b in banners %}
+                                   <tr>
+                                        
+                                        <td>{{b.banner_name}}</td>
+                                        <td>{{b.expiry}}</td>
+                                        <td class="text-end">
+                                             <div class="dropdown">
+                                                  <a href="#" data-bs-toggle="dropdown" class="btn btn-light"> <i
+                                                            class="material-icons md-more_horiz"></i> </a>
+                                                  <div class="dropdown-menu">
+                                                       <a class="dropdown-item" href="">Edit
+                                                            info</a>
+                                                       <a style="cursor: pointer;" class="dropdown-item text-danger"
+                                                       href="{% url 'banner_dlt' b.id %}"
+                                                            >Delete</a>
+                                                  </div>
+
+                                             </div>
+                                             <!-- dropdown //end -->
+                                        </td>
+                                        
+                                   </tr>
+                                   {% endfor %}
+                                 
+                                  
+                              </tbody>
+                         </table>
+
+                    </div> <!-- .col// -->
+               </div> <!-- .row // -->
+          </div> <!-- card body .// -->
+     </div> <!-- card .// -->
+</section> <!-- content-main end// -->
+
+
+
+
+
+
+
+
+
+{% endblock %}

@@ -18,16 +18,16 @@
                     <div class="swiper-container zoom-top">
                         <div class="swiper-wrapper">
                             <div class="swiper-slide zoom-image-hover">
-                                <img class="img-responsive m-auto" src="{{products.image.url}}" alt="">
+                                <img style="height: 500px;" class="img-responsive m-auto" src="{{products.image.url}}" alt="">
                             </div>
                             <div class="swiper-slide zoom-image-hover">
-                                <img class="img-responsive m-auto" src="{{products.image1.url}}" alt="">
+                                <img style="height: 500px;" class="img-responsive m-auto" src="{{products.image1.url}}" alt="">
                             </div>
                             <div class="swiper-slide zoom-image-hover">
-                                <img class="img-responsive m-auto" src="{{products.image2.url}}" alt="">
+                                <img style="height: 500px;" class="img-responsive m-auto" src="{{products.image2.url}}" alt="">
                             </div>
                             <div class="swiper-slide zoom-image-hover">
-                                <img class="img-responsive m-auto" src="{{products.image3.url}}" alt="">
+                                <img style="height: 500px;" class="img-responsive m-auto" src="{{products.image3.url}}" alt="">
                             </div>
                         </div>
                     </div>
@@ -52,12 +52,17 @@
                     <div class="product-details-content quickview-content">
                         <h2>{{products.productname}}</h2>
                         <div class="pricing-meta">
+                        {% if products.discount_price == None  %}
                             <ul>
-                                <li class="old-price not-cut"><s>
-                                        <h5>${{products.price}}</h5>
-                                    </s> </li>
-                                <li class="old-price not-cut">${{products.discount_price}}</li>
+                                <li class="old-price not-cut"><h5 style="color: green;" >Rs: {{products.price}}</h5>  </li>      
                             </ul>
+                            {% else %}
+                            <ul>
+                                <li class="old-price not-cut"><s > <h5 style="color: red;">RS: {{products.price}}</h5> </s></li> 
+                                <li style="color: rgb(75, 179, 15);" class="old-price not-cut">Rs: {{products.discount_price}} ({{products.offer_name}})</li>
+                            </ul>
+                            {% endif %}
+
                         </div>
                         <div class="pro-details-rating-wrap">
                             <div class="rating-product">
@@ -102,14 +107,11 @@
                                 <input class="cart-plus-minus-box" type="text" name="qtybutton" value="1" />
                             </div>
                             <div class="pro-details-cart">
-                                <button class="add-cart" href="#"> Add To
+                                <button class="add-cart" onclick="cart('{{products.id}}')" > Add To
                                     Cart</button>
                             </div>
                             <div class="pro-details-compare-wishlist pro-details-wishlist ">
-                                <a href="#"><i class="pe-7s-like"></i></a>
-                            </div>
-                            <div class="pro-details-compare-wishlist pro-details-compare">
-                                <a href="#"><i class="pe-7s-refresh-2"></i></a>
+                                <a onclick="whishList('{{products.id}}')"><i class="pe-7s-like"></i></a>
                             </div>
                         </div>
                         {% endif %}
@@ -184,17 +186,7 @@
                         <div class="product-description-wrapper">
                             <p>
 
-                                Lorem ipsum dolor sit amet, consectetur adipisi elit, incididunt ut labore et. Ut enim
-                                ad minim veniam, quis nostrud exercita ullamco laboris nisi ut aliquip ex ea commol
-                                consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore
-                                eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa
-                                qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste
-                                natus error sit voluptatem accusantiulo doloremque laudantium, totam rem aperiam, eaque
-                                ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt
-                                explicabo. Nemo enim ipsam voluptat quia voluptas sit aspernatur aut odit aut fugit, sed
-                                quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro
-                                quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed
-                                quia non numquam eius modi tempora incidunt ut labore
+                               {{products.description}}
 
                             </p>
                         </div>
@@ -330,23 +322,19 @@
                         <div class="product">
                             <div class="thumb">
                                 <a href="/user_product_view/{{Product.id}}" class="image">
-                                    <img style="width: 13em; height: 15em;" src="{{Product.image.url}}" alt="Product" />
-                                    <img style="width: 13em; height: 15em;" class="hover-image"
+                                    <img  src="{{Product.image.url}}" alt="Product" />
+                                    <img  class="hover-image"
                                         src="{{Product.image1.url}}" alt="Product" />
                                 </a>
                                 <span class="badges">
                                     <span class="new">New</span>
                                 </span>
                                 <div class="actions">
-                                    <a href="wishlist.html" class="action wishlist" title="Wishlist"><i
+                                    <a onclick="whishList('{{Product.id}}')"  class="action wishlist" title="Wishlist"><i
                                             class="pe-7s-like"></i></a>
-                                    <a href="#" class="action quickview" data-link-action="quickview" title="Quick view"
-                                        data-bs-toggle="modal" data-bs-target="#exampleModal"><i
-                                            class="pe-7s-search"></i></a>
-                                    <a href="compare.html" class="action compare" title="Compare"><i
-                                            class="pe-7s-refresh-2"></i></a>
+                                   
                                 </div>
-                                <button title="Add To Cart" class=" add-to-cart">Add
+                                <button  onclick="cart('{{Product.id}}')" title="Add To Cart" class=" add-to-cart">Add
                                     To Cart</button>
                             </div>
                             <div class="content">
@@ -360,9 +348,18 @@
                                         {{Product.productname}}
                                     </a>
                                 </h5>
+                                {% if Product.discount_price == None %}
                                 <span class="price">
-                                    <span class="new">${{Product.price}}</span>
+                                    <span class="new">Rs{{Product.price}}</span>
                                 </span>
+                                {% else %}
+                                <span class="price" style="margin-bottom: 3px;">
+                                    <span style="color: green;"  class="new">Rs: {{Product.discount_price}} ({{Product.offer_name}})</span>
+                                </span>
+                                <span class="price">
+                                    <span style="color: red;" class="new">Rs: <s>{{Product.price}}</s></span>
+                                </span>
+                                {% endif %}
                             </div>
                         </div>
 

@@ -7,9 +7,7 @@
 
 	<div class="content-header">
 		<h2 class="content-title">Users</h2>
-		<div>
-			<a href="#" class="btn btn-primary"><i class="material-icons md-plus"></i> Create new</a>
-		</div>
+		
 	</div>
 
 	<div class="card mb-4">
@@ -40,7 +38,6 @@
 				<table class="table table-hover">
 					<thead>
 						<tr>
-							<th>#ID</th>
 							<th scope="col">Name</th>
 							<th scope="col">Email</th>
 							<th scope="col">Phone</th>
@@ -51,7 +48,6 @@
 					<tbody>
 						{% for user in users%}
 						<tr>
-							<td>{{user.id}}</td>
 							<td><b>{{user.username}}</b></td>
 							<td>{{user.email}}</td>
 							<td>{{user.mobile_number}}</td>
@@ -61,11 +57,7 @@
 							<td><span class="badge rounded-pill alert-danger">Deactive</span></td>
 							{% endif %}
 							<td class="text-end">
-								{% if not user.is_superuser %}
-								<a href="user_del/{{user.id}}"><button class="btn btn-danger"
-										onclick="return confirm('Are you sure you want to Delete this user?');"><i
-											class="fas fa-trash-alt"></i></button></a>
-								{% endif %}
+							
 								<div class="dropdown">
 
 									<div>

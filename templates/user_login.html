@@ -45,13 +45,13 @@
                                         {% if messages %}
                                         {% for message in messages %}
                                         {% if message.tags == "success" %}
-                                        <div class="alert alert-{{message.tags}} m-1 p" id="msg" role="alert"
-                                            style="padding: 1px; background-color: rgb(116, 238, 99);">
+                                        <div class="text-center alert alert-{{message.tags}} m-1 p" id="msg" role="alert"
+                                            style="padding: 1px; background-color: #a9d366; font-weight: 500;">
                                             {{ message }}
                                         </div>
                                         {% else %}
-                                        <div class="alert alert-{{message.tags}} m-1 p" id="msg" role="alert"
-                                            style="padding: 1px; background-color: rgba(240, 10, 10, 0.952);">
+                                        <div class="text-center alert alert-{{message.tags}} m-1 p" id="msg" role="alert"
+                                            style="padding: 1px; background-color:#eb4343; font-weight: 500;">
                                             {{ message }}
                                         </div>
                                         {% endif %}
@@ -65,7 +65,7 @@
                                         <div class="button-box">
                                             <div class="login-toggle-btn">
                                                 <input type="checkbox" />
-                                                <a class="flote-none" href="Forget_password">Forget password?</a>
+                                                <a class="flote-none" href="Forget_password">Login with otp?</a>
                                                 <!-- <a href="#">Forgot Password?</a> -->
                                                 <a href="register">Don't have account? register</a>
                                             </div>
@@ -82,5 +82,13 @@
         </div>
     </div>
 </div>
+
+<script>
+    document.getElementById("msg").style.display = 'block';
+    // hide error message after 3 sec 
+    setTimeout(function() {
+        document.getElementById("msg").style.display = 'none';
+    }, 2000);
+</script>
 <!-- login area end -->
 {% endblock %}

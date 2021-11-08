@@ -126,7 +126,9 @@
                                         <table cellspacing="0" cellpadding="0" border="0" width="100%">
                                             <tr>
                                                 <td width="75%" align="left" bgcolor="#eeeeee" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 800; line-height: 24px; padding: 10px;"> Order Confirmation # </td>
-                                                <td width="25%" align="left" bgcolor="#eeeeee" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 800; line-height: 24px; padding: 10px;"> 2345678 </td>
+                                               
+                                                <td width="25%" align="left" bgcolor="#eeeeee" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 800; line-height: 24px; padding: 10px;"> {{order_dtls}} </td>
+                                               
                                             </tr>
                                              <!-- {% for x in order_dtls %}
                                             <tr>
@@ -151,10 +153,10 @@
                                 <tr>
                                     <td align="left" style="padding-top: 20px;">
                                         <table cellspacing="0" cellpadding="0" border="0" width="100%">
-                                            <!-- <tr>
+                                             <tr>
                                                 <td width="75%" align="left" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 800; line-height: 24px; padding: 10px; border-top: 3px solid #eeeeee; border-bottom: 3px solid #eeeeee;"> TOTAL </td>
                                                 <td width="25%" align="left" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 800; line-height: 24px; padding: 10px; border-top: 3px solid #eeeeee; border-bottom: 3px solid #eeeeee; color: #F44336;"> {{total}} </td>
-                                            </tr> -->
+                                            </tr> 
                                         </table>
                                     </td>
                                 </tr>
@@ -175,6 +177,8 @@
                                                         <p>{{k.state}},{{k.district}},{{k.city}},<br>{{k.address_line1}},{{k.pincode}}</p>
                                                         {% endfor %}
                                                     </td>
+
+                                                    
                                                 </tr>
                                             </table>
                                         </div>
@@ -198,7 +202,7 @@
                             <table align="center" border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width:600px;">
                                 <tr>
                                     <td align="center" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; padding-top: 25px;">
-                                        <h2 style="font-size: 24px; font-weight: 800; line-height: 30px; color: #ffffff; margin: 0;"><a href="{% url 'home' %}">Get 30% off your next order.</a>  </h2>
+                                        <h2 style="font-size: 24px; font-weight: 800; line-height: 30px; color: #ffffff; margin: 0;"><a href="{% url 'home' %}">Get 30% off your next order.</a> <br>  <a href="{% url 'orders' %}">Order details</a> </h2>
                                     </td>
                                 </tr>
                                 <tr>

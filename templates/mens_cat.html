@@ -1,0 +1,143 @@
+{% extends 'base_user.html' %}
+{% load static %}
+
+{% block contents %}
+<html lang="zxx">
+    <!-- Shop Page Start  -->
+    <div class="shop-category-area pt-100px pb-100px" style="margin-top: 1px;">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-9 order-lg-last col-md-12 order-md-first">
+                    <!-- Shop Top Area Start -->
+                    <div class="shop-top-bar d-flex">
+                        <!-- Left Side start -->
+                        <p><span>{{count}}</span> Product Found of <span>{{prd_count}}</span></p>
+                        <!-- Left Side End -->
+                       
+                        <!-- Right Side Start -->
+                       
+                        <!-- Right Side End -->
+                    </div>
+                    <!-- Shop Top Area End -->
+
+                    <!-- Shop Bottom Area Start -->
+                    {% if count %} 
+                    <div class="shop-bottom-area">
+
+                        <!-- Tab Content Area Start -->
+                        <div class="row">
+                            <div class="col">
+                                <div class="tab-content">
+                                    <div class="tab-pane fade show active" id="shop-grid">
+                                        <div class="row mb-n-30px">
+                                           
+                                            {% for p in products %}
+                                            <div class="col-lg-4 col-md-6 col-sm-6 col-xs-6 mb-30px" data-aos="fade-up"
+                                                data-aos-delay="200">
+                                                <!-- Single Prodect -->
+                                               
+                                                <div class="product">
+                                                    <div class="thumb">
+                                                        <a href="{% url 'user_product_view' p.id  %}" class="image">
+                                                            <img src="{{p.image.url}}" 
+                                                                alt="Product" />
+                                                            <img class="hover-image"
+                                                                src="{{p.image.url}}" alt="Product" />
+                                                        </a>
+                                                        <span class="badges">
+                                                            <span class="new">New</span>
+                                                        </span>
+                                                        <div class="actions">
+                                                            <a onclick="whishList('{{p.id}}')" class="action wishlist"
+                                                                title="Wishlist"><i class="pe-7s-like"></i></a>
+                                                            <!-- <a href="#" class="action quickview"
+                                                                data-link-action="quickview" title="Quick view"
+                                                                data-bs-toggle="modal" data-bs-target="#exampleModal"><i
+                                                                    class="pe-7s-search"></i></a>
+                                                            <a href="compare.html" class="action compare"
+                                                                title="Compare"><i class="pe-7s-refresh-2"></i></a> -->
+                                                        </div>
+                                                        <button title="Add To Cart"  onclick="cart('{{p.id}}')" class=" add-to-cart">Add
+                                                            To Cart</button>
+                                                    </div>
+                                                    <div class="content">
+                                                        <h5 class="title"><a href="single-product.html">{{p.productname}}
+                                                                
+                                                            </a>
+                                                        </h5>
+                                                        {% if p.discount_price == None %}
+                                                        <span class="price">
+                                                            <span style="color: green;" class="new">Rs: {{p.price}}</span>
+                                                        </span>
+                                                        {% else %}
+                                                        <span style="margin-bottom: 3px;" class="price">
+                                                        <p style="color: green; margin-bottom: 2px;" class="new"></p> 
+                                                            <span style="color: green;" class="new">Rs: {{p.discount_price}}  ({{p.offer_name}})</span>
+                                                        </span>
+                                                        <span  class="price">
+                                                            <span style="color: red;" class="new ">Rs: <s >{{p.price}}</s></span>
+                                                        </span>
+                                                        {% endif %}
+                                                    </div>
+                                                </div>
+                                                
+                                            </div> 
+                                            {% endfor %} 
+                                           
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                       
+                        <!-- Tab Content Area End -->
+
+                        <!--  Pagination Area Start -->
+                        <!-- <div class="load-more-items text-center mb-md-60px mb-lm-60px mt-30px0px" data-aos="fade-up">
+                            <a href="#" class="btn btn-lg btn-primary btn-hover-dark m-auto"> Load More <i
+                                    class="fa fa-refresh ml-15px" aria-hidden="true"></i></a>
+                        </div> -->
+                        <!--  Pagination Area End -->
+                    </div>
+                    {% else %}
+                        
+                    <div class="row">
+                        <div  class="container">
+                            <h1  style=" color: red;" > No matches found!!! </h1>
+                        </div>
+                    </div>
+                
+                  {% endif %}
+                    <!-- Shop Bottom Area End -->
+                </div>
+                <!-- Sidebar Area Start -->
+                <div class="col-lg-3 order-lg-first col-md-12 order-md-last mb-md-60px mb-lm-60px">
+                    <div class="shop-sidebar-wrap">
+                        <!-- Sidebar single item -->
+                        <div class="sidebar-widget-search">
+                            <form id="widgets-searchbox" action="{% url 'search' %}" method="post">
+                                <input class="input-field" name="value" type="text" placeholder="Search">
+                                <button class="widgets-searchbox-btn" type="submit">
+                                    <i class="fa fa-search"></i>
+                                </button>
+                            </form>
+                        </div>
+                      
+                        <!-- Sidebar single item -->
+                        <div class="sidebar-widget">
+                            <h4 class="sidebar-title">Category</h4>
+                            <div class="sidebar-widget-category">
+                                <ul>
+                                    <li><a href="#" class="selected m-0">Men <span></span> </a></li>
+                                    <li><a href="#" class="">Women<span></span> </a></li>
+                                </ul>
+                            </div>
+                        </div> 
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Shop Page End  -->
+
+  {% endblock %}

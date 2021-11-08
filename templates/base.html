@@ -2,13 +2,11 @@
 <!DOCTYPE HTML>
 <html lang="en">
 
-<!-- Mirrored from www.ecommerce-admin.com/demo/page-index-1.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 03 Sep 2021 07:00:23 GMT -->
-
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-  <title>Sample title - Ecommerce admin dashboard template</title>
+  <title>Cool clothes</title>
 
   <link href="{% static 'images admin/favicon.ico' %}" rel="shortcut icon" type="image/x-icon">
 
@@ -22,8 +20,22 @@
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"
     integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
 
+<!-- 
+    cropping js -->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/0.8.1/cropper.min.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+
   <!-- iconfont -->
   <link rel="stylesheet" href="{% static 'fonts admin/material-icon/css/round.css' %}" />
+
+<!-- data table -->
+  <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/tabletools/2.2.1/css/dataTables.tableTools.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.7.0/css/buttons.dataTables.min.css">
+   <script type="text/javascript" language="javascript" src="~/Scripts/DataTables/dataTables.tableTools.min.js"></script>
+
 
   <style>
     body {
@@ -100,7 +112,7 @@
 
   <aside class="navbar-aside" id="offcanvas_aside">
     <div class="aside-top">
-      <a href="page-index-1.html" class="brand-wrap">
+      <a  href="{% url 'newadmin' %}" class="brand-wrap">
         <img src="{% static 'images admin/logo.svg' %}" height="46" class="logo" alt="Ecommerce dashboard template">
       </a>
       <div>
@@ -112,12 +124,12 @@
     <nav>
       <ul class="menu-aside">
         <li class="menu-item active">
-          <a class="menu-link" href="admin_home"> <i class="icon material-icons md-home"></i>
+          <a class="menu-link" href="{% url 'newadmin' %}"> <i class="icon material-icons md-home"></i>
             <span class="text">Dashboard</span>
           </a>
         </li>
         <li class="menu-item">
-          <a class="menu-link" href="user_list"> <i class="icon material-icons md-shopping_bag"></i>
+          <a class="menu-link" href="{% url 'user_list' %}"> <i class="icon material-icons md-shopping_bag"></i>
             <span class="text">Users</span>
 
           </a>
@@ -127,8 +139,8 @@
             <span class="text">Products</span>
           </a>
           <div class="submenu">
-            <a href="product_list">Product list view</a>
-            <a href="add_product">Add Product</a>
+            <a href="{% url 'product_list' %}">Product list view</a>
+            <a href="{% url 'add_product' %}">Add Product</a>
 
           </div>
         </li>
@@ -136,82 +148,40 @@
           <a class="menu-link" href="{% url 'order_managment' %}"> <i class="icon material-icons md-shopping_cart"></i>
             <span class="text">Order managment</span>
           </a>
-          <!-- <div class="submenu">
-        <a href="page-orders-1.html">Order list 1</a>
-        <a href="page-orders-2.html">Order list 2</a>
-        <a href="page-orders-detail.html">Order detail</a>
-      </div>  -->
+
         </li>
+        <li class="menu-item  has-submenu">
+          <a class="menu-link" href="{% url 'offer_manegment' %}"> <i class="icon material-icons md-shopping_cart"></i>
+            <span class="text">Offer managment</span>
+          </a>
+          <div class="submenu">
+            <a href="{% url 'offer_manegment' %}">Coupen managment</a>
+            <a href="{% url 'product_offer' %}">Product offer</a>
+            <a href="{% url 'catogory_offer' %}">Catogory offer</a>
+      </div> 
+        </li>
+
         <li class="menu-item has-submenu">
           <a class="menu-link" href="page-sellers-cards.html"> <i class="icon material-icons md-store"></i>
             <span class="text">Catogory Managment</span>
           </a>
           <div class="submenu">
-            <a href="product_catagory">Catogory</a>
-            <a href="sub_catogery">Sub Catogory</a>
-            <a href="brand">Brand</a>
+            <a href="{% url 'product_catagory' %}">Catogory</a>
+            <a href="{% url 'sub_catogery' %}">Sub Catogory</a>
+            <a href="{% url 'brand' %}">Brand</a>
 
           </div>
         </li>
-        <!-- <li class="menu-item has-submenu"> 
-      <a class="menu-link" href="page-form-product-1.html"> <i class="icon material-icons md-add_box"></i>  
-        <span class="text">Add product</span> 
-      </a> 
-      <div class="submenu">
-        <a href="add_product">Add product 1</a>  
-      </div>
-    </li> -->
-        <!-- <li class="menu-item has-submenu">
-      <a class="menu-link" href="page-transactions-A.html"> <i class="icon material-icons md-monetization_on"></i> 
-        <span class="text">Transactions</span> 
-      </a> 
-      <div class="submenu">
-        <a href="page-transactions-A.html">Transaction 1</a>
-        <a href="page-transactions-B.html">Transaction 2</a>
-      </div>
-    </li> -->
-        <!-- <li class="menu-item has-submenu"> 
-      <a class="menu-link" href="#"> <i class="icon material-icons md-person"></i>  
-        <span class="text">Account</span> 
-      </a> 
-      <div class="submenu">
-        <a href="page-account-login.html">User login</a>
-        <a href="page-account-register.html">User registration</a>
-        <a href="page-error-404.html">Error 404</a>
-      </div>
-    </li> -->
-        <!-- <li class="menu-item"> 
-      <a class="menu-link" href="page-reviews.html"> <i class="icon material-icons md-comment"></i> 
-        <span class="text">Reviews</span> 
-      </a> 
-    </li>
-    <li class="menu-item"> 
-      <a class="menu-link" href="page-brands.html"> <i class="icon material-icons md-stars"></i> 
-        <span class="text">Brands</span> </a> 
-    </li>
-    <li class="menu-item"> 
-      <a class="menu-link" disabled href="#"> <i class="icon material-icons md-pie_chart"></i> 
-        <span class="text">Statistics</span> 
-      </a> 
-    </li> -->
-      </ul>
-      <hr>
-      <!-- <ul class="menu-aside">
-    <li class="menu-item has-submenu"> 
-      <a class="menu-link" href="#"> <i class="icon material-icons md-settings"></i> 
-        <span class="text">Settings</span> 
-      </a>
-      <div class="submenu">
-        <a href="page-settings-1.html">Setting sample 1</a>
-        <a href="page-settings-2.html">Setting sample 2</a>
-      </div>
-    </li>
-    <li class="menu-item">
-      <a class="menu-link" href="page-0-blank.html"> <i class="icon material-icons md-local_offer"></i> 
-        <span class="text"> Starter page </span>
-      </a> 
-    </li>
-  </ul> -->
+        <li class="menu-item ">
+          <a class="menu-link" href="{% url 'sales_reprt' %}"> <i class="icon material-icons md-shopping_cart"></i>
+            <span class="text">Sales report</span>
+          </a>
+        </li>
+        <li class="menu-item ">
+          <a class="menu-link" href="{% url 'banners' %}"> <i class="icon material-icons md-shopping_cart"></i>
+            <span class="text">Banners</span>
+          </a>
+        </li>
       <br>
       <br>
     </nav>
@@ -242,25 +212,22 @@
                 class="material-icons md-nights_stay"></i> </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link btn-icon" href="#"> <i class="material-icons md-notifications_active"></i> </a>
+            <a class="nav-link btn-icon" > <i class="material-icons md-notifications_active"></i> </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#"> English </a>
+            <a class="nav-link" > English </a>
           </li>
           <li class="dropdown nav-item">
-            <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#"> <img class="img-xs rounded-circle"
+            <a class="dropdown-toggle" data-bs-toggle="dropdown" > <img class="img-xs rounded-circle"
                 src="{% static 'images admin/people/avatar1.jpg' %}" alt="User"></a>
             <div class="dropdown-menu dropdown-menu-end">
               <a class="dropdown-item" href="#">My profile</a>
               <a class="dropdown-item" href="#">Settings</a>
-              <a class="dropdown-item text-danger" href="admin_logout">logout</a>
+              <a class="dropdown-item text-danger" href="{% url 'admin_logout' %}">logout</a>
             </div>
           </li>
         </ul>
       </div>
-
-
-
     </header>
 
 
@@ -280,7 +247,59 @@
 
   <script src="{% static 'js_admin/jquery-3.5.0.min.js' %}"></script>
   <script src="{% static 'js_admin/bootstrap.bundle.min.js' %}"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> -->
+  	
+// order status selection
+<script>
+function change(input,id){
+  var value=input.value
+ var data = {"csrf_token": '{{csrf_token}}', 'value': value, 'id': id}
+      console.log(data)
+
+      swal({
+        title: "Are you sure?",
+        text: "Once  Changed, you will not be able to recover this Order!",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+      })
+      .then((willDelete) => {
+        if (willDelete) {
+      
+          $.ajax({
+            method: "POST",
+            url: "{% url 'order_status'  %}",
+            data:  data, 
+            success: function(resp){
+              
+                console.log(resp)
+                var status = resp
+               
+                var sattus_c = status.status
+      
+                document.getElementById("statusChanging").innerHTML = sattus_c;
+                location.href='order_managment'
+      
+                swal("Poof! Order cancelled!!!", {
+                  icon: "success",
+                });
+            }
+           
+        });
+      
+        } else {
+          swal("Oder is safe!");
+        }
+      });
+
+}
+
+</script>
+
+
+
+  
+
 
   <!-- ChartJS files-->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
@@ -293,24 +312,19 @@
     var ctx = document.getElementById('myChart').getContext('2d');
     var chart = new Chart(ctx, {
       // The type of chart we want to create
-      type: 'line',
+      type: 'bar',
 
       // The data for our dataset
       data: {
-        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+        labels: {{ labels | safe }},
         datasets: [
           {
             label: 'Sales',
-            backgroundColor: 'rgb(44, 120, 220)',
+            backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850"],
             borderColor: 'rgb(44, 120, 220)',
-            data: [18, 17, 4, 3, 2, 20, 25, 31, 25, 22, 20, 9]
+            data: {{ data | safe }}
           },
-          {
-            label: 'Visitors',
-            backgroundColor: 'rgb(180, 200, 230)',
-            borderColor: 'rgb(180, 200, 230)',
-            data: [40, 20, 17, 9, 23, 35, 39, 30, 34, 25, 27, 17]
-          }
+         
 
         ]
       },
@@ -320,8 +334,96 @@
     });
   </script>
 
-</body>
+   <script>
+    var ctx = document.getElementById('myChart1').getContext('2d');
+    var chart = new Chart(ctx, {
+      // The type of chart we want to create
+      type: 'pie',
 
-<!-- Mirrored from www.ecommerce-admin.com/demo/page-index-1.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 03 Sep 2021 07:00:33 GMT -->
+      // The data for our dataset
+      data: {
+        labels: {{ labels | safe }},
+        datasets: [
+          {
+            label: 'Sales',
+            backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850"],
+            borderColor: 'rgb(44, 120, 220)',
+            data: {{ val_data | safe }}
+          },
+         
+
+        ]
+      },
+
+      // Configuration options go here
+      options: {}
+    });
+  </script>
+
+ 
+  <script language="javascript">
+      var today = new Date();
+      var dd = String(today.getDate()).padStart(2, '0');
+      var mm = String(today.getMonth() + 1).padStart(2, '0');
+      var yyyy = today.getFullYear();
+
+      today = yyyy + '-' + mm + '-' + dd;
+      $('#expiry').attr('min',today);
+  </script>
+
+
+
+<!-- data table script -->
+  <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+	<script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+	<script src="https://cdn.datatables.net/buttons/1.7.0/js/dataTables.buttons.min.js"></script>
+	
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+	
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+	
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+	
+	<script src="https://cdn.datatables.net/buttons/1.7.0/js/buttons.html5.min.js"></script>
+	<script src="https://cdn.datatables.net/buttons/1.7.0/js/buttons.print.min.js"></script>
+	<script>
+		$(document).ready(function () {
+			$('#exampleeeee').DataTable({
+				"footerCallback": function (row, data, start, end, display) {
+					var api = this.api(), data;
+	
+					// Remove the formatting to get integer data for summation
+					var intVal = function (i) {
+						return typeof i === 'string' ?
+							i.replace(/[\$,]/g, '') * 1 :
+							typeof i === 'number' ?
+								i : 0;
+					};
+	
+					// Total over all pages
+					total = api
+						.column(5)
+						.data()
+						.reduce(function (a, b) {
+							return intVal(a) + intVal(b);
+						}, 0);
+	
+				  
+					// Update footer
+					$(api.column(5).footer()).html(
+					   ' ( $' + total + ' total)'
+					);
+				},
+				dom: 'Bfrtip',
+				buttons: [
+					'excel', 'pdf', 'print'
+				],
+			});
+		});
+	</script>
+ 
+<!-- data tabele script end -->
+
+</body>
 
 </html>

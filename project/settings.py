@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 from pathlib import Path
+from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -42,6 +43,14 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.humanize',
+    #  "django.contrib.sites",  # new
+    # # 3rd party
+    # "allauth", # new
+    # "allauth.account", # new
+    # "allauth.socialaccount", # new
+    # # social providers
+    # "allauth.socialaccount.providers.github", # new
+    # "allauth.socialaccount.providers.twitter", # new
 ]
 
 AUTH_USER_MODEL = 'user.MyUser'
@@ -69,6 +78,9 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'cart.context_processor.carts',
+                'cart.context_processor.cat',
+                'cart.context_processor.wish_list'
             ],
         },
     },
@@ -83,13 +95,17 @@ WSGI_APPLICATION = 'project.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'project1',
-        'USER': 'postgres',
-        'PASSWORD': 'mejo123',
+        'NAME': config('Name'),
+        'USER': config('USER'),
+        'PASSWORD': config('PASSWORD'),
         'HOST': 'localhost'
     }
 }
 
+
+
+RAZOR_KEY_ID = config('RAZOR_KEY')
+RAZOR_KEY_SECRET = config('RAZOR_KEY_SECRET')
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
@@ -140,3 +156,25 @@ MEDIA_ROOT = os.path.join(BASE_DIR,'media')
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+# social_app/settings.py
+
+# AUTHENTICATION_BACKENDS = (
+#     "allauth.account.auth_backends.AuthenticationBackend",
+# )
+
+# SITE_ID = 1
+# ACCOUNT_EMAIL_VERIFICATION = "none"
+# LOGIN_REDIRECT_URL = "home"
+# ACCOUNT_LOGOUT_ON_GET = True
+
+# SMTP / email host configuration
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = config('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
+EMAIL_USE_TLS = True
+
+
+DATA_UPLOAD_MAX_MEMORY_SIZE = 5242880

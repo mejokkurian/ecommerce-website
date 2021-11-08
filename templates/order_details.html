@@ -1,38 +1,37 @@
-
 {% extends 'base_user.html' %}
 {% load static %}
 
 {% block contents %}
+{% load humanize %}
 
 <head>
     <style>
+        label.cabinet {
+            display: block;
+            cursor: pointer;
+        }
+
+        label.cabinet input.file {
+            position: relative;
+            height: 100%;
+            width: auto;
+            opacity: 0;
+            -moz-opacity: 0;
+            filter: progid:DXImageTransform.Microsoft.Alpha(opacity=0);
+            margin-top: -30px;
+        }
+
+        #upload-demo {
+            width: 250px;
+            height: 250px;
+            padding-bottom: 25px;
+        }
 
 
-label.cabinet{
-	display: block;
-	cursor: pointer;
-}
+        a {
+            color: inherit;
+        }
 
-label.cabinet input.file{
-	position: relative;
-	height: 100%;
-	width: auto;
-	opacity: 0;
-	-moz-opacity: 0;
-  filter:progid:DXImageTransform.Microsoft.Alpha(opacity=0);
-  margin-top:-30px;
-}
-
-#upload-demo{
-	width: 250px;
-	height: 250px;
-  padding-bottom:25px;
-}
-
-
-         a {
-      color: inherit;
-    }
         * {
             margin: 0;
             padding: 0;
@@ -52,6 +51,7 @@ label.cabinet input.file{
         }
 
         .profile-pic-div {
+            margin-top: 250px;
             height: 150px;
             width: 150px;
             position: absolute;
@@ -102,7 +102,7 @@ label.cabinet input.file{
                             <li> <a href="#orders" data-bs-toggle="tab" class="nav-link active">Orders</a></li>
                             <li><a href="#account-details" data-bs-toggle="tab" class="nav-link">Account details</a>
                             </li>
-                            <li><a href="#change_password" data-bs-toggle="tab" class="nav-link">Change Password</a>
+                            <li><a href="{% url 'change_password' %}" class="nav-link">Change Password</a>
                             </li>
 
 
@@ -114,131 +114,227 @@ label.cabinet input.file{
                     <div class="tab-content dashboard_content" data-aos="fade-up" data-aos-delay="200">
                         <div class="tab-pane fade show active" id="orders">
                             <h4>Orders</h4>
-                            <div class="table_page table-responsive">
-                                <table>
+                            <div  >
+                                <table  class="table table-bordered border-primary">
                                     <thead>
 
                                         <tr>
-
-                                            
                                             <th>Date</th>
+                                            <th>Order No</th>
                                             <th>Payment method</th>
+                                            <th>Product</th>
+                                            <th>Stock</th>
                                             <th>Total</th>
                                             <th>Status</th>
                                             <th>Actions</th>
-                                           
+                                            
                                         </tr>
                                     </thead>
                                     <tbody>
                                         {% for k in order_dtl %}
                                         <tr>
-                                            
-                                            <td style="color: blue;" >{{k.date}}</td>
-                                            <td style="color: green;" >{{k.payment_method}}</td>
-                                            <td style="color: red;" >{{k.total}}</td>
+
+                                            <td style="color: blue;">{{k.date|timesince}}</td>
+                                            <td style="color: blue;">{{k.order_number.order_no}}</td>
+                                            <td style="color: green;">{{k.payment_method}}</td>
+                                            <td style="color: green;">{{k.product.productname}}</td>
+                                            <td style="color: green;">{{k.product_stock}}</td>
+                                            <td style="color: red;">{{k.total}}</td>
                                             <td><span class="badge rounded-pill alert-danger">{{k.status}}</span></td>
-                                            <td><a href="{% url 'order_dlt' k.id %}"><button type="button"  style="height: 2em; width: 8em;" class="btn btn-primary" onclick="return confirm('Are you sure you want to cancel this order?');" >Cancel</button></a></td>
-                                           
+                                            {% if k.status == "cancelled" %}
+
+                                            {% else %}
+                                            <td><a href="{% url 'order_dlt' k.id %}"><button type="button"
+                                                        style="height: 2em; width: 8em;" class="btn btn-primary"
+                                                        onclick="return confirm('Are you sure you want to cancel this order?');">Cancel</button></a>
+                                            </td>
+                                            {% endif %}
                                         </tr>
                                         {% endfor %}
 
                                     </tbody>
                                 </table>
+                                 <div class="pagination">
+                                    <span class="step-links">
+                                        {% if order_dtl.has_previous %}
+                                            <a href="?page=1">&laquo; first</a>
+                                            <a href="?page={{ order_dtl.previous_page_number }}">previous</a>
+                                        {% endif %}
+
+                                        <span class="current">
+                                            Page {{ order_dtl.number }} of {{ order_dtl.paginator.num_pages }}.
+                                        </span>
+
+                                        {% if order_dtl.has_next %}
+                                            <a href="?page={{ order_dtl.next_page_number }}">next</a>
+                                            <a href="?page={{ order_dtl.paginator.num_pages }}">last &raquo;</a>
+                                        {% endif %}
+                                    </span>
+                                </div>
                             </div>
                         </div>
 
-                        <div class="tab-pane fade" id="account-details">
+                      <div class="tab-pane fade" id="account-details">
 
 
 
                             <h3>Account details </h3>
+                            <hr>
                             <div class="login">
+                                <span id="passage" style="color: red; font-size: larger;"  >  </span>
                                 <div class="login_form_container">
-
+                                    {%  if request.user.is_authenticated %}
+                                      {% for user in userdtl %}
                                     <div class="account_login_form">
-                                        <form action="/order-details" method="POST" enctype="multipart/form-data">
+                                        <form onclick="return formeee()" action="{% url 'userprofile_upddate' user.id %}" method="POST" enctype="multipart/form-data">
                                             <div>
-                                                <div class="container">
-	                        <div class="row">
-								<div class="col-xs-12">
-									<label class="cabinet center-block">
-										<figure>
-											<img src="/user-image/616aeed99fbdf42d8a3a09b5.jpg" class="gambar img-responsive img-thumbnail" id="photo" />
-										  <figcaption><i class="fa fa-camera"></i></figcaption>
-								    </figure>
-										<input type="file" class="item-img file center-block" name="userImage"/>
-									</label>
-								</div>
-							</div>
-                        </div>
+                                                <div class="d-flex flex-row justify-content-start mb-3">
+                                                    <div class="image">   <img src="{{user.profile_pic.url}}" class="rounded-circle" style="width: 100px; height:100px ;" >  <span><i class='bx bxs-camera-plus'></i></span> </div>
+                                                    <div class="m-4">
+                                                        <div class="input-group">
 
-
-
+                                                            <input type="file" name="pic"  accept="image/*" hidden = true class="form-control" id="pic" size="4" placeholder="upload" required >
+                                                        </div>
+                                                    </div>
+                                                    <div class="d-flex flex-column ms-3 user-details">
+                                                        <!-- <h4 class="mb-0">Zenda Grace</h4>
+                                                        <div class="ratings"> <span>4.0</span> <i class='bx bx-star ms-1'></i> </div> <span>Pro Member</span> -->
+                                                    </div>
                                             </div>
+                                            
                                             <div class="default-form-box mb-20">
                                                 <label>Name</label>
-                                                <input type="text" name="Name" value="Mejo K Kurian" required>
+                                                <div><span  style="color: red;" id="error1"></span></div>
+                                                <input type="text" name="Name" id="name" onkeyup="nme()" hidden = true  value="{{user.username}}" >
+                                                <p id="namep" >{{user.username}}</p>
                                             </div>
-                                            <div class="default-form-box mb-20">
-                                                <label>User Name</label>
-                                                <input type="text" name="Username" value="Mejo"
-                                                    required>
-                                            </div>
+                                           
                                             <div class="default-form-box mb-20">
                                                 <label>Email</label>
-                                                <input type="text" name="Email" value="mjokkurian06@gmail.com" required>
+                                                <div><span  style="color: red;" id="error2"></span></div>
+                                                <input type="text" onkeyup="emee()" name="Email" id="email" hidden = true  value="{{user.email}}" >
+                                                <p  id="emailp" >{{user.email}}</p>
                                             </div>
                                             <div class="default-form-box mb-20">
                                                 <label>Mobile No</label>
-                                                <input type="text" name="MobileNo" value="9526467702"
-                                                    required>
+                                                <div><span  style="color: red;" id="error3"></span></div>
+                                                <input type="text" onclick="mobee()" name="MobileNo" id="mobile" hidden = true  value="{{user.mobile_number}}"
+                                                    >
+                                                    <p id="mobilep"  >{{user.mobile_number}}</p>
                                             </div>
+                                            {% endfor %}
+                                            {% else %}
+                                            <h1>Please Login</h1>
+                                            {% endif %}
 
                                             <br>
-
-
-
-
-
-
-
                                             <div class="save_button mt-3">
-                                                <button class="btn" type="submit">Save</button>
+
+                                                <button class="btn edit" id="edit"   selected onclick ="hidden1()" type="submit">Edit Profile</button>
+                                                <button class="btn" id="submit" hidden = true type="submit">Submit</button>
                                             </div>
                                         </form>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-
-                        <div class="tab-pane fade" id="change_password"  >
-                            <form action="/change-password" method="POST">
-
-
-                                <div class="default-form-box mb-20">
-                                    <label>Password</label>
-                                    <input type="password" name="password" id="password" placeholder="Password" onchange='onChange()'>
-                                </div>
-                                <div class="default-form-box mb-20">
-                                    <label>Confirm Password</label>
-                                    <input type="password" name="confirm_password" id="confirm_password"
-                                        placeholder="confirm password" onchange='onChange()'>
-                                    <span id='message'></span>
-                                </div>
-                                <button class="btn1 btn-primary1" id="" type="submit" >Change Password</button>
-                            </div>
-                            </form>
-                        </div>
-
-
-
+                        </div>                       
                     </div>
+
+                    
+                       
+
                 </div>
             </div>
         </div>
     </div>
+    </div>
     <!-- account area start -->
 
-     {% endblock %}
 
- 
+    <script>
+        document.getElementById('edit').addEventListener('submit', (e)=> e.preventDefault())
+        document.getElementById('submit').addEventListener('submit', (e)=> e.preventDefault())
+        function hidden1(){
+            document.getElementById('edit').hidden = true
+            document.getElementById('submit').hidden = false
+            document.getElementById('passage').innerText = "Now you can edit your details!!!"
+            document.getElementById('name').hidden = false
+            document.getElementById('namep').hidden = true
+            document.getElementById('email').hidden = false
+            document.getElementById('emailp').hidden = true
+            document.getElementById('mobile').hidden = false
+            document.getElementById('mobilep').hidden = true
+            document.getElementById('pic').hidden = false
+            
+        }
+    </script>
+
+    <script>
+        function nme(){
+            let value = document.getElementById('name').value
+            if(value == 0){
+                document.getElementById('error1').innerText = "Field required!!";
+                return false
+            }else{
+                document.getElementById('error1').innerText = "";
+                return true
+            }
+        }
+
+        function emee(){
+            let value = document.getElementById('email').value
+            if(value == 0){
+                document.getElementById('error2').innerText = "Field required!!";
+                return false
+            }else{
+                document.getElementById('error2').innerText = "";
+                return true
+            }
+        }
+
+        function mobee(){
+            let value1 = document.getElementById('mobile').value
+            if(value1 == 0){
+                document.getElementById('error3').innerText = "Field required!!";
+                return false
+            }
+            else{
+                document.getElementById('error3').innerText = "";
+                return true
+            }
+        }
+
+       function formeee(){
+           if(nme() && emee() && mobee()){
+               return true
+           }else{
+            nme()  
+            emee()
+            mobee()
+            return false
+           }
+       }
+
+       function checking(event){
+           let code = event.which || event.keycode
+           if ((code >= 48 && code <= 57)){
+            console.log("true")
+            return true
+
+       }else{
+            console.log("false")
+            event.preventDefault()
+            return false
+
+            
+       }
+  }
+       document.getElementById('mobile').addEventListener("keypress",checking)
+    </script>
+
+
+  
+   
+
+
+    {% endblock %}

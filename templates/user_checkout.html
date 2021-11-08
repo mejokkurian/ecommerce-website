@@ -5,111 +5,321 @@
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet">
 
 <style></style>
-    <!-- checkout area start -->
-    <div class="checkout-area pt-100px pb-100px">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-7">
-                    <h3 style="font-family: '#offcanvas-mobile-menu';" >Billing address</h3>
-                      <hr>
-                      {% for addr in address %}
-                     
-                      <div class="form-check">
+<!-- checkout area start -->
+<div class="checkout-area pt-100px pb-100px">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-7">
+                <h3 style="font-family: '#offcanvas-mobile-menu';">Billing address</h3>
+                <span style="color: red; font-size: larger;" id="select" aria-required="true"></span>
 
-                    <form action="{% url 'order_placed' addr.id  %}" method="post">
-                        {% csrf_token %}
-                        <input class="form-check-input p-2" value={{addr.id}}   type="radio" name="flexRadioDefault" id="flexRadioDefault1" required>
-                        <label  class="form-check-label" for="flexRadioDefault1">
-                            <p ><strong style="color: black;" >  {{addr.full_name}} </strong>    <a href="" ><i  class="fas fa-pen " style="margin-right: 1em; margin-left: 1em; color: blue;" ></i></a>      <a href="{% url 'address_dlt' addr.id %}"   onclick="return confirm('Are you sure you want to Active this user?');"><i class="fas fa-times" style="color: red;"></i></a>  </p>      
-                             <p>{{addr.address_line1}},{{addr.state}},{{addr.district}},{{addr.city}},{{addr.pincode}},</p>
-                             <p><strong style="color: black;" >Mobile No:  {{addr.mobile}}</strong> </p>
-                        </label>
+                <hr>
+                {% if address == 0 %}
+                
+                {%  else %}
+                <form onSubmit="return checkFormDetail(this); " action="{% url 'order_placed' %}" method="post" id="form">
+                 {% endif %}
+                    {% for addr in address %}
+
+                    <div id="dlteee" class="form-check">
                         
-                     
-                      </div>
-                      {% endfor %}
-                        
-                    
+                        <form onSubmit="return checkFormDetail(this); " action="{% url 'order_placed' %}" method="post"
+                            id="form">
+                           
+                            {% csrf_token %}
+                            
+
+                            <input class="form-check-input p-2 address" value={{addr.id}} type="radio"
+                                name="flexRadioDefault"  id="flexRadioDefault1" />
+                            <label class="form-check-label" for="flexRadioDefault1">
+                                <p><strong style="color: black;"> {{addr.full_name}} </strong> <a href=""><i
+                                            class="fas fa-pen "
+                                            style="margin-right: 1em; margin-left: 1em; color: blue;"></i></a> <a
+                                        
+                                        onclick="dlt('{{addr.id}}')"><i
+                                            class="fas fa-times" style="color: red;"></i></a> </p>
+                                <p>{{addr.address_line1}},{{addr.state}},{{addr.district}},{{addr.city}},{{addr.pincode}},
+                                </p>
+                                <p><strong style="color: black;">Mobile No: {{addr.mobile}}</strong> </p>
+                            </label>
+                    </div>
+                    {% endfor %}
 
 
-                     <a href="{% url 'address' %}"><button type="button" style="border-radius: 80; height: 3em;" class="btn btn-primary">ADD NEW ADDRESS</button></a> 
 
 
-                      <h3 style="font-family: '#offcanvas-mobile-menu';  margin-top: 3em;" >Payments</h3>
-                      
+                    <a href="{% url 'address' %}"><button type="button" style="border-radius: 80; height: 3em;"
+                            class="btn btn-primary">ADD NEW ADDRESS</button></a>
+                    <h3 style="font-family: '#offcanvas-mobile-menu';  margin-top: 3em;">Payments</h3>
+                    <hr>
+                    <div class="form-check">
 
-                      <div class="form-check">
-                        <input class="form-check-input p-2" value="cod"  type="radio" name="flexRadio" id="flexRadioDefault1" required>
+                        <input class="form-check-input p-2 payment_option" value="cod" type="radio" name="flexRadio"
+                            id="flexRadioDefault1" required>
                         <label class="form-check-label" for="flexRadioDefault1">
-                             Cash On Delivery
+                            Cash On Delivery
                         </label>
-                     
-                      </div>
+                    </div>
+                    <input hidden id="coupon" value="{{coupon_code}}" name="coupon_code" type="text">
+                    <div class="form-check">
+                        <input class="form-check-input p-2 payment_option" value="Razorpay" type="radio"
+                            name="flexRadio" id="flexRadioDefault" required>
+                        <label class="form-check-label " for="flexRadioDefault1">
+                            Razor Pay
+                        </label>
+                    </div>
 
-                     <button type="submit" style="border-radius: 80; height: 3em; width: 500px; margin-left: 22em;" class="btn btn-primary">Place Order</button>
-                 </form>
-                </div>
+                    <div class="form-check">
+                        <input class="form-check-input paypal-check p-2 payment_option" value="paypal" type="radio" name="flexRadio"
+                            id="flexRadioDefault" required>
+                        <label class="form-check-label " for="flexRadioDefault1">
+                            PayPal
+                        </label>
+                    </div>
+
+            </div>
 
 
-                
-                    
-
-                
-                
-                <div class="col-lg-5 mt-md-30px mt-lm-30px ">
-                    <div class="your-order-area">
-                        <h3>Your order</h3>
-                        <div class="your-order-wrap gray-bg-4">
-                            <div class="your-order-product-info">
-                                <div class="your-order-top">
-                                    <ul>
-                                        <li>Product</li>
-                                        <li>Total</li>
-                                    </ul>
-                                </div>
-                                <div class="your-order-middle">
-                                    <ul>
+            <div class="col-lg-5 mt-md-30px mt-lm-30px ">
+                <div class="your-order-area">
+                    <h3>Your order</h3>
+                    <div class="your-order-wrap gray-bg-4">
+                        <div class="your-order-product-info">
+                            <div class="your-order-top">
+                                <ul>
+                                    <li>Product</li>
+                                    <li>Total</li>
+                                </ul>
+                            </div>
+                            <div class="your-order-middle">
+                                <ul>
                                     {% for prd in product %}
-                                        <li><span style="color: rgb(190, 30, 164);" class="order-middle-left">{{prd.product_id.productname}}  ({{prd.product_stock}})</span>
-                                            
-                                          {% for item,value in total %} 
-                                          <!-- {% if item == prd.product_id.productname %}  -->
-                                            <span style="color: red;"    class="order-price">{{value}}</span></li>
-                                            <!-- {% endif %} -->
-                                        {% endfor %}
+                                    <li><span style="color: rgb(190, 30, 164);"
+                                            class="order-middle-left">{{prd.product_id.productname}}
+                                            ({{prd.product_stock}})</span>
+
+                                        {% for item,value in total %}
+                                        <!-- {% if item == prd.product_id.productname %}  -->
+                                        <span style="color: red;" class="order-price">{{value}}</span>
+                                    </li>
+                                    <!-- {% endif %} -->
+                                    {% endfor %}
 
                                     {% endfor %}
-                                        
-                                    </ul>
-                                </div>
-                                <div class="your-order-bottom">
-                                    <ul>
-                                        <li  class="your-order-shipping">Shipping</li>
-                                        <li style="color: rgb(24, 184, 24);" >Free shipping</li>
-                                    </ul>
-                                </div>
-                                <div class="your-order-total">
-                                    <ul>
-                                        <li class="order-total">Total</li>
-                                        <li>{{grandtotal}}</li>
-                                    </ul>
-                                </div>
+
+                                </ul>
                             </div>
-                          
+                            <div class="your-order-bottom">
+                                <ul>
+                                    <li class="your-order-shipping">Shipping</li>
+                                    <li style="color: rgb(24, 184, 24);">Free shipping</li>
+                                </ul>
+                            </div>
+                            <div class="your-order-total">
+                                {% if normal_orice %}
+                                <ul>
+                                    <li id="totalCheck" class="order-total" style="color: green;">Coupon off :</li>
+                                    <li style="text-decoration: line-through black;">{{normal_orice}}</li>
+
+                                </ul>
+                                <ul>
+                                    <li id="totalCheck" class="order-total">Grand Total :</li>
+                                    <li>{{grandtotal}}</li>
+
+
+                                </ul>
+                                {% else %}
+                                <ul>
+                                    <li id="totalCheck" class="order-total">Total</li>
+                                    <li>{{grandtotal}}</li>
+
+
+                                </ul>
+                                {% endif %}
+                            </div>
                         </div>
-                        <!-- <div class="Place-order mt-25">
-                            <a class="btn-hover" href="#">Place Order</a>
-                        </div> -->
                     </div>
-                    
                 </div>
-                
             </div>
-            <hr>
         </div>
-        
+        <hr>
     </div>
-    <!-- checkout area end -->
+
+    <div class="container">
+        <div class="row">
+
+            <button type="submit" selected style="border-radius: 80; height: 3em; width: 300px; margin-left: 6em;"
+                id="COD_Button" class="btn btn-primary">Proceed to payment
+            </button>
+
+            <button style="border-radius: 80; height: 3em; width: 300px; margin-left: 6em;" class="btn btn-primary"
+                hidden="true" id="rzp-button1">Pay with razorpay
+
+            </button>
+
+            <div style="border-radius: 80%; height: 3em; width: 300px; margin-left: 6em;" hidden=true
+                id="paypal-button-container"></div>
+        </div>
+    </div>
+
+
+
+    </form>
+   
+
+
+
+
+
+
+</div>
+<!-- checkout area end -->
+
+
+
+<!-- Include the PayPal JavaScript SDK -->
+<script
+    src="https://www.paypal.com/sdk/js?client-id=AU5HFL-VEID6GySTdxGXrdCDR2UPI0UV1jlEzs2--N45RWqyJ4kERvacWtZhqPzI81baP6WovkOtzmed&currency=USD"></script>
+    
+<script>
+    
+    var toatl = {{ grandtotal }}
+
+    // Render the PayPal button into #paypal-button-container   
+    paypal.Buttons ({
+        // Set up the transaction
+      onInit:function(data,action){
+        action.disable();
+        document.querySelectorAll('input[name="flexRadio"]')[2].addEventListener('change',()=>{
+            console.log("clicked")
+            let addr =document.querySelector('input[name="flexRadioDefault"]:checked');
+            if(addr){
+                action.enable();
+            }
+            else{
+                document.getElementById('select').innerText = "please select/Create a address!!!"
+                window.location.href = '#select';
+                action.disable();
+            }
+        });
+       
+      },
+
+        createOrder: function (data, actions) {
+            return actions.order.create({
+                purchase_units: [{
+                    amount: {
+                        value: toatl
+                    }
+                }]
+            });
+        },
+        
+
+        // Finalize the transaction
+        onApprove: function (data, actions) {
+            return actions.order.capture().then(function (orderData) {
+                // Successful capture! For demo purposes:
+                console.log('Capture result', orderData, JSON.stringify(orderData, null, 2));
+                var transaction = orderData.purchase_units[0].payments.captures[0];
+                alert('Transaction ' + transaction.status + ': ' + transaction.id + '\n\nSee console for all available details');
+                $('#form').submit()
+
+                // Replace the above to show a success message within this page, e.g.
+                // const element = document.getElementById('paypal-button-container');
+                // element.innerHTML = '';
+                // element.innerHTML = '<h3>Thank you for your payment!</h3>';
+                // Or go to another URL:  actions.redirect('thank_you.html');
+            });
+        }
+    
+
+  
+
+    }).render('#paypal-button-container');
+
+
+
+
+</script>
+
+
+
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+
+
+    function checking(order_id, amount) {
+
+        var options = {
+            "key": "rzp_test_LnJaBOrsdCtTO1",
+            "amount": amount, // 
+            "currency": "INR",
+            "name": "Jesco shop",
+            "description": "Test Transaction",
+            "image": "https://example.com/your_logo",
+            "order_id": order_id,
+            "handler": function (response) {
+                $('#form').submit()
+            },
+            "prefill": {
+                "name": "Mejo K kurian",
+                "email": "mejokkurian06@gmail.com",
+                "contact": "9526467702"
+            },
+            "notes": {
+                "address": "Razorpay Corporate Office"
+            },
+            "theme": {
+                "color": "#E4A5CA"
+            }
+        };
+        var rzp1 = new Razorpay(options);
+        rzp1.on('payment.failed', function (response) {
+            alert(response.error.code);
+            alert(response.error.description);
+            alert(response.error.source);
+            alert(response.error.step);
+            alert(response.error.reason);
+            alert(response.error.metadata.order_id);
+            alert(response.error.metadata.payment_id);
+        });
+        rzp1.open();
+    }
+</script>
+
+
+
+<script>
+    function dlt(id){
+        swal({
+            title: "Are you sure?",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+          })
+          .then((willDelete) => {
+            if (willDelete) {
+                var data = { 'id': id, "csrf_token": '{{csrf_token}}' }
+                $.ajax({
+                    url: "{% url 'address_dlt'  %}",
+                    method: "POST",
+                    data: data,
+                    success: function (resp) {
+                        swal("Poof! Your address has been deleted!", {
+                            icon: "success",
+                          }); 
+                          $( "#dlteee" ). load(window. location. href + " #dlteee" );
+                    } 
+                })
+             
+            } else {
+              swal("Your address not deleted");
+            }
+          });
+    }
+</script>
+
 
 {% endblock %}
-   

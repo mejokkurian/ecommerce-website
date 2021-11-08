@@ -1,21 +1,23 @@
 <!doctype html>
 {% load static %}
 <html lang="en">
-  <head>
-  	<title>Contact Form 06</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<head>
+	<title>Contact Form 06</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
 	<link href='https://fonts.googleapis.com/css?family=Roboto:400,100,300,700' rel='stylesheet' type='text/css'>
 
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-	
+
 	<link rel="stylesheet" href="{% static 'css_contact/style.css' %}">
 
-	</head>
-	<body>
+</head>
+
+<body>
 	<section class="ftco-section">
-		<div class="container "   >
+		<div class="container ">
 			<div class="row justify-content-center">
 				<div class="col-md-12 text-center mb-5">
 					<h2 class="heading-section">Add New Address </h2>
@@ -27,62 +29,79 @@
 						<div class="row no-gutters mb-5">
 							<div class="col-md-12">
 								<div class="contact-wrap w-100 p-md-5 p-4">
-									
-									<div  class="mb-4"></div> 
-				      		<div  class="mb-4">
-				            
-				      		</div>
-									<form method="POST"  action="{% url 'address_submit' user.id %}" class="contactForm">
+
+									<div class="mb-4"></div>
+									<div class="mb-4">
+
+									</div>
+									<form method="POST" action="{% url 'address_submit' user.id %}"  onsubmit="return validateForm()" class="contactForm">
 										{% csrf_token %}
 										<div class="row">
 											<div class="col-md-6">
 												<div class="form-group">
 													<label class="label" for="name">Full Name</label>
-													<input type="text" class="form-control" name="fullname"  placeholder="Name" required>
+													<div><span  class="text-end" style="color: red; font-size: small; " id="error1"></span></div>
+													<input type="text" id="name1"  onkeyup="checking()" class="form-control" name="fullname"
+														placeholder="Name" >
+														
+														
 												</div>
 											</div>
-											<div class="col-md-6"> 
+											<div class="col-md-6">
 												<div class="form-group">
 													<label class="label" for="moblile">Mobile</label>
-													<input type="tel" class="form-control" name="phone"  placeholder="phone" required>
+													<div><span  class="text-end" style="color: red; font-size: small; " id="error2"></span></div>
+													<input type="tel" id="mobile" type="number"    onkeyup="mobile1()" class="form-control" name="phone"
+														placeholder="phone"  >
 												</div>
 											</div>
 											<div class="col-md-6">
 												<div class="form-group">
-													<label class="label" for="name">Pincode</label>
-													<input type="text" class="form-control" name="pin"  placeholder="zip" required>
-												</div>
-											</div>
-											<div class="col-md-6"> 
-												<div class="form-group">
-													<label class="label" for="email">State</label>
-													<input type="text" class="form-control" name="state"  placeholder="state" required>
+													<label class="label"  for="name">Pincode</label>
+													<div><span  class="text-end" style="color: red; font-size: small; " id="error3"></span></div>
+
+													<input type="text" id="pincode" class="form-control" onkeyup="pincode1()" name="pin" placeholder="zip" 	>
+													
 												</div>
 											</div>
 											<div class="col-md-6">
 												<div class="form-group">
-													<label class="label" for="name">City</label>
-													<input type="text" class="form-control" name="city"  placeholder="city" required>
+													<label class="label"  for="email">State</label>
+													<div><span  class="text-end" style="color: red; font-size: small; " id="error4"></span></div>
+
+													<input type="text"  id="state"  onkeyup="state1()" class="form-control" name="state"
+														placeholder="state" >
 												</div>
 											</div>
-											<div class="col-md-6"> 
+											<div class="col-md-6">
 												<div class="form-group">
-													<label class="label" for="email">Dist</label>
-													<input type="text" class="form-control" name="district"  placeholder="" required>
+													<label class="label"  for="name">City</label>
+													<div><span  class="text-end" style="color: red; font-size: small; " id="error5"></span></div>
+													<input type="text" id="city" onkeyup="city1()" class="form-control" name="city"
+														placeholder="city" >
+												</div>
+											</div>
+											<div class="col-md-6">
+												<div class="form-group">
+													<label class="label"  for="email">Dist</label>
+													<div><span  class="text-end" style="color: red; font-size: small; " id="error6"></span></div>
+													<input type="text" id="dist" onkeyup="dist1()" class="form-control" name="district"
+														placeholder="" >
 												</div>
 											</div>
 
 											<div class="col-md-12">
 												<div class="form-group">
-													<label class="label" for="subject">Address(Area and Street)</label>
-													<input type="text" class="form-control" name="address"
-													placeholder="Address" required>
+													<label class="label"  for="subject">Address(Area and Street)</label>
+													<div><span  class="text-end" style="color: red; font-size: small; " id="error7"></span></div>
+													<input id="add" onclick="addr()" type="text" class="form-control" name="address"
+														placeholder="Address" >
 												</div>
 											</div>
-										
+
 											<div class="col-md-12">
 												<div class="form-group">
-													<input type="submit" value="Send Message" class="btn btn-primary">
+												<button type="submit"  class="btn btn-primary">Submit</button> 
 													<div class="submitting"></div>
 												</div>
 											</div>
@@ -90,24 +109,237 @@
 									</form>
 								</div>
 							</div>
-							
+
 						</div>
-					
-			          
+
+
 					</div>
 				</div>
 			</div>
 		</div>
 	</section>
 
+	<script>
+
+
+		document.getElementById("name1").addEventListener("keypress", myFunction);
+
+		function myFunction(event){
+			let value = document.getElementById('mobile').value
+			console.log(value)
+			console.log("success")
+			var x = event.which || event.keycode;
+			if ((x >= 97 && x <= 122)){
+				console.log("true")
+				return true
+				
+			
+			}else if((x == 32)){
+				return true
+			
+			}else if((x >= 65 && x <=90)){
+				return true
+			}else{
+				console.log("false")
+				document.getElementById('mobile').innerText = "";
+				event.preventDefault()
+				return false
+
+				
+			}
+			
+		}
+
+		document.getElementById("mobile").addEventListener("keypress", mobile);
+
+		function mobile(event){
+			let value = document.getElementById('mobile').value
+			console.log(value)
+			console.log("success")
+			var x = event.which || event.keycode;
+			if ((x >= 48 && x <= 57)){
+				console.log("true")
+				return true
+				
+			
+			}else{
+				console.log("false")
+				event.preventDefault()
+				return false
+
+				
+			}
+		}
+
+		document.getElementById("pincode").addEventListener("keypress", pincode);
+
+		function pincode(event){
+			let value = document.getElementById('mobile').value
+			console.log(value)
+			console.log("success")
+			var x = event.which || event.keycode;
+			if ((x >= 48 && x <= 57)){
+				console.log("true")
+				return true
+				
+			
+			}else{
+				console.log("false")
+				document.getElementById('mobile').innerText = "";
+				event.preventDefault()
+				return false
+
+				
+			}
+		}
+
+		
+		function checking(){
+			let name = document.getElementById('name1').value
+			console.log(name)
+			
+			if (name.length < 3){
+				document.getElementById('error1').innerText = "Please enter name";
+				return false
+			}else{
+				document.getElementById('error1').innerText = "";
+				return true
+			}
+
+		}
+
+		function mobile1(){
+
+			let mobile = document.getElementById('mobile').value
+			console.log(mobile)
+			
+			if (mobile.length == 0){
+				document.getElementById('error2').innerText = "Please enter mobile number";
+				return false
+			}else if(mobile.length > 10){
+				document.getElementById('error2').innerText = "Please enter valid phone number";
+				return false
+			}
+			else{
+				document.getElementById('error2').innerText = "";
+				return true
+			}
+
+	  }
+
+	  function pincode1(){
+		let pincode1 = document.getElementById('pincode').value
+		console.log(pincode1)
+		
+		if (pincode1.length == 0){
+			document.getElementById('error3').innerText = "Please enter Pincode";
+			return false
+		}else if(pincode1.length > 6){
+			document.getElementById('error3').innerText = "Please enter valid pincode";
+			return false
+		}
+		else{
+			document.getElementById('error3').innerText = "";
+			return true
+		}
+
+
+	  }
+
+
+	  function state1(){
+		let state1 = document.getElementById('state').value
+		console.log(state1)
+		
+		if (state1.length == 0){
+			document.getElementById('error4').innerText = "Please provide details";
+			return false
+		}
+		else{
+			document.getElementById('error4').innerText = "";
+			return true
+		}
+
+
+	  }
+
+	  function city1(){
+		let city1 = document.getElementById('city').value
+		console.log(city1)
+		
+		if (city1.length == 0){
+			document.getElementById('error5').innerText = "Please provide details";
+			return false
+		}
+		else{
+			document.getElementById('error5').innerText = "";
+			return true
+		}
+
+
+	  }
+
+	  function dist1(){
+		let dist1 = document.getElementById('dist').value
+		console.log(dist1)
+		
+		if (dist1.length == 0){
+			document.getElementById('error6').innerText = "Please provide details";
+			return false
+		}
+		else{
+			document.getElementById('error6').innerText = "";
+			return true
+		}
+
+
+	  }
+
+	  function addr(){
+		let addr = document.getElementById('add').value
+		console.log(addr)
+		
+		if (addr.length == 0){
+			document.getElementById('error7').innerText = "Please provide details";
+			return false
+		}
+		else{
+			document.getElementById('error7').innerText = "";
+			return true
+		}
+
+
+	  }
+
+	  function validateForm(){
+		  if(checking() && mobile1() &&  pincode1() &&  state1() && city1() && dist1() && addr()){
+		  return true
+
+		  }else{
+			checking()
+			mobile1()
+			pincode1()
+			state1()
+			state1()
+			city1()
+			dist1()
+			addr()
+			return false
+		  }
+	  }
+	</script>
+	
 	<script src="{% static 'js_contact/jquery.min.js' %}"></script>
-  <script src="{% static 'js_contact/popper.js' %}"></script>
-  <script src="{% static 'js_contact/bootstrap.min.js' %}"></script>
-  <!-- <script src="{% static 'js_contact/jquery.validate.min.js' %}"></script> -->
-  {% comment %} <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script> {% endcomment %}
-  <script src="{% static 'js_contact/google-map.js' %}"></script>
-  <script src="{% static 'js_contact/main.js' %}"></script>
+	<script src="{% static 'js_contact/popper.js' %}"></script>
+	<script src="{% static 'js_contact/bootstrap.min.js' %}"></script>
+	<!-- <script src="{% static 'js_contact/jquery.validate.min.js' %}"></script> -->
+	{% comment %}
+	<script
+		src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
+	{% endcomment %}
+	<script src="{% static 'js_contact/google-map.js' %}"></script>
+	<script src="{% static 'js_contact/main.js' %}"></script>
 
-	</body>
+</body>
+
 </html>
-

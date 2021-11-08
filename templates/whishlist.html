@@ -1,0 +1,58 @@
+{% extends 'base_user.html' %}
+{% load static %}
+
+{% block contents %}
+<div id="whisheee">
+   {% if Whish_items == 0 %}
+   <h1 class="text-center" style="color: red; margin-top: 3em; margin-bottom: 3em;" >your wishlist is empty!!!</h1>
+   {% else %}
+   
+   <div class="cart-main-area pt-100px pb-100px">
+        <div class="container">
+            <h3 class="cart-page-title">Your wish list</h3>
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                    <form action="#">
+                        <div class="table-content table-responsive cart-table-content">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Image</th>
+                                        <th>Product Name</th>
+                                        <th>Until Price</th>
+                                        <th>Add To Cart</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                {% for k in wish_list %}
+                                    <tr>
+                                        <td class="product-thumbnail">
+                                            <a href="#"><img class="img-responsive ml-15px" src="{{k.product_id.image1.url}}" alt="" /></a>
+                                        </td>
+                                        <td class="product-name"><a href="#"> {{k.product_id.productname}}</a></td>
+                                        <td class="product-price-cart"><span class="amount">{{k.product_id.price}}</span></td>
+                                        <td class="product-wishlist-cart">
+                                            <a  onclick="cart('{{k.product_id.id}}')" href="#">add to cart</a>
+                                        </td>
+                                        <td class="product-remove">
+                                            <a onclick="deelte('{{k.id}}')" ><i
+                                                    class="fa fa-times"></i></a>
+                                        </td>
+                                    </tr>
+                                   {% endfor %}
+                                   
+                                </tbody>
+                            </table>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+   {% endif %}
+
+</div> 
+
+{% endblock %}
+    <!-- Wishlist Area End -->

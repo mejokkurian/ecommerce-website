@@ -24,28 +24,24 @@
                          <span>
 
                          </span>
-                         <form action="create_category" method="POST">
+                         <form  onclick="return formee()" action="create_category" method="POST">
                               {% csrf_token %}
                               <div class="mb-4">
                                    <label for="sub_cat_name" class="form-label">Name</label>
-                                   <input type="text" placeholder="Type here" name="cat_name" class="form-control"
-                                        id="product_name" />
+                                   <div><span style="color: red;" id="error1"></span></div>
+                                   <input itemid="cat-name" id="cat-name"  onkeyup   ="nme()" type="text" placeholder="Type here" name="cat_name" class="form-control"
+                                         />
                               </div>
                               <div class="mb-4">
                                    <label for="product_slug" class="form-label">Slug</label>
-                                   <input type="text" placeholder="Type here" name="slug" class="form-control"
-                                        id="product_slug" />
+                                   <div><span style="color: red;" id="error2"></span></div>
+                                   <input  type="text" onkeyup="slugee()" placeholder="Type here" name="slug" class="form-control"
+                                        id="cat_slug" />
                               </div>
-                              {% comment %} <div class="mb-4">
-                                   <label class="form-label">Parent</label>
-                                   <select class="form-select">
-                                        <option>Clothes</option>
-                                        <option>T-Shirts</option>
-                                   </select>
-                              </div> {% endcomment %}
                               <div class="mb-4">
                                    <label class="form-label">Description</label>
-                                   <textarea placeholder="Type here" name="discr" class="form-control"
+                                   <div><span style="color: red;" id="error3"></span></div>
+                                   <textarea id="dicript" onkeyup="textee()" placeholder="Type here" name="discr" class="form-control"
                                         rows="4"></textarea>
                               </div>
                               <div class="d-grid">
@@ -55,7 +51,7 @@
                     </div>
                     <div class="col-md-8">
 
-                         <table class="table table-hover">
+                         <table id="tableeee" class="table table-hover">
                               <thead>
 
                                    <tr>
@@ -92,9 +88,9 @@
                                                   <div class="dropdown-menu">
                                                        <a class="dropdown-item" href="edit_category/{{cats.id}}">Edit
                                                             info</a>
-                                                       <a class="dropdown-item text-danger"
-                                                            onclick="return confirm('Are you sure you want to Delete this user?');"
-                                                            href="category_delete/{{cats.id}}">Delete</a>
+                                                       <a style="cursor: pointer;" class="dropdown-item text-danger"
+                                                            onclick="dlt('{{cats.id}}')"
+                                                            >Delete</a>
                                                   </div>
 
                                              </div>
@@ -133,4 +129,87 @@
           </div> <!-- card body .// -->
      </div> <!-- card .// -->
 </section> <!-- content-main end// -->
+
+<script>
+     function nme(){
+     
+          let name = document.getElementById('cat-name').value
+          if(name == 0){
+               document.getElementById('error1').innerText = "field required!!";
+               return false
+          }else{
+               document.getElementById('error1').innerText = "";
+               return true
+          }
+     }
+
+     function slugee(){
+     
+          let name = document.getElementById('cat_slug').value
+          if(name == 0){
+               document.getElementById('error2').innerText = "field required!!";
+               return false
+          }else{
+               document.getElementById('error2').innerText = "";
+               return true
+          }
+     }
+
+     function textee(){
+     
+          let name = document.getElementById('dicript').value
+          if(name == 0){
+               document.getElementById('error3').innerText = "field required!!";
+               return false
+          }else{
+               document.getElementById('error3').innerText = "";
+               return true
+          }
+     }
+
+
+     function formee(){
+          if(nme() && slugee() && textee()){
+               return true
+          }
+          else{
+               nme()
+               slugee()
+               textee()
+               return false
+          }
+     }
+</script>
+
+<script>
+     function dlt(id){
+         swal({
+             title: "Are you sure?",
+             icon: "warning",
+             buttons: true,
+             dangerMode: true,
+           })
+           .then((willDelete) => {
+             if (willDelete) {
+                 var data = { 'id': id, "csrf_token": '{{csrf_token}}' }
+                 $.ajax({
+                     url: "{% url 'category_delete'  %}",
+                     method: "POST",
+                     data: data,
+                     success: function (resp) {
+                         swal("Poof! Your imaginary file has been deleted!", {
+                             icon: "success",
+                           }); 
+                           $( "#tableeee" ). load(window. location. href + " #tableeee" );
+                     } 
+                 })
+              
+             } else {
+               swal("Your category not deleted");
+             }
+           });
+     }
+ </script>
+
+ 
 {% endblock %}

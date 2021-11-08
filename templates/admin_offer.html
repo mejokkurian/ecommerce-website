@@ -1,0 +1,220 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block contents %}
+{% load humanize %}
+
+<section class="content-main">
+     <div class="content-header">
+          <h2 class="content-title">Offer managment</h2>
+     </div>
+     {% if messages %}
+     {% for message in messages %}
+     <div class="row">
+     <div class="col-md-6  alert alert-{{message.tags}} m-1 p text-center" id="msg" role="alert"
+          style="padding: 1px; background-color: rgb(0, 255, 13);">
+          {{ message }}
+     </div>
+     </div>
+     {% endfor %}
+     {% endif %}
+
+     <div class="card">
+          <div class="card-body">
+               <div class="row">
+                    <div class="col-md-6">
+                         <span>
+
+                         </span>
+                         <form  onsubmit="return check()" action="{% url 'coupon_creation' %}" method="POST">
+                              {% csrf_token %}
+                              <div class="row">
+
+                              <div class="mb-4 col-md-6">
+                                   <label for="sub_cat_name" class="form-label">Copon code</label>
+                                   <div><span id="error1" style="color: red;"></span></div>
+                                   <input type="text" placeholder="Type here" onkeyup="nme()" name="coupon_code" class="form-control"
+                                        id="product_name" />
+                              </div>
+                              <div class="mb-4 col-md-6">
+                                   <label for="product_slug" class="form-label">Coupen value</label>
+                                   <div><span id="error2" style="color: red;"></span></div>
+                                   <input type="text" placeholder="Type here"  onkeyup="val()"  name="coupon_value" class="form-control"
+                                        id="value" />
+                              </div>
+                            </div>
+                              
+                              <div class="mb-4">
+                                   <label class="form-label">coupon description</label>
+                                   <div><span id="error3" style="color: red;"></span></div>
+                                   <input type="text" placeholder="Type here"  onkeyup="dicrpt()" name="coupon_dscr" id="dicr" class="form-control">
+                              </div>
+                              <div class="row">
+                                  <div class="col-md-6 mb-4">
+                                    <label class="form-label">Expiry</label>
+                                    <div><span id="error4" style="color: red;"></span></div>
+                                    <input type="date" placeholder="Type here"  onchange="expr()" name="expiry" id = "expiry" class="form-control">
+                                  </div>
+
+                                  <div class="col-md-6">
+                                    <label class="form-label">Minimum purchace Amount</label>
+                                    <div><span id="error5" style="color: red;"></span></div>
+                                    <input type="text" placeholder="Type here"  onkeyup="minm()" name="min_amount" id = "min" class="form-control">
+                                  </div>
+                              </div>
+
+                              <div class="d-grid">
+                                   <button style="width: fit-content;" type="submit" class="btn btn-primary">Create coupon</button>
+                              </div>
+                         </form>
+                    </div>
+                    <div class="col-md-6">
+
+                         <table class="table table-hover">
+                              <thead>
+
+                                   <tr>
+                                        <th>COUPON</th>
+                                        <th>Value</th>
+                                        <!-- <th>Expiry</th> -->
+                                        <th>Min amount</th>
+                                        <th class="text-end">Action</th>
+                                   </tr>
+                              </thead>
+                              <tbody>
+                                   {% for c in coupon %} 
+                                   <tr>
+                                        
+                                        <td>{{c.coupon_code}}</td>
+                                        <td>{{c.percentage}}</td>
+                                        <!-- <td>{{c.expiry_date}}</td> -->
+                                        <td>{{c.min_rate}}</td>
+                                        <td class="text-end">
+                                             <div class="dropdown">
+                                                  <a href="#" data-bs-toggle="dropdown" class="btn btn-light"> <i
+                                                            class="material-icons md-more_horiz"></i> </a>
+                                                  <div class="dropdown-menu">
+                                                       <a class="dropdown-item" href="">Edit
+                                                            info</a>
+                                                       <a class="dropdown-item text-danger"
+                                                            onclick="return confirm('Are you sure you want to Delete this Coupon?');"
+                                                            href="{% url 'coupon_dlt'  c.id  %}">Delete</a>
+                                                  </div>
+
+                                             </div>
+                                             <!-- dropdown //end -->
+                                        </td>
+                                        
+                                   </tr>
+                                   {% endfor %} 
+                                  
+                              </tbody>
+                         </table>
+
+                    </div> <!-- .col// -->
+               </div> <!-- .row // -->
+          </div> <!-- card body .// -->
+     </div> <!-- card .// -->
+</section> <!-- content-main end// -->
+
+<script>
+     function validator(event){
+          let name = document.getElementById('value').value
+          console.log(name)
+          var code = event.which || event.keycode
+          if ((code >= 48 && code <= 57)){
+               console.log("true")
+               return true
+
+          }
+          else{
+               console.log("false")
+               event.preventDefault()
+               return false
+
+               
+          }
+     }
+
+     document.getElementById('value').addEventListener("keypress",validator)
+
+
+     function nme(){
+          let name = document.getElementById('product_name').value
+          if(name == 0){
+               document.getElementById('error1').innerText = "field required";
+               return false
+          }else{
+               document.getElementById('error1').innerText = "";
+               return true
+          }
+     }
+
+     function val(){
+          let name = document.getElementById('value').value
+          if(name == 0){
+               document.getElementById('error2').innerText = "field required";
+               return false
+          }else if(name.length > 2){
+               document.getElementById('error2').innerText = "enter a valid value";
+               return false
+          }
+          else{
+               document.getElementById('error2').innerText = "";
+               return true
+          }
+     }
+
+
+     function dicrpt(){
+          let name = document.getElementById('dicr').value
+          if(name == 0){
+               document.getElementById('error3').innerText = "field required";
+               return false
+          }else{
+               document.getElementById('error3').innerText = "";
+               return true
+          }
+     }
+
+     function expr(){
+          let name = document.getElementById('expiry').value
+          if(name == 0){
+               document.getElementById('error4').innerText = "field required";
+               return false
+          }else{
+               document.getElementById('error4').innerText = "";
+               return true
+          }
+     }
+
+     function minm(){
+          let name = document.getElementById('min').value
+          if(name == 0){
+               document.getElementById('error5').innerText = "field required";
+               return false
+          }else{
+               document.getElementById('error5').innerText = "";
+               return true
+          }
+     }
+
+     function check(){
+          if( nme() && val() && dicrpt() && expr() && minm()){
+               return true
+          }
+          else{
+               nme()
+               val()
+               dicrpt()
+               expr()
+               minm()
+               return false
+          }
+     }
+
+
+
+</script>
+
+{% endblock %}

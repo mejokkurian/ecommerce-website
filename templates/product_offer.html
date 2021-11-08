@@ -1,0 +1,290 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block contents %}
+{% load humanize %}
+
+
+
+<section class="content-main">
+     <div class="content-header">
+          <h2 class="content-title">Product Offer managment</h2>
+     </div>
+     {% if messages %}
+     {% for message in messages %}
+     <div class="row">
+     <div class="col-md-6  alert alert-{{message.tags}} m-1 p text-center" id="msg" role="alert"
+          style="padding: 1px; background-color: rgb(0, 255, 13);">
+          {{ message }}
+          
+     </div>
+     </div>
+     {% endfor %}
+     {% endif %}
+
+     <div class="card">
+          <div class="card-body">
+               <div class="row">
+                    <div class="col-md-6">
+                         <span>
+
+                         </span>
+                         <form >
+                              {% csrf_token %}
+                              <div class="row">
+
+                              <div class="mb-4 col-md-6">
+                                   <label for="sub_cat_name" class="form-label">Offer name</label>
+                                   <div><span style="color: red ;" id="error1" ></span></div>
+                                   <input type="text" placeholder="Type here" onkeyup="nme()" id="offerName" name="offer_name" class="form-control"
+                                        id="product_name" />
+                              </div>
+                              <div class="mb-4 col-md-6">
+                                   <label for="product_slug" class="form-label">offer value</label>
+                                   <div><span style="color: red ;" id="error2" ></span></div>
+                                   <input type="text" placeholder="Type here" id="offervalue" onkeyup="valee()" name="offer_value" class="form-control"
+                                        id="product_slug" />
+                              </div>
+                            </div>
+                              
+                              <div class="mb-4">
+                                   
+                                    <label>Choose a Product from this list:
+                                        <div><span style="color: red ;" id="error3" ></span></div>
+                                        <input list="browsers" id="prdName" onkeyup="prdname()" name="product_name" /></label>
+                                        
+                                        <datalist id="browsers" >
+                                        {% for p in product %}
+                                         
+                                          <option value="{{p.productname}} {{p.id}}">
+                                       {% endfor %}
+                                        </datalist>
+                                         
+                                   
+                              </div>
+                              <div class="row">
+                                  <div class="col-md-6 mb-4">
+                                    <label class="form-label">Expiry</label>
+                                    <div><span style="color: red ;" id="error4" ></span></div>
+                                    <input type="date" placeholder="Type here" onchange="date()" id="expiry"  name="expiry" class="form-control">
+                                  </div>
+
+                                  <!-- <div class="col-md-6">
+                                    <label class="form-label">Minimum purchace Amount</label>
+                                    <input type="text" placeholder="Type here" name="min_amount" class="form-control">
+                                  </div>  -->
+                              </div>
+
+                              <div class="d-grid">
+                                   <button style="width: fit-content;" x id="button" onclick="offer()" class="btn btn-primary">Create offer</button>
+                              </div>
+                         </form>
+                    </div>
+                    <div class="col-md-6">
+
+                         <table class="table table-hover">
+                              <thead>
+                             
+                                   <tr>
+                                        <th>Product name</th>
+                                        <th>Offer name</th>
+                                       
+                                        <th>Dicount</th>
+                                        <th class="text-end">Action</th>
+                                   </tr>
+                              </thead>
+                              <tbody>
+                                   {% for k in offer %}
+                                   <tr>
+                                        
+                                        <td>{{k.product.productname}}</td>
+                                        <td>{{k.offer_name}}</td>
+                                        <!-- <td>{{c.expiry_date}}</td> -->
+                                        <td>{{k.discount_value}}</td>
+                                        <td class="text-end">
+                                             <div class="dropdown">
+                                                  <a href="#" data-bs-toggle="dropdown" class="btn btn-light"> <i
+                                                            class="material-icons md-more_horiz"></i> </a>
+                                                  <div class="dropdown-menu">
+                                                       <a class="dropdown-item" href="">Edit
+                                                            info</a>
+                                                       <a class="dropdown-item text-danger"
+                                                            onclick="dltee('{{k.id}}')"
+                                                            >Delete</a>
+                                                  </div>
+
+                                             </div>
+                                             <!-- dropdown //end -->
+                                        </td>
+                                        
+                                   </tr>
+                                  {% endfor %}
+                                  
+                              </tbody>
+                         </table>
+
+                    </div> <!-- .col// -->
+               </div> <!-- .row // -->
+          </div> <!-- card body .// -->
+     </div> <!-- card .// -->
+</section> <!-- content-main end// -->
+
+<script>
+
+
+     function offer(){
+          let offerName = document.getElementById('offerName').value 
+          let value = document.getElementById('offervalue').value 
+          let prdName = document.getElementById('prdName').value 
+          let expiry = document.getElementById('expiry').value 
+          
+          if(date() && prdname() && valee() && nme()){
+          var data = { 'offer_name': offerName, 'offer_value' : value,'product_name': prdName,'expiry':expiry, "csrf_token": '{{csrf_token}}' }
+          $.ajax({
+               url: "{% url 'product_offer'  %}",
+                method: "POST",
+                data: data,
+                success: function (resp) {
+                    window.location.href = "product_offer";
+                    $('#msg').html(data).fadeIn('slow');
+                    $('#msg').html("Offer created successfully").fadeIn('slow') //also show a success message 
+                    $('#msg').delay(50000).fadeOut('slow');
+                    
+                }
+          })
+          }else{
+               date()  
+               prdname()
+               valee()
+               nme()
+          }
+     }
+
+
+     document.getElementById("button").addEventListener("click", function(event){
+          event.preventDefault()
+        });
+
+        document.getElementById("msg").style.display = 'block';
+        // hide error message after 3 sec 
+        setTimeout(function() {
+            document.getElementById("msg").style.display = 'none';
+        }, 3000); 
+     
+</script>
+
+
+<script>
+
+     document.getElementById('offervalue').addEventListener('keypress',checking)
+
+     function checking(event){
+          console.log(event)
+          var code = event.which || event.keycode 
+          let val = document.getElementById('offervalue').value
+          if ((code >= 48 && code <= 57)){
+               console.log("true")
+               return true
+
+          }else{
+               console.log("false")
+               event.preventDefault()
+               return false
+
+               
+          }
+     }
+ 
+     function nme(){
+          let val = document.getElementById('offerName').value
+          if (val == 0){
+               document.getElementById('error1').innerText = "please fiil the field";
+               return false
+          } else{
+               document.getElementById('error1').innerText = "" 
+               return true
+          }
+     }
+
+     function valee(){
+          let val = document.getElementById('offervalue').value
+          if (val == 0){
+               document.getElementById('error2').innerText = "please fiil the field";
+               return false
+          } else if(val > 100){
+               document.getElementById('error2').innerText = "please select below 100" 
+               return false
+          }else{
+               document.getElementById('error2').innerText = "" 
+               return true
+          }
+     }
+
+     function prdname(){
+          let val = document.getElementById('prdName').value
+          if (val == 0){
+               document.getElementById('error3').innerText = "please fiil the field";
+               return false
+          } else if(val > 100){
+               document.getElementById('error3').innerText = "please select below 100" 
+               return false
+          }else{
+               document.getElementById('error3').innerText = "" 
+               return true
+          }
+     }
+
+     function date(){
+          let val = document.getElementById('expiry').value
+          if (val == 0){
+               document.getElementById('error4').innerText = "please select date";
+               return false
+          }else{
+               document.getElementById('error4').innerText = "" 
+               return true
+          }
+     }
+
+  
+
+</script>
+
+<script>
+     function dltee(id){
+
+          swal({
+               title: "Are you sure?",
+               text: "",
+               icon: "warning",
+               buttons: true,
+               dangerMode: true,
+             })
+             .then((willDelete) => {
+               if (willDelete) {
+                    var data = { "id":id ,"csrf_token": '{{csrf_token}}' }
+               $.ajax({
+                    url: "{% url 'prd_offer_dlt'  %}",
+                    method: "POST",
+                    data: data,
+                    success: function (resp) {
+                         window.location.href = "product_offer";
+                         swal("Product offer deleted!!", {
+                              icon: "success",
+                            });/
+                    }
+               })
+
+               } else {
+                 swal("Your imaginary file is safe!");
+               }
+             });
+          
+
+     }
+    
+</script>
+
+
+
+
+{% endblock %}

@@ -2,185 +2,190 @@
 {% load static %}
 
 {% block contents %}
-
-    <!-- Cart Area Start -->
-    <div class="cart-main-area pt-100px pb-100px">
+<div id="dlweee">
+        {% if CART_ITEMS == 0 %}
+        <div class="row" style="margin-top: 5em; margin-bottom: 5em;">
         <div class="container">
-            <h3 class="cart-page-title">Your cart items</h3>
-            <div class="row">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-12">
-                    <form action="#">
-                        <div class="table-content table-responsive cart-table-content">
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th>Image</th>
-                                        <th>Product Name</th>
-                                        <th>Unit Price</th>
-                                        <th>stock</th>
-                                        <th>Qty</th>
-                                        <th>Sub total</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                {% if request.user.is_authenticated %}
-                                 {% for product in products %}
-                                    <tr>
-                                        <td class="product-thumbnail">
-                                            <a href="#"><img class="img-responsive ml-15px"
-                                                    src="{{product.product_id.image1.url}}" alt="" /></a>
-                                        </td>
-                                        <td class="product-name"><a href="#">{{product.product_id.productname}} </a></td>
-                                        <td class="product-price-cart"><span class="amount">{{product.product_id.price}}</span></td>
-                                        {% if product.product_id.amount_in_stock < 5 %}
-                                        <td class="product-name" ><a  href="#">{{product.product_id.amount_in_stock}} <br><span style="color: red; font-size: small;"> <small><p>Hurry!! <br> only few items left</p> </small> </span> </a></td>
-                                       
+        <h1 class="text-center" style=" color: red;">Your Cart is empty!! <br> Continue Shopping</h1>
+        </div>
+        </div>
+        {% else %}
+
+        <!-- Cart Area Start -->
+        <div  class="cart-main-area pt-100px pb-100px">
+            <div class="container">
+                <h3 class="cart-page-title">Your cart items</h3>
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                        <form action="#">
+                            <div class="table-content table-responsive cart-table-content">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Image</th>
+                                            <th>Product Name</th>
+                                            <th>Unit Price</th>
+                                            <th>stock</th>
+                                            <th>Qty</th>
+                                            <th>Sub total</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% if request.user.is_authenticated %}
+                                        {% for product in products %}
+                                        <tr>
+                                            <td class="product-thumbnail">
+                                                <a href="#"><img class="img-responsive ml-15px"
+                                                        src="{{product.product_id.image1.url}}" alt="" /></a>
+                                            </td>
+                                            <td class="product-name"><a href="#">{{product.product_id.productname}} </a></td>
+                                            {% if product.product_id.discount_price == None %}
+                                            <td class="product-price-cart"><span class="amount">{{product.product_id.price}}</span></td>      
+                                            {% else %}
+                                            <td class="product-price-cart"><span class="amount">{{product.product_id.discount_price}}</span></td>    
+                                            {% endif %}
+                                            {% if product.product_id.amount_in_stock < 5 %} <td class="product-name"><a
+                                                    href="#">{{product.product_id.amount_in_stock}} <br><span
+                                                        style="color: red; font-size: small;"> <small>
+                                                            <p>Hurry!! <br> only few items left</p>
+                                                        </small> </span> </a></td>
+
+                                                {% else %}
+                                                <!-- {% if product.product_id.amount_in_stock == 0 %}
+                                                        <td class="product-name" ><a  href="#">{{product.product_id.amount_in_stock}} <br><span style="color: red; font-size: small;"> <small><p>Out of stock</p> </small> </span> </a></td>
+                                                    {% endif %} -->
+                                                <td class="product-name"><a style="color:rgb(33, 230, 33);"
+                                                        href="#">{{product.product_id.amount_in_stock}} </a></td>
+                                                {% endif %}
+                                                <td class="product-quantity">
+                                                    <div class="cart-plus-minus">
+
+                                                        <div class="dec qtybutton minbtn"
+                                                            onclick="prdDecrement('{{product.product_id.id}}')">-</div>
+
+                                                        <input id='box{{product.product_id.id}}' class="cart-plus-minus-box"
+                                                            type="text" name="qtybutton" value="{{product.product_stock}}" />
+
+
+                                                        <div class="inc qtybutton plubtn"
+                                                            onclick="prdIncrement('{{product.product_id.id}}')">+</div>
+
+                                                        <!-- <input type="hidden" class="productid" name="prdid" value="{{product.product_id.id}}"> -->
+                                                    </div>
+
+                                                </td>
+
+                                                <td id='subtotal{{product.product_id.id}}' class="product-subtotal">
+                                                    {{product.sub_total}}</td>
+                                                <td class="product-remove">
+                                                    {% comment %} <a href=""><i class="fa fa-pencil"></i></a> {% endcomment %}
+                                                    <a onclick = "dlt('{{product.id}}')" ><i
+                                                            class="fa fa-times"></i></a>
+                                                </td>
+                                        </tr>
+
+                                        {% endfor %}
                                         {% else %}
-                                             <!-- {% if product.product_id.amount_in_stock == 0 %}
-                                                 <td class="product-name" ><a  href="#">{{product.product_id.amount_in_stock}} <br><span style="color: red; font-size: small;"> <small><p>Out of stock</p> </small> </span> </a></td>
-                                             {% endif %} -->
-                                        <td class="product-name" ><a style="color:rgb(33, 230, 33);"  href="#">{{product.product_id.amount_in_stock}} </a></td>
+                                        <tr>
+                                            <td class="product-thumbnail">
+                                                <a href="#"><img class="img-responsive ml-15px"  alt="" /></a>
+                                            </td>
+                                            <td class="product-name"><a href="#"></a></td>
+                                            <td class="product-price-cart"><span class="amount"> </span></td>
+                                            <td class="product-quantity">
+                                                <div class="cart-plus-minus">
+                                                    <input class="cart-plus-minus-box" type="text" name="qtybutton" value="1" />
+                                                </div>
+                                            </td>
+                                            <td class="product-subtotal"></td>
+                                            <td class="product-remove">
+                                                {% comment %} <a href=""><i class="fa fa-pencil"></i></a> {% endcomment %}
+                                                <a href=""><i class="fa fa-times"></i></a>
+                                            </td>
+                                        </tr>
                                         {% endif %}
-                                        <td class="product-quantity">
-                                            <div class="cart-plus-minus">
-                                               
-                                                <div class="dec qtybutton minbtn"   onclick="prdDecrement('{{product.product_id.id}}')">-</div>
-                                
-                                                <input id = 'box{{product.product_id.id}}' class="cart-plus-minus-box"  type="text" name="qtybutton" value="{{product.product_stock}}" />
-                                                    
-                                                    
-                                                <div class="inc qtybutton plubtn"   onclick="prdIncrement('{{product.product_id.id}}')">+</div>
 
-                                                <!-- <input type="hidden" class="productid" name="prdid" value="{{product.product_id.id}}"> -->
-                                            </div>
-                                            
-                                        </td>
+
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="cart-shiping-update-wrapper">
+                                        <div class="cart-shiping-update">
+                                            <a href="{% url 'home' %}">Continue Shopping</a>
+                                        </div>
                                         
-                                        <td id = 'subtotal{{product.product_id.id}}' class="product-subtotal">{{product.sub_total}}</td>
-                                        <td class="product-remove">
-                                            {% comment %} <a href=""><i class="fa fa-pencil"></i></a> {% endcomment %}
-                                            <a href="{% url 'cartitem_dlt' product.id %}"><i class="fa fa-times"></i></a>
-                                        </td>
-                                    </tr>
-
-                                {% endfor %} 
-                                {% else %}  
-                                 <tr>
-                                        <td class="product-thumbnail">
-                                            <a href="#"><img class="img-responsive ml-15px"
-                                                    src="" alt="" /></a>
-                                        </td>
-                                        <td class="product-name"><a href="#"></a></td>
-                                        <td class="product-price-cart"><span class="amount"> </span></td>
-                                        <td class="product-quantity">
-                                            <div class="cart-plus-minus">
-                                                <input class="cart-plus-minus-box" type="text" name="qtybutton"
-                                                    value="1" />
-                                            </div>
-                                        </td>
-                                        <td class="product-subtotal"></td>
-                                        <td class="product-remove">
-                                            {% comment %} <a href=""><i class="fa fa-pencil"></i></a> {% endcomment %}
-                                            <a href=""><i class="fa fa-times"></i></a>
-                                        </td>
-                                    </tr>
-                                    {% endif %} 
-                                  
-                                  
-                                </tbody>
-                            </table>
-                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
                         <div class="row">
-                            <div class="col-lg-12">
-                                <div class="cart-shiping-update-wrapper">
-                                    <div class="cart-shiping-update">
-                                        <a href="#">Continue Shopping</a>
+                            <div class="col-lg-4 col-md-6 mb-lm-30px">
+                                <div class="cart-tax">
+                                    <div class="title-wrap">
+                                        <h4 class="cart-bottom-title section-bg-gray">Available coupons</h4>
                                     </div>
-                                    <div class="cart-clear">
-                                        <button>Update Shopping Cart</button>
-                                        <a href="#">Clear Shopping Cart</a>
+                                    <div class="tax-wrapper">
+                                        
+                                        <div class="tax-select-wrapper">
+                                        {% for i in coupons %}
+                                            <div class="tax-select">
+                                                <label>
+                                                    * {{i.coupon_code}}
+                                                </label>
+                                            
+                                            </div>
+                                        {% endfor %}
+                                        </div>
                                     </div>
-                                </div>
+                                </div> -
                             </div>
-                        </div>
-                    </form>
-                    <div class="row">
-                        <div class="col-lg-4 col-md-6 mb-lm-30px">
-                            <div class="cart-tax">
-                                <div class="title-wrap">
-                                    <h4 class="cart-bottom-title section-bg-gray">Estimate Shipping And Tax</h4>
-                                </div>
-                                <div class="tax-wrapper">
-                                    <p>Enter your destination to get a shipping estimate.</p>
-                                    <div class="tax-select-wrapper">
-                                        <div class="tax-select">
-                                            <label>
-                                                * Country
-                                            </label>
-                                            <select class="email s-email s-wid">
-                                                <option>Bangladesh</option>
-                                                <option>Albania</option>
-                                                <option>Åland Islands</option>
-                                                <option>Afghanistan</option>
-                                                <option>Belgium</option>
-                                            </select>
-                                        </div>
-                                        <div class="tax-select">
-                                            <label>
-                                                * Region / State
-                                            </label>
-                                            <select class="email s-email s-wid">
-                                                <option>Bangladesh</option>
-                                                <option>Albania</option>
-                                                <option>Åland Islands</option>
-                                                <option>Afghanistan</option>
-                                                <option>Belgium</option>
-                                            </select>
-                                        </div>
-                                        <div class="tax-select mb-25px">
-                                            <label>
-                                                * Zip/Postal Code
-                                            </label>
-                                            <input type="text" />
-                                        </div>
-                                        <button class="cart-btn-2" type="submit">Get A Quote</button>
+                            <div class="col-lg-4 col-md-6 mb-lm-30px">
+                                <div class="discount-code-wrapper">
+                                    <div class="title-wrap">
+                                        <h4 class="cart-bottom-title section-bg-gray">Use Coupon Code</h4>
+                                    </div>
+                                    <div class="discount-code">
+                                        <p>Enter your coupon code if you have one.</p>
+
+
+                                        <input type="text" style="margin-bottom: 5px;" id="coupon" required="" name="name" />
+                                        <span id="invalid" style="color: red;"></span>
+                                        <button class="cart-btn-2" onclick="coupon()">Apply Coupon</button>
+
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-md-6 mb-lm-30px">
-                            <div class="discount-code-wrapper">
-                                <div class="title-wrap">
-                                    <h4 class="cart-bottom-title section-bg-gray">Use Coupon Code</h4>
+                            </div> 
+                            <div class="col-lg-4 col-md-12 mt-md-30px">
+
+                                <div class="grand-totall">
+                                    <div class="title-wrap">
+                                        <h4 class="cart-bottom-title section-bg-gary-cart">Cart Total</h4>
+                                    </div>
+                                    <h5>Total amount <span id="strike" style="color: red;" class="total">{{grandtotal}}</span>
+                                    </h5>
+                                    <span id="alert" style="color: green;"></span>
+                                    <h5 hidden id="h">Coupon discount <span hidden id="off" style="color: red;"
+                                            class="tax"><small>{{tax}}</small></span></h5>
+                                    <h5 hidden id="f">Nett payabale<strong><span id="grandTotal" style="color: rgb(7, 122, 7);"
+                                                class="total"></span></strong></h5>
+                                    {% comment %} <div class="total-shipping">
+                                        <h5>Total shipping</h5>
+                                        <ul>
+                                            <li><input type="checkbox" /> Standard <span>$20.00</span></li>
+                                            <li><input type="checkbox" /> Express <span>$30.00</span></li>
+                                        </ul>
+                                    </div> {% endcomment %}
+
+                                    <h4 class="grand-totall-title"> <span></span></h4>
+                                    {% if user.is_authenticated %}
+                                    <a  style="cursor: pointer;" onclick=orderProceed("{% url 'checkout' user.id %}")>Proceed to Checkout</a>
+                                    {% else %}
+                                    <a style="cursor: pointer;" href="{% url 'login' %}">Proceed to Checkout</a>
+                                    {% endif %}
                                 </div>
-                                <div class="discount-code">
-                                    <p>Enter your coupon code if you have one.</p>
-                                    <form>
-                                        <input type="text" required="" name="name" />
-                                        <button class="cart-btn-2" type="submit">Apply Coupon</button>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-md-12 mt-md-30px">
-                            <div class="grand-totall">
-                                <div class="title-wrap">
-                                    <h4 class="cart-bottom-title section-bg-gary-cart">Cart Total</h4>
-                                </div>
-                                <h5 >Total amount <span style="color: red;" class="total">{{grandtotal}}</span></h5>
-                                <h5 >Tax amount <span style="color: red;" class="tax"><small>{{tax}}</small></span></h5>
-                                {% comment %} <div class="total-shipping">
-                                    <h5>Total shipping</h5>
-                                    <ul>
-                                        <li><input type="checkbox" /> Standard <span>$20.00</span></li>
-                                        <li><input type="checkbox" /> Express <span>$30.00</span></li>
-                                    </ul>
-                                </div> {% endcomment %}
-                               
-                                <h4 class="grand-totall-title"> <span></span></h4>
-                              
-                                <a href="{% url 'checkout' user.id %}">Proceed to Checkout</a>
                             </div>
                         </div>
                     </div>
@@ -188,90 +193,105 @@
             </div>
         </div>
     </div>
-    <!-- Cart Area End -->
+<!-- Cart Area End -->
 
-    <script>
-        //increment fuction
-            function prdDecrement(id) {
-                let quantity = document.getElementById('box'+id).value
-                //console.log( document.getElementById("box"+id) )
-                console.log(quantity)
-                if (quantity == 1){
-                    console.log("quantity", quantity)
-                } else {
-                var data = {'id' : id, "csrf_token": '{{csrf_token}}'}
-                $.ajax({
-                    url : "{% url 'product_decrement'  %}",
-                    method: "POST",
-                    data : data,
-                    success : function(resp){
-                        console.log("data",resp)
-                        var productStock = resp.product_stock
-                        var subTotal = resp.sub_total
-                        var grand_Ttoal = resp.grandtotal 
-                        var tax = resp.tax 
-                        console.log(productStock,'---------')
-                        console.log(subTotal,'++++++')
-                        console.log(grand_Ttoal,'++++++')
-                        console.log(tax,'tax')
-    
-                        document.getElementById("box"+id).value = productStock;
-                        document.getElementById("subtotal"+id).innerHTML = subTotal;
-                        document.getElementsByClassName("total")[0].innerHTML = grand_Ttoal;
-                        document.getElementsByClassName("tax")[0].innerHTML = tax;
-                        if (productStock == 1) {
-                            document.getElementById("mySelect").style.pointerEvents = 'none';
-                        
+
+<!-- cartitem delete -->
+
+
+<!-- product increment and decrement -->
+<script>
+
+    let userId = {{ user.id }};
+    function orderProceed(url) {
+        console.log(url)
+        console.log(couponCode)
+        if (couponCode) {
+            window.location.href = url + "?couponde=" + couponCode;
+        }
+        else {
+            window.location.href = url;
+        }
+        console.log("order procceded ", userId)
+    }
+    //increment fuction
+    function prdDecrement(id) {
+        let quantity = document.getElementById('box' + id).value
+        //console.log( document.getElementById("box"+id) )
+        console.log(quantity)
+        if (quantity == 1) {
+            console.log("quantity", quantity)
+        } else {
+            var data = { 'id': id, "csrf_token": '{{csrf_token}}' }
+            $.ajax({
+                url: "{% url 'product_decrement'  %}",
+                method: "POST",
+                data: data,
+                success: function (resp) {
+                    console.log("data", resp)
+                    var productStock = resp.product_stock
+                    var subTotal = resp.sub_total
+                    var grand_Ttoal = resp.grandtotal
+                    var tax = resp.tax
+                    console.log(productStock, '---------')
+                    console.log(subTotal, '++++++')
+                    console.log(grand_Ttoal, '++++++')
+                    console.log(tax, 'tax')
+
+                    document.getElementById("box" + id).value = productStock;
+                    document.getElementById("subtotal" + id).innerHTML = subTotal;
+                    document.getElementsByClassName("total")[0].innerHTML = grand_Ttoal;
+                    document.getElementsByClassName("tax")[0].innerHTML = tax;
+                    if (productStock == 1) {
+                        document.getElementById("mySelect").style.pointerEvents = 'none';
+
                         //document.getElementsByClassName("cart-page-title")[0].innerHTML = "dsafsdf";
-    
+
                         // for (let dt of iterator.values()) {
                         //     
                         //     console.log("productStock", productStock);
                         //     console.log("subTotal", subTotal);
                         // } 
-                        }
-    
-                        
                     }
-                })
-            }
-        
+
+
+                }
+            })
         }
+
+    }
 
 
     //decrement function
-        function prdIncrement(id) {
-            console.log('prdIncrement')
-            var data = {'id' : id, "csrf_token": '{{csrf_token}}'}
-            $.ajax({
-                url : "{% url 'product_increment'  %}",
-                method: "POST",
-                data : data,
-                success : function(resp){
-                    console.log("data",resp)
-                    var productStock = resp.product_stock
-                    var subTotal = resp.sub_total
-                    var grand_Ttoal = resp.grandtotal 
-                    var tax = resp.tax 
-                    console.log(productStock,'---------')
-                    console.log(subTotal,'++++++')
-                    console.log(grand_Ttoal,'++++++')
-                    console.log(tax,'tax')
+    function prdIncrement(id) {
+        console.log('prdIncrement')
+        var data = { 'id': id, "csrf_token": '{{csrf_token}}' }
+        $.ajax({
+            url: "{% url 'product_increment'  %}",
+            method: "POST",
+            data: data,
+            success: function (resp) {
+                console.log("data", resp)
+                var productStock = resp.product_stock
+                var subTotal = resp.sub_total
+                var grand_Ttoal = resp.grandtotal
+                var tax = resp.tax
+                console.log(productStock, '---------')
+                console.log(subTotal, '++++++')
+                console.log(grand_Ttoal, '++++++')
+                console.log(tax, 'tax')
 
-                    document.getElementById("box"+id).value = productStock;
-                    document.getElementById("subtotal"+id).innerHTML = subTotal;
-                    document.getElementsByClassName("total")[0].innerHTML = grand_Ttoal;
-                    document.getElementsByClassName("tax")[0].innerHTML = tax;
-                }
-            })
-            console.log(id);
-            
-        }
+                document.getElementById("box" + id).value = productStock;
+                document.getElementById("subtotal" + id).innerHTML = subTotal;
+                document.getElementsByClassName("total")[0].innerHTML = grand_Ttoal;
+                document.getElementsByClassName("tax")[0].innerHTML = tax;
+            }
+        })
+        console.log(id);
 
-    </script>
+    }
+
+</script>
+{% endif %}
 
 {% endblock %}
-
-
-
-   

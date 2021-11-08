@@ -2,9 +2,9 @@
 {% load static %}
 
 {% block contents %}
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
-<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 
 <!-- Hero/Intro Slider Start -->
@@ -21,7 +21,7 @@
                                 <span class="category">Offer 2021</span>
                                 <h2 class="title-1">Sale Up To </h2>
                                 <h2 class="title-2"><span>50%</span> Off</h2>
-                                <a href="shop-left-sidebar.html" class="btn btn-lg btn-primary btn-hover-dark"> Shop Now
+                                <a href="#shopArea" class="btn btn-lg btn-primary btn-hover-dark"> Shop Now
                                     <i class="fa fa-shopping-basket ml-15px" aria-hidden="true"></i></a>
                             </div>
                         </div>
@@ -31,16 +31,7 @@
                                 <div class="hero-slide-image">
                                     <img src="{% static 'images/slider-image/slider-1.png' %}" alt="" />
                                 </div>
-                                <div class="display-wrapper">
-                                    <div class="content-side">
-                                        <h4 class="title">Full Dress</h4>
-                                        <span class="price">$21.00</span>
-                                        <a href="shop-left-sidebar.html" class="shop-link">Shop Now</a>
-                                    </div>
-                                    <div class="image-side">
-                                        <img src="{% static 'images/slider-image/display-image.png' %}" alt="">
-                                    </div>
-                                </div>
+                               
                             </div>
                         </div>
                     </div>
@@ -55,7 +46,7 @@
                                 <span class="category">Offer 2021</span>
                                 <h2 class="title-1">Sale Up To </h2>
                                 <h2 class="title-2"><span>50%</span> Off</h2>
-                                <a href="shop-left-sidebar.html" class="btn btn-lg btn-primary btn-hover-dark"> Shop Now
+                                <a href="#shopArea" class="btn btn-lg btn-primary btn-hover-dark"> Shop Now
                                     <i class="fa fa-shopping-basket ml-15px" aria-hidden="true"></i></a>
                             </div>
                         </div>
@@ -65,16 +56,7 @@
                                 <div class="hero-slide-image">
                                     <img src="{% static 'images/slider-image/slider-2.png' %}" alt="" />
                                 </div>
-                                <div class="display-wrapper">
-                                    <div class="content-side">
-                                        <h4 class="title">Full Dress</h4>
-                                        <span class="price">$21.00</span>
-                                        <a href="shop-left-sidebar.html" class="shop-link">Shop Now</a>
-                                    </div>
-                                    <div class="image-side">
-                                        <img src="{% static 'images/slider-image/display-image.png' %}" alt="">
-                                    </div>
-                                </div>
+                               
                             </div>
                         </div>
                     </div>
@@ -91,6 +73,7 @@
     </div>
 </div>
 
+
 <!-- Hero/Intro Slider End -->
 
 <!-- Banner Area Start -->
@@ -98,7 +81,8 @@
     <div class="container">
         <div class="row">
             <div class="single-col">
-                <a href="shop-left-sidebar.html" class="single-banner">
+                
+                <a  class="single-banner">
                     <img src="{% static 'images/banner/1.jpg' %}" alt="">
                     <div class="item-disc">
                         <span class="item-title">Women</span>
@@ -111,15 +95,15 @@
                     <img src="{% static 'images/banner/2.jpg' %}" alt="">
                     <div class="item-disc">
                         <h2 class="title">#bestsellers</h2>
-                        <a href="shop-left-sidebar.html" class="shop-link">Shop Now</a>
+                       
                     </div>
                 </div>
             </div>
             <div class="single-col">
-                <a href="shop-left-sidebar.html" class="single-banner">
+                <a  class="single-banner">
                     <img src="{% static 'images/banner/3.jpg' %}" alt="">
                     <div class="item-disc">
-                        <span class="item-title">Nomen</span>
+                        <span class="item-title">Men</span>
                         <span class="item-amount">16 items</span>
                     </div>
                 </a>
@@ -128,6 +112,7 @@
     </div>
 </div>
 <!-- Banner Area End -->
+
 
 <!-- Feature Area Srart -->
 <div class="feature-area pb-100px">
@@ -175,33 +160,23 @@
 </div>
 <!-- Feature Area End -->
 
+
 <!-- Product Area Start -->
 <div class="product-area">
-    <div class="container">
+    
+    
+    <div id="shopArea" class="container">
         <!-- Section Title & Tab Start -->
         <div class="row">
             <!-- Section Title Start -->
             <div class="col-lg col-md col-12">
                 <div class="section-title mb-0">
-                    <h2 class="title">#products</h2>
+                    <h2 style="font-weight: 800; margin-bottom: 11px; font-family: sans-serif; color: red;" class="text-center ">products</h2>
                 </div>
             </div>
             <!-- Section Title End -->
 
-            <!-- Tab Start -->
-            <div class="col-lg-auto col-md-auto col-12">
-                <ul class="product-tab-nav nav">
-                    <li class="nav-item"><a class="nav-link active" data-bs-toggle="tab" href="#tab-product-all">All</a>
-                    </li>
-                    <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#tab-product-new">New</a>
-                    </li>
-                    <li class="nav-item"><a class="nav-link" data-bs-toggle="tab"
-                            href="#tab-product-bestsellers">Bestsellers</a></li>
-                    <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#tab-product-itemssale">Items
-                            Sale</a></li>
-                </ul>
-            </div>
-            <!-- Tab End -->
+
         </div>
         <!-- Section Title & Tab End -->
 
@@ -210,10 +185,10 @@
                 <div class="tab-content top-borber">
                     <!-- 1st tab start -->
 
-                    <div class="tab-pane fade show active" id="tab-product-all" ">
+                    <div class="tab-pane fade show active" id="tab-product-all">
                         <div class=" row">
                         {% for product in products %}
-                        <div class="col-lg-4 col-xl-3 col-md-6 col-sm-6 col-xs-6 mb-30px" data-aos="fade-up"
+                        <div class="col-lg-4 col-xl-3 col-md-6 col-sm-6 col-xs-6 mb-30px " data-aos="fade-up"
                             data-aos-delay="200">
                             <!-- Single Prodect -->
 
@@ -221,45 +196,45 @@
 
                                 <div class="thumb">
                                     <a href="user_product_view/{{product.id}}" class="image">
-                                        <img style="width: 13em; height: 15em;" src="{{product.image3.url}}"
+                                        <img  src="{{product.image3.url}}"
                                             alt="Product" />
+                                            <img class="hover-image"
+                                             src="{{product.image3.url}}" alt="Product" />
 
                                     </a>
                                     <span class="badges">
                                         <span class="new">New</span>
                                     </span>
                                     <div class="actions">
-                                        <a href="wishlist.html" class="action wishlist" title="Wishlist"><i
+                                        <a onclick="whishList('{{product.id}}')"  class="action wishlist" title="Wishlist"><i
                                                 class="pe-7s-like"></i></a>
-                                        <a href="#" class="action quickview" data-link-action="quickview"
-                                            title="Quick view" data-bs-toggle="modal" data-bs-target="#exampleModal"><i
-                                                class="pe-7s-search"></i></a>
-                                        <a href="compare.html" class="action compare" title="Compare"><i
-                                                class="pe-7s-refresh-2"></i></a>
+                                      
                                     </div>
+                                    
                                     {% if product.amount_in_stock <= 0 %}
-                                    <h4 style="color: red";>Out of Stock </h4>
+                                    <h4 class ="text-center" style="color: red;" >Out of Stock </h4>
                                     {% else %}
                                   <button title="Add To Cart"  onclick="cart('{{product.id}}')" class=" add-to-cart">Add
-                                        To Cart</button>
-                                    {% endif %}
+                                        To Cart</button>   
                                 </div>
                                 <div class="content">
-                                    <span class="ratings">
-                                        <span class="rating-wrap">
-                                            <span class="star" style="width: 100%"></span>
-                                        </span>
-                                        <span class="rating-num">( 5 Review )</span>
-                                    </span>
                                     <h5 class="title"><a href="#">{{product.productname}}
                                         </a>
                                     </h5>
+                                    {% if product.discount_price == None %}
                                     <span class="price">
-                                        <span class="new">$<s>{{product.price}}</s></span>
+                                        <span style="color: green;" class="new">Rs: {{product.price}}</span>
                                     </span>
-                                    <span class="price">
-                                        <span class="new">offer ${{product.discount_price}}</span>
+                                    {% else %}
+                                    <span style="margin-bottom: 3px;" class="price">
+                                       <p style="color: green; margin-bottom: 2px;" class="new"></p> 
+                                        <span style="color: green;" class="new">Rs: {{product.discount_price}}  ({{product.offer_name}})</span>
                                     </span>
+                                    <span  class="price">
+                                        <span style="color: red;" class="new ">Rs: <s >{{product.price}}</s></span>
+                                    </span>
+                                    {% endif %}
+                                    {% endif %}
                                 </div>
 
                             </div>
@@ -276,11 +251,25 @@
 
         </div>
     </div>
+    <div class="pagination">
+        <span class="step-links">
+            {% if products.has_previous %}
+                <a href="?page=1">&laquo; first</a>
+                <a href="?page={{ products.previous_page_number }}">previous</a>
+            {% endif %}
+    
+            <span class="current">
+                Page {{ products.number }} of {{ products.paginator.num_pages}}.
+            </span>
+    
+            {% if page_obj.has_next %}
+                <a href="?page={{ products.next_page_number }}">next</a>
+                <a href="?page={{ products.paginator.num_pages }}">last &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
 
 </div>
-
-
-
 
 
 <!-- Deal Area Start -->
@@ -296,7 +285,7 @@
                         <div class="deal-timing">
                             <div data-countdown="2021/12/31"></div>
                         </div>
-                        <a href="single-product-variable.html" class="btn btn-lg btn-primary btn-hover-dark m-auto">
+                        <a href="" class="btn btn-lg btn-primary btn-hover-dark m-auto">
                             Shop
                             Now <i class="fa fa-shopping-basket ml-15px" aria-hidden="true"></i></a>
                     </div>
@@ -318,57 +307,25 @@
         <div class="brand-slider swiper-container">
             <div class="swiper-wrapper">
                 <div class="swiper-slide brand-slider-item text-center">
-                    <a href="#"><img class=" img-fluid" src="{% static 'images/brand-logo/1.png' %}" alt="" /></a>
+                    <a ><img class=" img-fluid" src="{% static 'images/brand-logo/1.png' %}" alt="" /></a>
                 </div>
                 <div class="swiper-slide brand-slider-item text-center">
-                    <a href="#"><img class=" img-fluid" src="{% static 'images/brand-logo/2.png' %}" alt="" /></a>
+                    <a ><img class=" img-fluid" src="{% static 'images/brand-logo/2.png' %}" alt="" /></a>
                 </div>
                 <div class="swiper-slide brand-slider-item text-center">
-                    <a href="#"><img class=" img-fluid" src="{% static 'images/brand-logo/3.png' %}" alt="" /></a>
+                    <a ><img class=" img-fluid" src="{% static 'images/brand-logo/3.png' %}" alt="" /></a>
                 </div>
                 <div class="swiper-slide brand-slider-item text-center">
-                    <a href="#"><img class=" img-fluid" src="{% static 'images/brand-logo/4.png' %}" alt="" /></a>
+                    <a ><img class=" img-fluid" src="{% static 'images/brand-logo/4.png' %}" alt="" /></a>
                 </div>
                 <div class="swiper-slide brand-slider-item text-center">
-                    <a href="#"><img class=" img-fluid" src="{% static 'images/brand-logo/5.png' %}" alt="" /></a>
+                    <a ><img class=" img-fluid" src="{% static 'images/brand-logo/5.png' %}" alt="" /></a>
                 </div>
             </div>
         </div>
     </div>
 </div>
 <!-- Brand area end -->
-
-
-<script>
-    function cart(id){
-        var data = {'id' : id, "csrf_token": '{{csrf_token}}'}
-        $.ajax({
-            url : "{% url 'add_cart'  %}",
-            method: "POST",
-            data : data,
-            success : function(data){
-                swal({
-                    position :'top-end',
-                    icon: "success",
-                    text: "Item added to cart!",
-                    timer:1500
-                  });
-                
-                Toastify({
-
-                    text: "This is a toast",
-                    
-                    duration: 3000
-                    
-                    }).showToast();
-            }
-        })
-    } 
-
-        
-
-
-</script>
 
 
 {% endblock %}

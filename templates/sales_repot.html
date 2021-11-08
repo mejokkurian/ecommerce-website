@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block contents %}
+
+ <style>
+	button.dt-button, div.dt-button, a.dt-button, input.dt-button{
+		background-color: #3167eb;
+		border-radius: 0.25rem;
+		transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+		
+}
+ </style>
+
+<section class="content-main">
+
+	<div class="content-header">
+		<h2 class="content-title">Sales report </h2>
+		<div>
+			<form action="{% url 'sales_reprt' %}" method="post" >
+				<label for="for"> from </label>
+			<input  type="date" name="from" id="from">
+			<label for="for"> To </label>
+			<input type="date" name="to" id="to">
+			<button onclick="filter()"  class="btn btn-primary"><a ><i class="material-icons md-plus"></i> filter</a></button>
+			</form>
+		</div>
+	</div>
+
+
+	</header> <!-- card-header end// -->
+	<div class="table-responsive">
+		<table  id="exampleeeee"class="table table-bordered border-primary">
+			<thead  >
+				
+                  <tr >
+
+                    <th  scope="col" >User</th>
+                    <th scope="col">Payment method</th>
+                    <th scope="col">Product</th>
+                    <th scope="col">Stock</th>
+                    <th scope="col">Total</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Date</th>
+                    
+
+                </tr>
+			</thead>
+			<tbody>
+				{% for i in orders_details %}
+				<tr>
+					<td>{{i.username}}</td>
+					<td>{{i.payment_method}}</td>
+					<td>{{i.product}}</td>
+					<td>{{i.product_stock}}</td>
+					<td>{{i.total}}</td>
+					<td>{{i.status}}</td>
+					<td>{{i.date}}</td>
+					
+					
+					
+				</tr>
+			{% endfor %}
+			</tbody>
+		</table>
+	</div> <!-- table-responsive //end -->
+	</div>
+
+	<!-- data table -->
+
+
+
+
+    {% endblock %}
+	<!-- card-bod

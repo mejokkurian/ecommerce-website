@@ -1,0 +1,296 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block contents %}
+{% load humanize %}
+
+
+
+<section class="content-main">
+     <div class="content-header">
+          <h2 class="content-title">Catogory Offer managment</h2>
+     </div>
+     {% if messages %}
+     {% for message in messages %}
+     <div class="row">
+     <div class="col-md-6  alert alert-{{message.tags}} m-1 p text-center" id="msg" role="alert"
+          style="padding: 1px; background-color: rgb(0, 255, 13);">
+          {{ message }}
+          
+     </div>
+     </div>
+     {% endfor %}
+     {% endif %}
+
+     <div class="card">
+          <div class="card-body">
+               <div class="row">
+                    <div class="col-md-6">
+                         <span>
+
+                         </span>
+                         <form >
+                              {% csrf_token %}
+                              <div class="row">
+
+                              <div class="mb-4 col-md-6">
+                                   <label for="sub_cat_name" class="form-label">Offer name</label>
+                                   <div><span  style="color: red; " id="error1"></span></div>
+                                       
+                                   <input type="text" placeholder="Type here" id="offerName" onkeyup="nme()" name="offer_name" class="form-control"
+                                        id="product_name" />
+                              </div>
+                              <div class="mb-4 col-md-6">
+                                   <label for="product_slug" class="form-label">offer value</label>
+                                   <div><span  style="color: red; " id="error2"></span></div>
+                                   <input type="text" placeholder="Type here" id="offervalue" name="offer_value" onkeyup="val()" class="form-control"
+                                        id="value" />
+                              </div>
+                            </div>
+                              
+                              <div class="mb-4">
+                                   
+                                    <label>Choose a Catogory from this list:
+                                        <div><span  style="color: red; " id="error3"></span></div>
+                                        <input list="name" onchange="cat()" id="cat-name" name="product_name" /></label>
+                                        
+                                        <datalist   id="name" >
+                                        {% for p in category %}
+                                         
+                                          <option value="{{p.category_name}}">
+                                       {% endfor %}
+                                        </datalist>
+                                         
+                                   
+                              </div>
+                              <div class="row">
+                                  <div class="col-md-6 mb-4">
+                                    <label class="form-label">Expiry</label>
+                                    <div><span  style="color: red; " id="error4"></span></div>
+                                    <input type="date" placeholder="Type here" id="expiry" onchange="exp()" name="expiry" class="form-control">
+                                  </div>
+
+                                  <!-- <div class="col-md-6">
+                                    <label class="form-label">Minimum purchace Amount</label>
+                                    <input type="text" placeholder="Type here" name="min_amount" class="form-control">
+                                  </div>  -->
+                              </div>
+
+                              <div class="d-grid">
+                                   <button style="width: fit-content;" x id="button" onclick="category()" class="btn btn-primary">Create offer</button>
+                              </div>
+                         </form>
+                    </div>
+                    <div class="col-md-6">
+
+                         <table class="table table-hover">
+                              <thead>
+                             
+                                   <tr>
+                                        <th>Catogory name</th>
+                                        <th>Offer name</th>
+                                       
+                                        <th>Dicount</th>
+                                        <th class="text-end">Action</th>
+                                   </tr>
+                              </thead>
+                              <tbody>
+                                   {% for k in catgry_offer %}
+                                   <tr>
+                                        
+                                        <td>{{k.categoryName}}</td>
+                                        <td>{{k.offerName}}</td>
+                                        <!-- <td>{{c.expiry_date}}</td> -->
+                                        <td>{{k.discountPercentage}}</td>
+                                        <td class="text-end">
+                                             <div class="dropdown">
+                                                  <a href="#" data-bs-toggle="dropdown" class="btn btn-light"> <i
+                                                            class="material-icons md-more_horiz"></i> </a>
+                                                  <div class="dropdown-menu">
+                                                       <a class="dropdown-item" href="">Edit
+                                                            info</a>
+                                                       <a style="cursor: pointer;" class="dropdown-item text-danger"
+                                                            onclick="deleeet('{{k.id}}')"
+                                                            >Delete</a>
+                                                  </div>
+
+                                             </div>
+                                             <!-- dropdown //end -->
+                                        </td>
+                                        
+                                   </tr>
+                                  {% endfor %}
+                                  
+                              </tbody>
+                         </table>
+
+                    </div> <!-- .col// -->
+               </div> <!-- .row // -->
+          </div> <!-- card body .// -->
+     </div> <!-- card .// -->
+</section> <!-- content-main end// -->
+
+
+
+<script>
+
+
+     function category(){
+          if( nme() && val() && cat() &&  exp()){
+          let offerName = document.getElementById('offerName').value 
+          let value = document.getElementById('offervalue').value 
+          let catgryName = document.getElementById('cat-name').value 
+          let expiry = document.getElementById('expiry').value 
+
+         
+          var data = { 'offer_name': offerName, 'offer_value' : value,'catgryName': catgryName,'expiry':expiry, "csrf_token": '{{csrf_token}}' }
+          $.ajax({
+               url: "{% url 'catogory_offer'  %}",
+                method: "POST",
+                data: data,
+                success: function (resp) {
+                    window.location.href = "catogory_offer";   
+                    $('#msg').html(data).fadeIn('slow');
+                    $('#msg').html("Offer created successfully").fadeIn('slow') //also show a success message 
+                    $('#msg').delay(50000).fadeOut('slow');
+                    
+                }
+          })}else{
+               nme() 
+               val()
+               cat()
+               exp()
+          }
+     }
+
+
+     document.getElementById("button").addEventListener("click", function(event){
+          event.preventDefault()
+        });
+
+
+        document.getElementById("msg").style.display = 'block';
+        // hide error message after 3 sec 
+        setTimeout(function() {
+            document.getElementById("msg").style.display = 'none';
+        }, 2000); 
+
+
+
+
+        
+</script>
+
+
+<script>
+
+     function rupee(event){
+          var code = event.which || event.keycode
+          if ((code >= 48 && code <= 57)){
+               console.log("true")
+               return true
+
+          }
+          else{
+               console.log("false")
+               document.getElementById('error2').innerText = "Invalid!!!!!";
+               event.preventDefault()
+               return false
+
+               
+          }
+     }
+
+document.getElementById('offervalue').addEventListener("keypress",rupee)
+
+
+function nme(){
+     let val = document.getElementById('offerName').value
+     if(val == 0){
+          document.getElementById('error1').innerText = "field required";
+          return false
+     }else{
+          document.getElementById('error1').innerText = "";
+          return true
+     }
+}
+
+function val(){
+     let val = document.getElementById('offervalue').value
+     if(val == 0){
+          document.getElementById('error2').innerText = "field required";
+          return false
+     }else if(val.length > 2){
+          document.getElementById('error2').innerText = "invalid value";
+              return false
+     }
+     else{
+          document.getElementById('error2').innerText = "";
+          return true
+     }
+}
+
+function cat(){
+     let val = document.getElementById('cat-name').value
+     if(val == 0){
+          document.getElementById('error3').innerText = "field required";
+          return false
+     }else{
+          document.getElementById('error3').innerText = "";
+          return true
+     }
+}
+
+function exp(){
+     let val = document.getElementById('expiry').value
+     if(val == 0){
+          document.getElementById('error4').innerText = "field required";
+          return false
+     }else{
+          document.getElementById('error4').innerText = "";
+          return true
+     }
+}
+
+</script>
+
+<script>
+     function deleeet(id){
+
+          swal({
+               title: "Are you sure?",
+               text: "",
+               icon: "warning",
+               buttons: true,
+               dangerMode: true,
+             })
+             .then((willDelete) => {
+               if (willDelete) {
+                    var data = {'id': id,  "csrf_token": '{{csrf_token}}'}
+                    $.ajax({
+                         url: "{% url 'ctgry_offer_dlt'  %}",
+                          method: "POST",
+                          data: data,
+                          success: function (resp) {
+
+                              swal("offer deleted!", {
+                                   icon: "success",
+                                 });
+                                 location.reload();
+                              
+                              
+                          }
+                    })    
+
+                 
+               } else {
+                 swal("Your offer is safe!");
+               }
+             });
+
+     }
+</script>
+
+
+
+{% endblock %}

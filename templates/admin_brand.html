@@ -24,7 +24,7 @@
                          <span>
 
                          </span>
-                         <form action="create_brand" method="POST">
+                         <form onclick="return formee()" action="create_brand" method="POST">
                               {% csrf_token %}
 
                               <label style="margin-bottom: 2em;" for="category">Please Choose category:</label>
@@ -43,32 +43,22 @@
 
                               <div class="mb-4">
                                    <label for="sub_cat_name" class="form-label">Name</label>
-                                   <input type="text" placeholder="Type here" name="brand_name" class="form-control"
+                                   <div><span style="color: red;" id="error1"></span></div>
+                                   <input type="text" onkeyup="nme()" placeholder="Type here" name="brand_name" class="form-control"
                                         id="product_name" />
                               </div>
                               <div class="mb-4">
                                    <label for="product_slug" class="form-label">Slug</label>
-                                   <input type="text" placeholder="Type here" name="slug" class="form-control"
+                                   <div><span style="color: red;" id="error2"></span></div>
+                                   <input type="text" onkeyup="slugee()" placeholder="Type here" name="slug" class="form-control"
                                         id="product_slug" />
                               </div>
-                              {% comment %} <div class="mb-4">
-                                   <label class="form-label">Parent</label>
-                                   <select class="form-select">
-                                        <option>Clothes</option>
-                                        <option>T-Shirts</option>
-                                   </select>
-                              </div> {% endcomment %}
-                              {% comment %} <div class="mb-4">
-                                   <label class="form-label">Description</label>
-                                   <textarea placeholder="Type here" name="discr" class="form-control"
-                                        rows="4"></textarea>
-                              </div> {% endcomment %}
                               <div class="d-grid">
                                    <button class="btn btn-primary">Create Brand</button>
                               </div>
                          </form>
                     </div>
-                    <div class="col-md-8">
+                    <div id="tableeee" class="col-md-8">
 
                          <table class="table table-hover">
                               <thead>
@@ -112,9 +102,9 @@
 
                                                        <a class="dropdown-item"
                                                             href="{% url 'brand_edit' brand.id %}">Edit info</a>
-                                                       <a class="dropdown-item text-danger"
-                                                            onclick="return confirm('Are you sure you want to Delete this brand?');"
-                                                            href="brand_delete/{{brand.id}}">Delete</a>
+                                                       <a style="cursor: pointer;" class="dropdown-item text-danger"
+                                                            onclick="dlt('{{brand.id}}')"
+                                                            >Delete</a>
                                                   </div>
 
                                              </div>
@@ -123,28 +113,6 @@
 
                                    </tr>
                                    {% endfor %}
-
-
-                                   {% comment %} <tr>
-                                        <td><i class="material-icons md-subdirectory_arrow_right text-muted"></i></td>
-                                        <td>4</td>
-                                        <td><b>Hot Gifts</b></td>
-                                        <td>Hot Gifts</td>
-                                        <td>/gifts</td>
-                                        <td>4</td>
-                                        <td class="text-end">
-                                             <div class="dropdown">
-                                                  <a href="#" data-bs-toggle="dropdown" class="btn btn-light"> <i
-                                                            class="material-icons md-more_horiz"></i> </a>
-                                                  <div class="dropdown-menu">
-                                                       <a class="dropdown-item" href="#">View detail</a>
-                                                       <a class="dropdown-item" href="#">Edit info</a>
-                                                       <a class="dropdown-item text-danger" href="#">Delete</a>
-                                                  </div>
-                                             </div>
-                                             <!-- dropdown //end -->
-                                        </td>
-                                   </tr> {% endcomment %}
                               </tbody>
                          </table>
 
@@ -153,4 +121,77 @@
           </div> <!-- card body .// -->
      </div> <!-- card .// -->
 </section> <!-- content-main end// -->
+
+<script>
+
+
+
+     function nme(){
+     
+          let name = document.getElementById('product_name').value
+          if(name == 0){
+               document.getElementById('error1').innerText = "field required!!";
+               return false
+          }else{
+               document.getElementById('error1').innerText = "";
+               return true
+          }
+     }
+
+     function slugee(){
+     
+          let name = document.getElementById('product_slug').value
+          if(name == 0){
+               document.getElementById('error2').innerText = "field required!!";
+               return false
+          }else{
+               document.getElementById('error2').innerText = "";
+               return true
+          }
+     }
+
+
+
+     function formee(){
+          if(nme() && slugee()){
+               return true
+          }
+          else{
+               nme()
+               slugee()
+               return false
+          }
+     }
+</script>
+
+
+     <script>
+          function dlt(id){
+              swal({
+                  title: "Are you sure?",
+                  icon: "warning",
+                  buttons: true,
+                  dangerMode: true,
+                })
+                .then((willDelete) => {
+                  if (willDelete) {
+                      var data = { 'id': id, "csrf_token": '{{csrf_token}}' }
+                      $.ajax({
+                          url: "{% url 'brand_delete'  %}",
+                          method: "POST",
+                          data: data,
+                          success: function (resp) {
+                              swal("Poof! Your imaginary file has been deleted!", {
+                                  icon: "success",
+                                }); 
+                                $( "#tableeee" ). load(window. location. href + " #tableeee" );
+                          } 
+                      })
+                   
+                  } else {
+                    swal("Your brand not deleted");
+                  }
+                });
+          }
+      </script>
 {% endblock %}

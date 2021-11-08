@@ -26,7 +26,6 @@
 		<table class="table table-hover">
 			<thead>
 				<tr>
-					<th>#ID</th>
 					<th scope="col">product name</th>
 					<th scope="col">brand name</th>
 					<th scope="col">stock</th>
@@ -37,7 +36,6 @@
 			<tbody>
 				{% for product in products%}
 				<tr>
-					<td>{{product.id}}</td>
 					<td><b>{{product.productname}}</b></td>
 					<td>{{product.brand_name}}</td>
 					<td>{{product.amount_in_stock}}</td>
@@ -47,46 +45,17 @@
 							<a href="#" data-bs-toggle="dropdown" class="btn btn-light"> <i
 									class="material-icons md-more_horiz"></i> </a>
 							<div class="dropdown-menu">
-								<a class="dropdown-item" href="Edit_product/{{product.id}}">Edit info</a>
-								<a class="dropdown-item text-danger"
-									onclick="return confirm('Are you sure you want to Delete this user?');"
-									href="product_delete/{{product.id}}">Delete</a>
+								<a style="cursor: pointer;" class="dropdown-item" href="Edit_product/{{product.id}}">Edit info</a>
+								<a  style="cursor: pointer;" class="dropdown-item text-danger"
+									onclick="dleee('{{product.id}}')"
+								>Delete</a>
 							</div>
 
 						</div>
 						<!-- dropdown //end -->
 					</td>
 
-					{% comment %} <td><span class="badge rounded-pill alert-success">Active</span></td>
-
-					<td><span class="badge rounded-pill alert-danger">Deactive</span></td>
-
-					<td class="text-end">
-
-						<a href="user_del/{{user.id}}"><button class="btn btn-danger"
-								onclick="return confirm('Are you sure you want to Delete this user?');"><i
-									class="fas fa-trash-alt"></i></button></a>
-
-						<div class="dropdown">
-
-							<div>
-								<!-- <a class="dropdown-item" href="#">View detail</a>
-										<a class="dropdown-item" href="#">Edit info</a> -->
-								<!-- <a class="dropdown-item text-danger" href="user_del/{{user.id}}">  Delete</a> -->
-
-								<a href="user_deactive/{{user.username}}"><button class="btn btn-danger" type="button"
-										onclick="return confirm('Are you sure you want to Deactive this user?');"><i
-											class="fas fa-user-lock"></i></button></a>
-
-
-								<a href="user_active/{{user.username}}"> <button class="btn btn-success"
-										onclick="return confirm('Are you sure you want to Active this user?');"><i
-											class="fas fa-unlock-alt"></i></button></a>
-
-
-							</div>
-						</div> <!-- dropdown //end -->
-					</td> {% endcomment %}
+					
 				</tr>
 				{% endfor %}
 			</tbody>
@@ -96,4 +65,39 @@
 	<!-- card-bod
 
         </section> <!-- content-main end// -->
+
+		<script>
+			function dleee(id){
+
+				swal({
+					title: "Are you sure?",
+					text: "",
+					icon: "warning",
+					buttons: true,
+					dangerMode: true,
+				  })
+				  .then((willDelete) => {
+					if (willDelete) {
+						var data = { 'id': id, "csrf_token": '{{csrf_token}}' }
+						$.ajax({
+							url: "{% url 'product_delete'  %}",
+							method: "POST",
+							data: data,
+							success: function (resp) {
+								swal("Your product has been deleted!", {
+									icon: "success",
+								  }); 
+								  location.reload()
+							} 
+						})
+					} else {
+					  swal("Your product is safe!");
+					}
+				  });
+
+			}
+
+		</script>
+
+
 	{% endblock %}

@@ -56,5 +56,13 @@
 </div>
 <!-- login area end -->
 
+<script>
+    document.getElementById("msg").style.display = 'block';
+    // hide error message after 3 sec 
+    setTimeout(function() {
+        document.getElementById("msg").style.display = 'none';
+    }, 2000);
+</script>
+
 
 {% endblock %}
