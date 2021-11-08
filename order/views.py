@@ -63,7 +63,6 @@ def address_dlt(request):
     user_id = request.user.id
     print(user_id, 'userid')
     addrs_dlt = Address.objects.get(id=id)
-    print(addrs_dlt, 'delete address')
     addrs_dlt.delete()
     succ = "succsess"
     return JsonResponse({'success' : succ})
@@ -72,7 +71,6 @@ def address_dlt(request):
 # razorpay integration
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def Razorpay(request):
-    print("enterd")
     try:
         addres = request.POST['address']
     except:
@@ -80,7 +78,6 @@ def Razorpay(request):
 
     error = "please select/create address!!!"
     if addres == None:
-        print('again')
         return JsonResponse({"error":error})
 
     cartid = Cart.objects.filter(username=request.user)
@@ -141,7 +138,7 @@ def order_placed(request):
     except:
         coupon_code = None
 
-    print(coupon_code,'coupon code came')
+   
     
     # generate order no
     yr                  = int(datetime.date.today().strftime('%Y'))
@@ -266,13 +263,10 @@ def orders(request):
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def userprofile_upddate(request,id):
     pic = request.FILES['pic']
-    print(pic,"pic got")
-
+    
     name = request.POST['Name']
     email = request.POST['Email']
     mobile = request.POST['MobileNo']
-    print(name,'name recieved')
-    print(id)
 
     user = MyUser.objects.get(id = id)
     user.username = name
@@ -295,7 +289,6 @@ def order_dlt(request, id):
 # order status changing
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def order_status(request):
-    print('its came')
     status = request.POST.get('value')
     id = request.POST.get('id')
 

@@ -22,8 +22,6 @@ import uuid
 def cart_view(request):
     if request.user.is_authenticated:
         coupons = Coupon.objects.all()
-        # for l in coupons:
-        #     if 
         cartid = Cart.objects.filter(username=request.user).order_by('id')
         total = 0
         item = 0

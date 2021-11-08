@@ -290,15 +290,12 @@ def whishlis_dlt(request):
 #search 
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def search(request):
-    print("enterd")
     value = request.POST['value']
     print(value)
     data = Product.objects.filter(Q(productname__icontains=value)).order_by("id")
     prod = Product.objects.all()
     prd_count = prod.count()
     count=data.count()
-    for p in data:
-        print(p.productname)
     return render(request,'mens_cat.html',{'products' : data,"count":count, "prd_count" : prd_count})
 
     

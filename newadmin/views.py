@@ -780,6 +780,8 @@ def banners_submit(request):
     BannerUpdate.objects.create(banner_image = pic, banner_name = bannerName, expiry =  expiry)
     return redirect(banners)
 
+
+# banner delete
 def banner_dlt(request,id):
     BannerUpdate.objects.get(id = id).delete()
     return redirect(banners)
