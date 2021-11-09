@@ -247,7 +247,7 @@
 
   <script src="{% static 'js_admin/jquery-3.5.0.min.js' %}"></script>
   <script src="{% static 'js_admin/bootstrap.bundle.min.js' %}"></script>
-  <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> -->
+ {% comment %} <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> {% endcomment %}
   	
 // order status selection
 <script>
@@ -349,6 +349,33 @@ function change(input,id){
             backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850"],
             borderColor: 'rgb(44, 120, 220)',
             data: {{ val_data | safe }}
+          },
+         
+
+        ]
+      },
+
+      // Configuration options go here
+      options: {}
+    });
+  </script>
+
+
+   <script>
+    var ctx = document.getElementById('myChart2').getContext('2d');
+    var chart = new Chart(ctx, {
+      // The type of chart we want to create
+      type: 'line',
+
+      // The data for our dataset
+      data: {
+        labels: {{ labels | safe }},
+        datasets: [
+          {
+            label: 'Sales',
+            backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850"],
+            borderColor: 'rgb(44, 120, 220)',
+            data: {{ data | safe }}
           },
          
 

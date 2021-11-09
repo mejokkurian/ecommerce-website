@@ -19,6 +19,7 @@
 		<h2 class="content-title">Sales report </h2>
 		<div>
 			<form action="{% url 'sales_reprt' %}" method="post" >
+			{% csrf_token %}
 				<label for="for"> from </label>
 			<input  type="date" name="from" id="from">
 			<label for="for"> To </label>

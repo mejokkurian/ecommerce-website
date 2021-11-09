@@ -109,7 +109,7 @@
                                                        <a class="dropdown-item" href="">Edit
                                                             info</a>
                                                        <a class="dropdown-item text-danger"
-                                                            onclick="dltee('{{k.id}}')"
+                                                            onclick="dlte('{{k.id}}')"
                                                             >Delete</a>
                                                   </div>
 
@@ -250,7 +250,7 @@
 </script>
 
 <script>
-     function dltee(id){
+     function dlte(id){
 
           swal({
                title: "Are you sure?",
@@ -270,7 +270,7 @@
                          window.location.href = "product_offer";
                          swal("Product offer deleted!!", {
                               icon: "success",
-                            });/
+                            });
                     }
                })
 

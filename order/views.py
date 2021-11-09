@@ -58,7 +58,9 @@ def address_submit(request, id):
 
 # user adress delete
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
+@csrf_exempt
 def address_dlt(request):
+    print("enterd")
     id = request.POST['id']
     user_id = request.user.id
     print(user_id, 'userid')
@@ -70,6 +72,7 @@ def address_dlt(request):
 
 # razorpay integration
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
+@csrf_exempt
 def Razorpay(request):
     try:
         addres = request.POST['address']
@@ -288,6 +291,7 @@ def order_dlt(request, id):
 
 # order status changing
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
+@csrf_exempt
 def order_status(request):
     status = request.POST.get('value')
     id = request.POST.get('id')

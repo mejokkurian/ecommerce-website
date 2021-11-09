@@ -262,8 +262,10 @@ def create_category(request):
 
 
 # category delete
+@csrf_exempt
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def category_delete(request):
+    print("eneter")
     id = request.POST['id']
     catgr_dlt = category.objects.get(id=id)
     catgr_dlt.delete()
@@ -296,6 +298,7 @@ def create_sub_category(request):
 
 # def delete subCategory
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
+@csrf_exempt
 def subcat_delete(request):
     id = request.POST['id']
     subcatgry = subcategory.objects.get(id=id)
@@ -330,6 +333,7 @@ def create_brand(request):
 
 # admin brand delete
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
+@csrf_exempt
 def brand_delete(request):
     id = request.POST['id']
     branddl = brand.objects.get(id=id)
@@ -579,6 +583,7 @@ def coupon_checking(request):
            
 
 # admin product offer
+@csrf_exempt
 def product_offer(request):
     product = Product.objects.all()
     print(product)
@@ -624,6 +629,7 @@ def product_offer(request):
     return render(request,'product_offer.html',{'product': product,"offer": prdct})
 
 # produt offer delete
+@csrf_exempt
 def prd_offer_dlt(request):
     id = request.POST['id']
     offer_dlt = Product_offer.objects.filter(id = id)
@@ -644,6 +650,7 @@ def prd_offer_dlt(request):
     return JsonResponse({'suuc':suuc})
 
 # catogory offer
+@csrf_exempt
 def catogory_offer(request):
     catg = category.objects.all()
     catgry_offer = Categoryoffer.objects.all()
@@ -692,6 +699,7 @@ def catogory_offer(request):
 
 
 # category offer delete
+@csrf_exempt
 def ctgry_offer_dlt(request):
     id = request.POST['id']
     offer = Categoryoffer.objects.filter(id = id)
@@ -718,6 +726,7 @@ def ctgry_offer_dlt(request):
 
 
 # pdf downloader 
+@csrf_exempt
 def pdf_download(request):
 
     buffer = io.BytesIO()

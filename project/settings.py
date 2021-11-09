@@ -24,9 +24,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-ri9c8!p_%$#wko6xj3rp&p@w^jgt@_5fapsgr=vge4u8uo9)v0'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -43,14 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.humanize',
-    #  "django.contrib.sites",  # new
-    # # 3rd party
-    # "allauth", # new
-    # "allauth.account", # new
-    # "allauth.socialaccount", # new
-    # # social providers
-    # "allauth.socialaccount.providers.github", # new
-    # "allauth.socialaccount.providers.twitter", # new
+   
 ]
 
 AUTH_USER_MODEL = 'user.MyUser'
@@ -59,7 +52,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    # 'django.middleware.csrf.CsrfViewMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',

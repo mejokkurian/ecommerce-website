@@ -1,4 +1,5 @@
 from django.contrib.auth import authenticate, login, logout
+from django.views.decorators.csrf import csrf_exempt
 from django.core.paginator import Paginator
 from django.db.models.query_utils import Q
 from django.http.response import JsonResponse
@@ -246,6 +247,7 @@ def password_submit(request):
 
     
 # user wishlist 
+@csrf_exempt
 def wishlist(request):
     if request.user.is_authenticated:
         wish_list = whishlist.objects.filter(user_name = request.user.id)
@@ -280,6 +282,7 @@ def wishlist(request):
 
 
 # wish list delete
+@csrf_exempt
 def whishlis_dlt(request):
     id = request.POST['id']
     whishlist.objects.get(id = id).delete()

@@ -119,6 +119,7 @@ def add_cart(request):
 
 # delete prodcut from the cart
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
+@csrf_exempt
 def cartitem_dlt(request):
     id = request.POST['id']
     cart_items = Cart.objects.get(id=id)
