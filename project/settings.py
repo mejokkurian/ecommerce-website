@@ -98,8 +98,8 @@ DATABASES = {
 
 
 
-RAZOR_KEY_ID = config('RAZOR_KEY')
-RAZOR_KEY_SECRET = config('RAZOR_KEY_SECRET')
+RAZOR_KEY_ID ='rzp_test_LnJaBOrsdCtTO1'
+RAZOR_KEY_SECRET = 'Vm4994FD1pa8p7lCtSakntCL'
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
@@ -166,8 +166,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # SMTP / email host configuration
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
-EMAIL_HOST_USER = config('EMAIL_HOST_USER')
-EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
+EMAIL_HOST_USER = 'jescoecom@gmail.com'
+EMAIL_HOST_PASSWORD = 'jesco123@1'
 EMAIL_USE_TLS = True
 
 
