@@ -22,7 +22,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-ri9c8!p_%$#wko6xj3rp&p@w^jgt@_5fapsgr=vge4u8uo9)v0'
+SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', default=False, cast=bool)
@@ -90,16 +90,16 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'project1',
-        'USER': 'postgres',
-        'PASSWORD': 'mejo123',
+        'USER': config('USER'),
+        'PASSWORD': config('PASSWORD'),
         'HOST': 'localhost'
     }
 }
 
 
 
-RAZOR_KEY_ID ='rzp_test_LnJaBOrsdCtTO1'
-RAZOR_KEY_SECRET = 'Vm4994FD1pa8p7lCtSakntCL'
+RAZOR_KEY_ID =config('RAZOR_KEY')
+RAZOR_KEY_SECRET = config('RAZOR_KEY_SECRET')
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
