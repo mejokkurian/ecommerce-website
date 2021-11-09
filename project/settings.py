@@ -11,7 +11,8 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 from pathlib import Path
-from user.private import EMAIL_HOST_PASSWORD,EMAIL_HOST_USER,RAZOR_KEY,RAZOR_KEY_SECRET,Name,USER,PASSWORD
+from decouple import config
+from user import private
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -88,17 +89,17 @@ WSGI_APPLICATION = 'project.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': Name,
-        'USER': USER,
-        'PASSWORD': PASSWORD,
+        'NAME': config('Name'),
+        'USER': config('USER'),
+        'PASSWORD': config('PASSWORD'),
         'HOST': 'localhost'
     }
 }
 
 
 
-RAZOR_KEY_ID = RAZOR_KEY
-RAZOR_KEY_SECRET = RAZOR_KEY_SECRET
+RAZOR_KEY_ID = config('RAZOR_KEY')
+RAZOR_KEY_SECRET = config('RAZOR_KEY_SECRET')
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
