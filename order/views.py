@@ -113,7 +113,6 @@ def Razorpay(request):
     order_currency = 'INR'
     client = razorpay.Client(
         auth=("rzp_test_LnJaBOrsdCtTO1", "Vm4994FD1pa8p7lCtSakntCL"))
-    print('comimggg')
     payment = client.order.create(
         {'amount': Amount, 'currency': order_currency})
     print(payment, 'payments')
