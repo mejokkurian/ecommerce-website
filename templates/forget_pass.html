@@ -35,8 +35,6 @@
                                     </span>
                                     <form action="{% url 'otp_login'  %}" method="post">
                                         {% csrf_token %}
-                                        <input type="hidden" name="csrfmiddlewaretoken"
-                                            value="gaSEsqsRKGdQmALfDiVyrSPonKTSE8I74YWzIEHqozxerYug14aAuwsXaGFIwAYU">
                                         <input type="text" name="mobile_no" placeholder="Mobiile No" required />
 
                                         <div class="button-box">
