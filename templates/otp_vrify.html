@@ -35,8 +35,7 @@
                                     </span>
                                     <form action="{% url 'otp_verify'  %}" method="post">
                                         {% csrf_token %}
-                                        <input type="hidden" name="csrfmiddlewaretoken"
-                                            value="gaSEsqsRKGdQmALfDiVyrSPonKTSE8I74YWzIEHqozxerYug14aAuwsXaGFIwAYU">
+
                                         <input type="text" name="otp" placeholder="Enter OTP" required />
 
                                         <div class="button-box">
