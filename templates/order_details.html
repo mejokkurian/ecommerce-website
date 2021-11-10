@@ -189,7 +189,11 @@
                                         <form onclick="return formeee()" action="{% url 'userprofile_upddate' user.id %}" method="POST" enctype="multipart/form-data">
                                             <div>
                                                 <div class="d-flex flex-row justify-content-start mb-3">
+                                                {% if user.profile_pic.url == 0 %}
+
+                                                {% else %}
                                                     <div class="image">   <img src="{{user.profile_pic.url}}" class="rounded-circle" style="width: 100px; height:100px ;" >  <span><i class='bx bxs-camera-plus'></i></span> </div>
+                                                {% endif %}
                                                     <div class="m-4">
                                                         <div class="input-group">
 
