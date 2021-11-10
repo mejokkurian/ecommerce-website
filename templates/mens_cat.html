@@ -116,6 +116,7 @@
                         <!-- Sidebar single item -->
                         <div class="sidebar-widget-search">
                             <form id="widgets-searchbox" action="{% url 'search' %}" method="post">
+                                {% csrf_token %}
                                 <input class="input-field" name="value" type="text" placeholder="Search">
                                 <button class="widgets-searchbox-btn" type="submit">
                                     <i class="fa fa-search"></i>
