@@ -232,6 +232,7 @@ def admin_add_product(request):
 
 # admin product delete
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
+@csrf_exempt
 def product_delete(request):
     id = request.POST['id']
     products = Product.objects.get(id=id)
