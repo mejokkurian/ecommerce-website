@@ -299,6 +299,7 @@
                     <div class="modal-body">
                         <h2>Search Your Product</h2>
                         <form action="{% url 'search' %}" method="post" class="navbar-form position-relative" role="search">
+                        {% csrf_token %}
                             <div class="form-group">
                                 <input type="text" name="value" class="form-control" placeholder="Search here...">
                             </div>
