@@ -24,9 +24,7 @@ from .private import Services, Auth_token, Account_sid
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def home(request):
     products = Product.objects.all()
-    paginator = Paginator(products, 10)
-    page_number = request.GET.get('page')
-    products = paginator.get_page(page_number)
+   
     banners = BannerUpdate.objects.all()
     print(banners)
     if request.user.is_authenticated:
