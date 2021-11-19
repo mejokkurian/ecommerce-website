@@ -448,6 +448,21 @@ function change(input,id){
 			});
 		});
 	</script>
+
+  <script>  
+    var today = new Date();
+    var dd = String(today.getDate()).padStart(2, '0');
+    var mm = String(today.getMonth() + 1).padStart(2, '0');
+    var yyyy = today.getFullYear();
+
+    today = yyyy + '-' + mm + '-' + dd;
+    $('#from').attr('max', today);
+    $('#to').attr('max', today);
+    document.getElementById('from').onchange = e => {
+        value = e.target.value
+        $('#to').attr('min', value);
+    }
+  </script>
  
 <!-- data tabele script end -->
 

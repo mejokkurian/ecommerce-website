@@ -8,22 +8,14 @@
 {% block contents %}
 
 <section class="content-main">
-
-
-
     <div class="content-header">
         <h2 class="content-title"> Order managment </h2>
     </div>
-
-
     </header> <!-- card-header end// -->
-
-
     <div class="table-responsive">
-        <table  class="table table-bordered border-primary">
+        <table  class="table table-bordered ">
             <thead >
-
-                <tr >
+                <tr>
 
                     <th style="color: black;" >User</th>
                     <th style="color: black;">Date</th>
@@ -47,12 +39,7 @@
                     <td style="color: green;">{{k.product.productname}}</td>
                     <td style="color: green;">{{k.product_stock}}</td>
                     <td style="color: rgba(255, 0, 0, 0.712);">{{k.total}}</td>
-                   
-                    <td style="color: rgba(255, 0, 0, 0.712);"><span id="statusChanging" class="badge rounded-pill alert-success ">{{k.status}}</span></td>
-                    
-                    
-                                        
-                   
+                    <td style="color: rgba(255, 0, 0, 0.712);"><span id="statusChanging" class="badge rounded-pill alert-success ">{{k.status}}</span></td> 
             {% else %}
                 <tr class="" style="background-color: aquamarine;" >
                     <td>{{k.username.username }}</td>
@@ -62,22 +49,13 @@
                     <td style="color: green;">{{k.product_stock}}</td>
                     <td style="color: red;">{{k.total}}</td>
                     <td><span id="statusChanging" class="badge rounded-pill alert-success ">{{k.status}}</span></td>
-                    
-                    
                                   
-                {% endif %}
-              
-                
-
-                  
+                {% endif %}                  
                     <td class="text-end">
 						<div class="">
 							<a href="#">
 									 </a>
 							<div>
-                           
-								 <!-- <a class="dropdown-item"  href="Edit_product/{{product.id}}">E</a>
-								<a class="dropdown-item text-danger" onclick="return confirm('Are you sure you want to cancel this order?');" href="{% url 'order_dlt' k.id %}">Cancel</a> -->
                                 {% if k.status == "cancelled"  %} 
                                 {% else %} 
                                     <select   name="cars" id="select_id" onchange="change(this,{{k.id}})">
@@ -97,9 +75,7 @@
 
                 </tr>
                 
-                {% endfor %}
-
-                           
+                {% endfor %}             
 
             </tbody>
         </table>

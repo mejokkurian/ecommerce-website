@@ -149,8 +149,6 @@ def product_increment(request):
         for i in cartid:
             if i.product_id.discount_price == None:
                 total = i.product_id.price * i.product_stock
-                print(total, "________________")
-                # cart = Cart()
                 i.sub_total = total
                 i.save()
             else:

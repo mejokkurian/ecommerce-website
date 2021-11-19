@@ -1,0 +1,94 @@
+{% extends 'base_user.html' %}
+{% load static %}
+
+{% block contents %}
+
+
+<div class="login-register-area pt-100px pb-100px">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-7 col-md-12 ml-auto mr-auto">
+                <div class="login-register-wrapper">
+                    <div class="login-register-tab-list nav">
+                        <a class="active" data-bs-toggle="tab" href="#lg1">
+                            <h4>login</h4>
+                        </a>
+
+                    </div>
+
+                    <div class="tab-content">
+                       
+                        <div id="lg1" class="tab-pane active">
+                            <div class="login-form-container">
+
+
+                                <div class="login-register-form">
+                                    <span>
+                                        {% if messages %}
+                                        {% for message in messages %}
+                                        <div class="alert alert-{{message.tags}} m-1 p text-center" id="msg" role="alert"
+                                            style="padding: 1px; background-color: rgba(243, 108, 108, 0.952);">
+                                            {{ message }}
+                                        </div>
+                                        {% endfor %}
+                                        {% endif %}
+                                    </span>
+                                    <form onsubmit="return myFunction()" action="{% url 'otp_double_verify'  %}" method="post">
+                                        {% csrf_token %}
+                                        <div><span style="color: red;" id="error" ></span></div>
+                                        <input type="text" onkeyup="validation()" id="valid" name="otp" placeholder="Enter OTP" required />
+                                        <a href="{% url 'user_register' %}">Resend OTP</a>
+
+                                        <div class="button-box">
+
+                                            <button type="submit"><span>Submit</span></button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- login area end -->
+
+<script>
+    document.getElementById("msg").style.display = 'block';
+    // hide error message after 3 sec 
+    setTimeout(function() {
+        document.getElementById("msg").style.display = 'none';
+    }, 7000);
+</script>
+
+<script>
+    function validation(){
+        let value = document.getElementById('valid').value
+        if(value.length < 6){
+         document.getElementById('error').innerText = "please enter a valid otp!!"; 
+         return false
+        }else if(value.length > 6){
+            document.getElementById('error').innerText = "please enter a valid otp!!"; 
+            return false  
+        }
+        else{
+            document.getElementById('error').innerText = ""; 
+            return true
+        }
+    }
+
+    function myFunction(){
+        if (validation()){
+            return true
+        }
+        else{
+            return false
+        }
+    }
+</script>
+
+
+{% endblock %}

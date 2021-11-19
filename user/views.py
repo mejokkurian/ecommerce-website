@@ -6,7 +6,7 @@ from django.http.response import JsonResponse
 from django.views.decorators.cache import cache_control
 from django.shortcuts import redirect, render
 from django.contrib.auth.models import auth
-from newadmin.models import Product
+from newadmin.models import Product, category
 from django.contrib import messages
 from django.http import request
 from user.models import MyUser, whishlist
@@ -16,10 +16,9 @@ from os import chmod
 import random
 import user
 from newadmin.models import BannerUpdate
-from .private import Services,Auth_token,Account_sid
+from .private import Services, Auth_token, Account_sid
 
 # Create your views here.
-
 
 # home page view
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
@@ -29,18 +28,20 @@ def home(request):
     page_number = request.GET.get('page')
     products = paginator.get_page(page_number)
     banners = BannerUpdate.objects.all()
+    print(banners)
     if request.user.is_authenticated:
-        cart_items = Cart.objects.filter(username = request.user).count()
-        return render(request, 'user_home.html', {'products': products,'cart_items': cart_items, 'banners':banners})
+        cart_items = Cart.objects.filter(username=request.user).count()
+        return render(request, 'user_home.html', {'products': products, 'cart_items': cart_items, 'banners': banners})
     else:
-        return  render(request, 'user_home.html' , {'products': products})
+        return render(request, 'user_home.html', {'products': products})
 
 
 # login page view
-@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+
 def login_user_page(request):
     if request.user.is_authenticated:
         print("home")
+        gues_handeler(request)
         return redirect(home)
     else:
         return render(request, 'user_login.html')
@@ -52,7 +53,6 @@ def register(request):
     return render(request, 'user_register.html')
 
 
-
 # user accont creation
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def user_register(request):
@@ -62,7 +62,8 @@ def user_register(request):
         password1 = request.POST['user_password']
         mail = request.POST['user-email']
         phone = request.POST['user-phone']
-
+        request.session['phone'] = phone
+     
         if MyUser.objects.filter(username=user_name):
             messages.info(request, 'Username already taken')
             return redirect(register)
@@ -72,15 +73,82 @@ def user_register(request):
         elif MyUser.objects.filter(mobile_number=phone):
             messages.info(request, 'Please enter a valid phone number')
             return redirect(register)
+        
+        new_phone = request.session['phone']    
+        user = MyUser.objects.create_user(
+            username=user_name, password=password1, email=mail, mobile_number=phone,is_active = False)
+        user.save()
+        new_phone = request.session['phone']
+        user_mobile = '+91' + new_phone
+        # messages.success(request, 'Sucessfully created a account!!!')
+        account_sid = Account_sid
+        auth_token = Auth_token
+        client = Client(account_sid, auth_token)
+        verification = client.verify \
+            .services(Services) \
+            .verifications \
+            .create(to=user_mobile, channel='sms')
 
-    user = MyUser.objects.create_user(
-        username=user_name, password=password1, email=mail, mobile_number=phone)
-    user.save()
-    print(user)
-    messages.success(request, 'Sucessfully created a account!!!')
-    return redirect(login_user_page)
+        print(verification.status)
+        messages.info(request,'Please enter the otp you have recieved on your mobile')
+        return render(request,'double_varification.html')
+    else:
+        new_phone = request.session['phone']
+        user_mobile = '+91' + new_phone
+        # messages.success(request, 'Sucessfully created a account!!!')
+        account_sid = Account_sid
+        auth_token = Auth_token
+        client = Client(account_sid, auth_token)
+        verification = client.verify \
+            .services(Services) \
+            .verifications \
+            .create(to=user_mobile, channel='sms')
 
+        print(verification.status)
+        messages.info(request,'Please enter the otp you have recieved on your mobile')
+        return render(request,'double_varification.html')
+        
 
+# otp double varifications
+def otp_double_verify(request):
+        if request.method == 'POST':
+            otp = request.POST['otp']
+            print(otp, 'otp come')
+            
+            mobile = request.session['phone']
+            user_mobile = '+91' + mobile
+
+            # twilio code for otp generation
+            account_sid = Account_sid
+            auth_token = Auth_token
+            client = Client(account_sid, auth_token)
+
+            verification_check = client.verify \
+                .services(Services) \
+                .verification_checks \
+                .create(to=user_mobile, code=otp)
+
+            print(verification_check.status)
+
+            # checking otp is valid or not. If valid redirect home
+            if verification_check.status == 'approved':
+                print("verified")
+                user_dtl = MyUser.objects.filter(
+                    mobile_number=mobile)  # user details
+
+                for u in user_dtl:
+                    username = u.username
+                    print(username)
+                    user = MyUser.objects.get(username=username)
+                    if user is not None:
+                        user.is_active = True
+                        user.save()
+                        login(request, user)
+                        print("again")
+                        return redirect(login_user_page)
+            else:
+                return redirect(user_register)
+        return redirect(user_register)
 
 # user auth and login to home page
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
@@ -98,19 +166,21 @@ def login_user(request):
             messages.error(request, 'invalid credentilas')
             return redirect(login_user_page)
 
+# guest user cart item change to user cart
 def gues_handeler(request):
     print("keri")
+    print(request.session.has_key('guest_user'))
     if request.session.has_key('guest_user'):
         guest_id = request.session['guest_user']
-        carteii = Cart.objects.filter(guest_token =guest_id)
+        carteii = Cart.objects.filter(guest_token=guest_id)
         print(carteii)
         for k in carteii:
-            print("hhhhh")
             id = k.product_id
             k.username = request.user
             k.guest_token = None
 
-            v = Cart.objects.filter(product_id=id, username = request.user).first()
+            v = Cart.objects.filter(
+                product_id=id, username=request.user).first()
             if v:
                 print("product already in cart")
             else:
@@ -134,97 +204,95 @@ def user_product_view(request, id):
     return render(request, 'user_single_product.html', {'products': products, 'Products': Products})
 
 
-
 # forgot password
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def Forget_password(request):
-    return render(request,'forget_pass.html')
+    return render(request, 'forget_pass.html')
 
 
-#otp verification
+# otp verification
 def otp_verify(request):
     if request.method == 'POST':
         otp = request.POST['otp']
-        print(otp ,'otp come')
+        print(otp, 'otp come')
         mobile = request.session['mobile']
         user_mobile = '+91' + mobile
 
-    #twilio code for otp generation
+    # twilio code for otp generation
         account_sid = Account_sid
         auth_token = Auth_token
         client = Client(account_sid, auth_token)
 
         verification_check = client.verify \
-                            .services(Services) \
-                            .verification_checks \
-                            .create(to=user_mobile, code=otp)
+            .services(Services) \
+            .verification_checks \
+            .create(to=user_mobile, code=otp)
 
         print(verification_check.status)
 
-        
-        #checking otp is valid or not. If valid redirect home
+        # checking otp is valid or not. If valid redirect home
         if verification_check.status == 'approved':
             print("verified")
-            user_dtl = MyUser.objects.filter(mobile_number = mobile)# user details
-            
+            user_dtl = MyUser.objects.filter(
+                mobile_number=mobile)  # user details
+
             for u in user_dtl:
                 username = u.username
                 print(username)
                 user = MyUser.objects.get(username=username)
                 if user is not None:
                     login(request, user)
+                    gues_handeler(request)
                     return redirect(home)
         else:
-            print("enter erro")
-            messages.error(request,'Invalid OTP')
-            return render(request,'otp_vrify.html') 
-           
-    return render(request,'otp_vrify.html')
+            messages.error(request, 'Invalid OTP')
+            return render(request, 'otp_vrify.html')
+
+    return render(request, 'otp_vrify.html')
 
 
-# otp registrsation 
+# otp registrsation
 def otp_login(request):
     mobile = request.POST['mobile_no']
     request.session['mobile'] = mobile
     print(mobile)
-    user = MyUser.objects.filter(mobile_number = mobile)
+    user = MyUser.objects.filter(mobile_number=mobile)
     print(user)
     for m in user:
         if m.mobile_number == mobile:
-            n = random.randint(111111,999999)
-            print(n,'random')
+            n = random.randint(111111, 999999)
+            print(n, 'random')
             user_mobile = '+91' + mobile
-    
-            print(user_mobile)
-        
-            # Your Account Sid and Auth Token from twilio.com / console
-            account_sid = Account_sid    
-            auth_token = Auth_token
-            client = Client(account_sid, auth_token) 
-            verification = client.verify \
-                     .services(Services) \
-                     .verifications \
-                     .create(to= user_mobile, channel='sms')
 
-            print(verification.status)                                                 
+            print(user_mobile)
+
+            # Your Account Sid and Auth Token from twilio.com / console
+            account_sid = Account_sid
+            auth_token = Auth_token
+            client = Client(account_sid, auth_token)
+            verification = client.verify \
+                .services(Services) \
+                .verifications \
+                .create(to=user_mobile, channel='sms')
+
+            print(verification.status)
             return redirect('otp_verify')
 
-    messages.error(request,'invalid phone number')    
+    messages.error(request, 'invalid phone number')
     return redirect(Forget_password)
 
 
-
-# Men Category based product listing 
+# Men Category based product listing
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
-def mens_cat(request,id):
-    products = Product.objects.filter(category_name = id)
-    return render(request,'mens_womens_car.html',{'products':products})
+def mens_cat(request, id):
+    products = Product.objects.filter(category_name=id)
+    return render(request, 'mens_womens_car.html', {'products': products})
 
 
 # usser password changing
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def change_password(request):
-    return render(request,'password/changepassword.html')
+    return render(request, 'password/changepassword.html')
 
 
 # password submiting
@@ -233,75 +301,73 @@ def password_submit(request):
     old_pass = request.POST['old_password'].strip()
     new_pass1 = request.POST['new_password2'].strip()
 
-    user = MyUser.objects.filter(id = request.user.id)
+    user = MyUser.objects.filter(id=request.user.id)
     for u in user:
         name = u.username
-        if authenticate(password = old_pass,username =name ):
+        if authenticate(password=old_pass, username=name):
             u.set_password(new_pass1)
             u.save()
         else:
-            messages.error(request,'Your old password is wrong!!!')
+            messages.error(request, 'Your old password is wrong!!!')
             return redirect(change_password)
-    messages.success(request,'Your password changed successfully!! login to continue shopping')
+    messages.success(
+        request, 'Your password changed successfully!! login to continue shopping')
     return redirect(login_user_page)
 
-    
-# user wishlist 
+
+# user wishlist
 @csrf_exempt
 def wishlist(request):
     if request.user.is_authenticated:
-        wish_list = whishlist.objects.filter(user_name = request.user.id)
+        wish_list = whishlist.objects.filter(user_name=request.user.id)
         if request.method == 'POST':
             if request.user.is_authenticated:
                 product_id = request.POST['id']
-                user = MyUser.objects.get(id = request.user.id)
-                produt = Product.objects.get(id = product_id)
-                
+                user = MyUser.objects.get(id=request.user.id)
+                produt = Product.objects.get(id=product_id)
+
                 whislist = whishlist()
                 whislist.product_id = produt
                 whislist.user_name = user
-                tItem = whishlist.objects.filter(product_id=produt, user_name = request.user).first()
+                tItem = whishlist.objects.filter(
+                    product_id=produt, user_name=request.user).first()
 
                 if tItem:
                     print('entered')
                 else:
                     whislist.save()
 
-                wish_items = whishlist.objects.filter(user_name = request.user).count()
+                wish_items = whishlist.objects.filter(
+                    user_name=request.user).count()
                 success = 'product added to wishlist!!!'
-                return JsonResponse({'success': success,'wish_items':wish_items})
+                return JsonResponse({'success': success, 'wish_items': wish_items})
             else:
                 error = "error"
-                return JsonResponse({'error':error })
+                return JsonResponse({'error': error})
     else:
-        messages.error(request,"please login!!")
+        messages.error(request, "please login!!")
         return redirect('login')
 
-    return render(request,'whishlist.html',{'wish_list': wish_list})  
-
+    return render(request, 'whishlist.html', {'wish_list': wish_list})
 
 
 # wish list delete
 @csrf_exempt
 def whishlis_dlt(request):
     id = request.POST['id']
-    whishlist.objects.get(id = id).delete()
+    whishlist.objects.get(id=id).delete()
     error = "error"
-    return JsonResponse({'error':error })
+    return JsonResponse({'error': error})
 
 
-#search 
+# search
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def search(request):
     value = request.POST['value']
     print(value)
-    data = Product.objects.filter(Q(productname__icontains=value)).order_by("id")
+    data = Product.objects.filter(
+        Q(productname__icontains=value)).order_by("id")
     prod = Product.objects.all()
     prd_count = prod.count()
-    count=data.count()
-    return render(request,'mens_cat.html',{'products' : data,"count":count, "prd_count" : prd_count})
-
-    
-
-
-
+    count = data.count()
+    return render(request, 'mens_cat.html', {'products': data, "count": count, "prd_count": prd_count})

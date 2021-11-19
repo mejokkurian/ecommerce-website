@@ -14,6 +14,7 @@ urlpatterns = [
     path('Forget_password',views.Forget_password,name = 'Forget_password'),
     path('otp_login',views.otp_login,name = 'otp_login'),
     path('otp_verify',views.otp_verify,name = 'otp_verify'),
+    path('otp_double_verify',views.otp_double_verify,name = 'otp_double_verify'),
     path('mens_cat/<int:id>',views.mens_cat,name = 'mens_cat'),
     path('change_password',views.change_password,name = 'change_password'),
     path('password_submit',views.password_submit,name = 'password_submit'),

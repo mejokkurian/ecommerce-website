@@ -11,9 +11,11 @@
 <div class="section ">
     <div class="hero-slider swiper-container slider-nav-style-1 slider-dot-style-1">
         <!-- Hero slider Active -->
+        
         <div class="swiper-wrapper">
+            {% for k in banners %}
             <!-- Single slider item -->
-            <div class="hero-slide-item slider-height swiper-slide d-flex bg-color1">
+            <!-- <div class="hero-slide-item slider-height swiper-slide d-flex bg-color1">
                 <div class="container align-self-center">
                     <div class="row">
                         <div class="col-xl-5 col-lg-5 col-md-5 col-sm-5 align-self-center sm-center-view">
@@ -36,7 +38,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> -->
             <!-- Single slider item -->
             <div class="hero-slide-item slider-height swiper-slide d-flex bg-color2">
                 <div class="container align-self-center">
@@ -54,7 +56,7 @@
                             class="col-xl-7 col-lg-7 col-md-7 col-sm-7 d-flex justify-content-center position-relative">
                             <div class="show-case">
                                 <div class="hero-slide-image">
-                                    <img src="{% static 'images/slider-image/slider-2.png' %}" alt="" />
+                                    <img src="{{k.banner_image.url}}" alt="" />
                                 </div>
                                
                             </div>
@@ -62,7 +64,9 @@
                     </div>
                 </div>
             </div>
+            {% endfor %}
         </div>
+        
         <!-- Add Pagination -->
         <div class="swiper-pagination swiper-pagination-white"></div>
         <!-- Add Arrows -->
@@ -77,6 +81,7 @@
 <!-- Hero/Intro Slider End -->
 
 <!-- Banner Area Start -->
+
 <div class="banner-area pt-100px pb-100px">
     <div class="container">
         <div class="row">
@@ -85,8 +90,9 @@
                 <a  class="single-banner">
                     <img src="{% static 'images/banner/1.jpg' %}" alt="">
                     <div class="item-disc">
-                        <span class="item-title">Women</span>
-                        <span class="item-amount">16 items</span>
+                   
+                        <span class="item-title">Men</span>
+                        
                     </div>
                 </a>
             </div>
@@ -103,12 +109,13 @@
                 <a  class="single-banner">
                     <img src="{% static 'images/banner/3.jpg' %}" alt="">
                     <div class="item-disc">
-                        <span class="item-title">Men</span>
-                        <span class="item-amount">16 items</span>
+                        <span class="item-title">Women</span>
                     </div>
+                    
                 </a>
+               
             </div>
-        </div>
+        </div>  
     </div>
 </div>
 <!-- Banner Area End -->

@@ -783,9 +783,12 @@ def banners(request):
 
 # banners submit
 def banners_submit(request):
+    banner_dlt = BannerUpdate.objects.all().order_by('created_at').first()
+    banner_dlt.delete()
     bannerName = request.POST['banner_name']
     pic = request.FILES['pic']
     expiry = request.POST['expiry']
+    
 
     BannerUpdate.objects.create(banner_image = pic, banner_name = bannerName, expiry =  expiry)
     return redirect(banners)

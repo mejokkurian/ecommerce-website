@@ -8,7 +8,7 @@
 
 <section class="content-main">
      <div class="content-header">
-          <h2 class="content-title">Catogory Offer managment</h2>
+          <h2 class="content-title">Banners</h2>
      </div>
      {% if messages %}
      {% for message in messages %}
@@ -29,7 +29,7 @@
                          <span>
 
                          </span>
-                         <form action="{% url 'banners_submit' %}"  method="post"  enctype="multipart/form-data">
+                         <form onsubmit="return myFunction()" action="{% url 'banners_submit' %}"  method="post"  enctype="multipart/form-data">
                               {% csrf_token %}
                               <div class="row">
 
@@ -43,7 +43,7 @@
                               <div class="mb-4 col-md-12">
                                    <label for="product_slug" class="form-label">banner image</label>
                                    <div><span  style="color: red; " id="error2"></span></div>
-                                   <input type="file" accept="image/*" placeholder="Type here" id="offervalue" name="pic" onkeyup="val()" class="form-control"
+                                   <input type="file" accept="image/*" placeholder="Type here" id="offervalue" name="pic" onchange="val()" class="form-control"
                                         id="value" />
                               </div>
                             </div>
@@ -114,7 +114,56 @@
 </section> <!-- content-main end// -->
 
 
+<script>
+     function nme(){
+          let value = document.getElementById('offerName').value
+          if(value == 0){
+               document.getElementById('error1').innerText = "Required";
+               return false
+          }
+          else{
+               document.getElementById('error1').innerText = "";
+               return true  
+          }
+     }
 
+     function val(){
+          let value = document.getElementById('offervalue').value
+          if(value == 0){
+               document.getElementById('error2').innerText = "Required";
+               return false
+          }
+          else{
+               document.getElementById('error2').innerText = "";
+               return true  
+          }
+
+     }
+     function exp(){
+          let value = document.getElementById('expiry').value
+          if(value == 0){
+               document.getElementById('error4').innerText = "Required";
+               return false
+          }
+          else{
+               document.getElementById('error4').innerText = "";
+               return true  
+          }
+
+     }
+
+     function myFunction(){
+          if(nme() && val() && exp()){
+               return true
+          }
+          else{
+               nme() 
+               val()
+               exp()
+               return false
+          }
+     }
+</script>
 
 
 

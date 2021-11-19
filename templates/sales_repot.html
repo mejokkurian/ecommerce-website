@@ -18,21 +18,28 @@
 	<div class="content-header">
 		<h2 class="content-title">Sales report </h2>
 		<div>
-			<form action="{% url 'sales_reprt' %}" method="post" >
+			<form onsubmit="return checking()" action="{% url 'sales_reprt' %}" method="post" >
 			{% csrf_token %}
+			<span style="color: red;" id="error1" ></span>	
 				<label for="for"> from </label>
-			<input  type="date" name="from" id="from">
+			<input onchange="first_date()"  type="date" name="from" id="from">
+			<span style="color: red;" id="error2" ></span>
 			<label for="for"> To </label>
-			<input type="date" name="to" id="to">
-			<button onclick="filter()"  class="btn btn-primary"><a ><i class="material-icons md-plus"></i> filter</a></button>
+			<input onchange="second_date()" type="date" name="to" id="to">
+			<button onclick="filter()"  id="enjooy" class="btn btn-primary"><a ><i class="material-icons md-plus"></i> filter</a></button>
 			</form>
 		</div>
 	</div>
 
 
-	</header> <!-- card-header end// -->
+	</header> <!-- card-header end// --> 
+	{% if not orders_details %}
+	<div>
+		<h5 style="color: red;" >No data found in this date range</h5>
+	</div>
+	{% else %}
 	<div class="table-responsive">
-		<table  id="exampleeeee"class="table table-bordered border-primary">
+		<table  id="exampleeeee"class="table table-bordered">
 			<thead  >
 				
                   <tr >
@@ -51,7 +58,7 @@
 			<tbody>
 				{% for i in orders_details %}
 				<tr>
-					<td>{{i.username}}</td>
+					<td id="value">{{i.username}}</td>
 					<td>{{i.payment_method}}</td>
 					<td>{{i.product}}</td>
 					<td>{{i.product_stock}}</td>
@@ -65,13 +72,55 @@
 			{% endfor %}
 			</tbody>
 		</table>
-	</div> <!-- table-responsive //end -->
+	</div> 
+	{% endif %}
+	<!-- table-responsive //end -->
 	</div>
+
+
 
 	<!-- data table -->
 
+	
+<script>
+	function first_date(){
+		let value = document.getElementById('from').value
+		if(value == 0){
+			document.getElementById('error1').innerText = "*Required*"
+			return false
+		}
+		else{
+			document.getElementById('error1').innerText = ""
+			return true
 
+		}
+	}
 
+	function second_date(){
+		let value = document.getElementById('to').value
+		if(value == 0){
+			document.getElementById('error2').innerText = "*Required*"
+			return false
+		}
+		else{
+			document.getElementById('error2').innerText = ""
+			return true
+
+		}
+	}
+
+	function checking(){
+		if(first_date() && second_date()){
+			return true
+		}else{
+			first_date()
+			second_date()
+			return false
+		}
+	}
+
+	
+</script>
 
     {% endblock %}
 	<!-- card-bod
