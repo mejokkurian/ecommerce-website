@@ -1,0 +1,10 @@
+	<div class="col-sm-12 mb-3">
+
+						<label class="form-label">Sub-category</label>
+						<select name="Sub_category" class="form-select">
+							<option  value="" disabled selected hidden>Select Sub-category</option>
+							{% for c in cats %}
+							<option  value="{{c.id}}">{{c.sub_category_name}}</option>
+							{% endfor %}
+						</select>
+	</div>

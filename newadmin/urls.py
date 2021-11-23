@@ -44,7 +44,8 @@ urlpatterns = [
     path('banners',views.banners, name = 'banners'), 
     path('banners_submit',views.banners_submit, name = 'banners_submit'), 
     path('banner_dlt/<int:id>',views.banner_dlt, name = 'banner_dlt'), 
-     
+    path('catgery_select',views.catgery_select, name = 'catgery_select'), 
+    path('brand_select',views.brand_select, name = 'brand_select'),   
     
 ]
 

@@ -290,7 +290,10 @@ def mens_cat(request, id):
 # usser password changing
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def change_password(request):
-    return render(request, 'password/changepassword.html')
+    if request.user.is_authenticated:
+        return render(request, 'password/changepassword.html')
+    else:
+        return redirect(login_user_page)
 
 
 # password submiting
@@ -315,6 +318,7 @@ def password_submit(request):
 
 # user wishlist
 @csrf_exempt
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def wishlist(request):
     if request.user.is_authenticated:
         wish_list = whishlist.objects.filter(user_name=request.user.id)
@@ -344,7 +348,8 @@ def wishlist(request):
                 return JsonResponse({'error': error})
     else:
         messages.error(request, "please login!!")
-        return redirect('login')
+        print("enterd here")
+        return redirect(login_user_page)
 
     return render(request, 'whishlist.html', {'wish_list': wish_list})
 

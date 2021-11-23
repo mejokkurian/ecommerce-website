@@ -1,0 +1,9 @@
+<div id="brandeee">
+<label style="margin-bottom: 2em;" for="category">Please Sub category:</label>
+        <select name="subcategory" id="catg">
+        <option  value="" disabled selected hidden>select</option>
+        {% for cat in cats %}
+            <option value="{{cat.id}}">{{cat.sub_category_name}}</option>
+        {% endfor %}
+        </select>
+</div>

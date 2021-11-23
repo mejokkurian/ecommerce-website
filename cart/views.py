@@ -9,7 +9,7 @@ from newadmin.models import Product
 from newadmin.models import Coupon
 from order.models import Address
 from user.models import MyUser
-from user.views import home
+from user.views import home, login_user_page
 from .models import Cart
 import datetime
 import uuid
@@ -42,7 +42,7 @@ def cart_view(request):
             tax = (grand_total/100)*5
         return render(request, 'cart.html', {'products': cartid, 'grandtotal': grand_total, 'tax': tax, 'coupons':coupons})
     messages.error(request,"please login!!!")    
-    return redirect('login')
+    return redirect(login_user_page)
 
 # add product to cart
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)

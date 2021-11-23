@@ -28,18 +28,21 @@
                               {% csrf_token %}
 
                               <label style="margin-bottom: 2em;" for="category">Please Choose category:</label>
-                              <select name="category" id="catg">
+                              <select name="category" id="catgeee">
+                                   <option  value="" disabled selected hidden>select</option>
                                    {% for catg in catgs %}
                                    <option value="{{catg.id}}">{{catg.category_name}}</option>
                                    {% endfor %}
                               </select>
 
+                              
+                              <div id="brandeee">
                               <label style="margin-bottom: 2em;" for="category">Please Sub category:</label>
                               <select name="subcategory" id="catg">
-                                   {% for subs in subcatgry %}
-                                   <option value="{{subs.id}}">{{subs.sub_category_name}}</option>
-                                   {% endfor %}
+                                   <option  value="" disabled selected hidden>select</option>
+                                   
                               </select>
+                              </div>
 
                               <div class="mb-4">
                                    <label for="sub_cat_name" class="form-label">Name</label>
@@ -181,7 +184,7 @@
                           method: "POST",
                           data: data,
                           success: function (resp) {
-                              swal("Poof! Your imaginary file has been deleted!", {
+                              swal("Poof! Your imaginary file has been deleted!",{
                                   icon: "success",
                                 }); 
                                 $( "#tableeee" ). load(window. location. href + " #tableeee" );
@@ -194,4 +197,27 @@
                 });
           }
       </script>
+
+
+	<script>
+		function slecter(){
+			let cat_id = document.getElementById('catgeee').value
+			var data = {'id' : cat_id, "csrf_token": '{{csrf_token}}'}
+			$.ajax({
+				url : "{% url 'brand_select'  %}",
+				method: "POST",
+				data : data,
+				success : function(data){
+					var cart = data.data;
+					document.getElementById('brandeee').innerHTML = cart;
+	 	
+				}
+			})   
+		}
+
+
+
+		document.getElementById('catgeee').addEventListener("change",slecter)
+	</script>
+      
 {% endblock %}

@@ -15,6 +15,7 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 from django.db.models import Sum
 from .models import Product_offer, subcategory
+from django.template.loader import render_to_string
 from collections import Counter
 from order.models import Order
 from user.models import MyUser
@@ -40,6 +41,7 @@ from django.http import FileResponse
 from reportlab.pdfgen import canvas
 from reportlab.lib.units import inch
 from reportlab.lib.pagesizes import letter
+from django.core import serializers
 
 
 
@@ -50,8 +52,10 @@ from reportlab.lib.pagesizes import letter
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def admin_login(request):
     if request.user.is_authenticated:
+        print("enterd to login view")
         return redirect(admin_home)
     else:
+        print("moonji")
         return render(request, 'adminlogin.html')
 
 
@@ -126,9 +130,11 @@ def admin_home(request):
 # user list
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def user_list(request):
-    users = MyUser.objects.all()
-    return render(request, 'page-user-1.html', {'users': users})
-
+    if request.user.is_authenticated:
+        users = MyUser.objects.all()
+        return render(request, 'page-user-1.html', {'users': users})
+    else:
+        return redirect(admin_login)
 
 
 
@@ -161,72 +167,83 @@ def admin_logout(request):
 # add product page view
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def add_product(request):
-    catgry = category.objects.all()
-    subcatgry = subcategory.objects.all()
-    brandsss = brand.objects.all()
-    return render(request, 'admin_add_product.html', {'catgs': catgry, 'subcatgry': subcatgry, 'brands': brandsss})
-
+    if request.user.is_authenticated:
+        catgry = category.objects.all()
+        subcatgry = subcategory.objects.all()
+        brandsss = brand.objects.all()
+        return render(request, 'admin_add_product.html', {'catgs': catgry, 'subcatgry': subcatgry, 'brands': brandsss})
+    else:
+        return redirect(admin_login)
 
 # admin product list
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def product_list(request):
-    products = Product.objects.all
-    return render(request, 'page-products-list.html', {'products': products})
+    if request.user.is_authenticated:
+        print("enterd")
+        products = Product.objects.all
+        return render(request, 'page-products-list.html', {'products': products})
+    else:
+        print("AGAIN ENTERD")
+        return redirect(admin_login)
+        
 
 
 # admin product adding
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def admin_add_product(request):
-    productname = request.POST['productname']
-    discrptin = request.POST['discrptin']
-    image1 = request.POST['pro_img1']
-    image2 = request.POST['pro_img2']
-    image3 = request.POST['pro_img3']
-    image4 = request.POST['pro_img4']
+    if request.user.is_authenticated:
+        productname = request.POST['productname']
+        discrptin = request.POST['discrptin']
+        image1 = request.POST['pro_img1']
+        image2 = request.POST['pro_img2']
+        image3 = request.POST['pro_img3']
+        image4 = request.POST['pro_img4']
 
-    format, img1 = image1.split(';base64,')
-    ext = format.split('/')[-1]
-    img_data1 = ContentFile(base64.b64decode(
-        img1), name=productname + '1.' + ext)
+        format, img1 = image1.split(';base64,')
+        ext = format.split('/')[-1]
+        img_data1 = ContentFile(base64.b64decode(
+            img1), name=productname + '1.' + ext)
 
-    format, img1 = image2.split(';base64,')
-    ext = format.split('/')[-1]
-    img_data2 = ContentFile(base64.b64decode(
-        img1), name=productname + '1.' + ext)
+        format, img1 = image2.split(';base64,')
+        ext = format.split('/')[-1]
+        img_data2 = ContentFile(base64.b64decode(
+            img1), name=productname + '1.' + ext)
 
-    format, img1 = image3.split(';base64,')
-    ext = format.split('/')[-1]
-    img_data3 = ContentFile(base64.b64decode(
-        img1), name=productname + '1.' + ext)
+        format, img1 = image3.split(';base64,')
+        ext = format.split('/')[-1]
+        img_data3 = ContentFile(base64.b64decode(
+            img1), name=productname + '1.' + ext)
 
-    format, img1 = image4.split(';base64,')
-    ext = format.split('/')[-1]
-    img_data4 = ContentFile(base64.b64decode(
-        img1), name=productname + '1.' + ext)
+        format, img1 = image4.split(';base64,')
+        ext = format.split('/')[-1]
+        img_data4 = ContentFile(base64.b64decode(
+            img1), name=productname + '1.' + ext)
 
-    Category = category.objects.get(id=request.POST['Category'])
-    Sub_category = subcategory.objects.get(id=request.POST['Sub_category'])
-    Brand = brand.objects.get(id=request.POST['Brand'])
-    stock_qnty = request.POST['stock_qnty']
-    product_price = request.POST['product_price']
-    
+        Category = category.objects.get(id=request.POST['Category'])
+        Sub_category = subcategory.objects.get(id=request.POST['Sub_category'])
+        Brand = brand.objects.get(id=request.POST['Brand'])
+        stock_qnty = request.POST['stock_qnty']
+        product_price = request.POST['product_price']
+        
 
-    products = Product.objects.create(
-        productname=productname,
-        description=discrptin,
-        image=img_data1,
-        image1=img_data2,
-        image2=img_data3,
-        image3=img_data4,
-        category_name=Category,
-        sub_catagory_name=Sub_category,
-        brand_name=Brand,
-        amount_in_stock=stock_qnty,
-        price=product_price)
-    products.save()
+        products = Product.objects.create(
+            productname=productname,
+            description=discrptin,
+            image=img_data1,
+            image1=img_data2,
+            image2=img_data3,
+            image3=img_data4,
+            category_name=Category,
+            sub_catagory_name=Sub_category,
+            brand_name=Brand,
+            amount_in_stock=stock_qnty,
+            price=product_price)
+        products.save()
 
-    messages.success(request, 'product added ')
-    return redirect(add_product)
+        messages.success(request, 'product added ')
+        return redirect(add_product)
+    else:
+        return redirect(admin_login)
 # admin product edit end
 
 
@@ -244,8 +261,11 @@ def product_delete(request):
 # product catogary page view
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def product_catagory(request):
-    catgry = category.objects.all()
-    return render(request, 'product_categories.html', {'category': catgry})
+    if request.user.is_authenticated:
+        catgry = category.objects.all()
+        return render(request, 'product_categories.html', {'category': catgry})
+    else:
+        return redirect(admin_login)
 
 
 # category creations
@@ -277,9 +297,14 @@ def category_delete(request):
 # subcategory page views
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def sub_catogery(request):
-    catgs = category.objects.all()
-    subcatgry = subcategory.objects.all()
-    return render(request, 'sub_category.html', {'catgs': catgs, 'subcatgry': subcatgry})
+    if request.user.is_authenticated:
+        catgs = category.objects.all()
+        subcatgry = subcategory.objects.all()
+        return render(request, 'sub_category.html', {'catgs': catgs, 'subcatgry': subcatgry})
+    else:
+        return redirect(admin_login)
+
+        
 
 
 # create subcategory
@@ -311,10 +336,13 @@ def subcat_delete(request):
 # brand creations
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def brands(request):
-    catgs = category.objects.all()
-    subcatgry = subcategory.objects.all()
-    brandsss = brand.objects.all()
-    return render(request, 'admin_brand.html', {'catgs': catgs, 'subcatgry': subcatgry, 'brands': brandsss})
+    if request.user.is_authenticated:
+        catgs = category.objects.all()
+        subcatgry = subcategory.objects.all()
+        brandsss = brand.objects.all()
+        return render(request, 'admin_brand.html', {'catgs': catgs, 'subcatgry': subcatgry, 'brands': brandsss})
+    else:
+        return redirect(admin_login)
 
 
 # admin brand creations
@@ -370,8 +398,11 @@ def category_edit_submit(request, id):
 # subcat editpage
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def subcategory_edit(request, id):
-    subs = subcategory.objects.get(id=id)
-    return render(request, 'subcat_edit.html', {'subs': subs})
+    if request.user.is_authenticated:
+        subs = subcategory.objects.get(id=id)
+        return render(request, 'subcat_edit.html', {'subs': subs})
+    else:
+        return redirect(admin_login)
 
 
 
@@ -419,11 +450,14 @@ def brand_eddit_submit(request, id):
 # product edit
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def Edit_product(request, id):
-    products = Product.objects.get(id=id)
-    catgs = category.objects.all()
-    subcatgry = subcategory.objects.all()
-    brands = brand.objects.all()
-    return render(request, 'edit_product.html', {'products': products, 'catgs': catgs, 'subcatgry': subcatgry, 'brands': brands})
+    if request.user.is_authenticated:
+        products = Product.objects.get(id=id)
+        catgs = category.objects.all()
+        subcatgry = subcategory.objects.all()
+        brands = brand.objects.all()
+        return render(request, 'edit_product.html', {'products': products, 'catgs': catgs, 'subcatgry': subcatgry, 'brands': brands})
+    else:
+        return redirect(admin_login)
 
 
 # product edit and submit
@@ -433,14 +467,15 @@ def product_edit_submit(request, id):
 
     productname = request.POST['productname']
     discrptin = request.POST['discrptin']
-    image1 = request.FILES.get('img1')
-    image2 = request.FILES.get('img2')
-    image3 = request.FILES.get('img3')
-    image4 = request.FILES.get('img4')
+    image1 = request.POST['pro_img1']
+    image2 = request.POST['pro_img2']
+    image3 = request.POST['pro_img3']
+    image4 = request.POST['pro_img4']
+   
     
-    Category = category.objects.get(category_name=request.POST['Category'])
+    Category = category.objects.get(id=request.POST['Category'])
     Sub_category = subcategory.objects.get(
-        sub_category_name=request.POST['Sub_category'])
+        id=request.POST['Sub_category'])
     Brand = brand.objects.get(brand_name=request.POST['Brand'])
     stock_qnty = request.POST['stock_qnty']
     product_price = request.POST['product_price']
@@ -449,23 +484,39 @@ def product_edit_submit(request, id):
     products.productname = productname
     products.description = discrptin
 
-    if image1 == None:
+    if len(image1)  == 0:
         products.image = products.image
     else:
-        products.image = image1
-    if image2 == None:
+        format, img1 = image1.split(';base64,')
+        ext = format.split('/')[-1]
+        img_data1 = ContentFile(base64.b64decode(
+        img1), name=productname + '1.' + ext)
+        products.image = img_data1
+    if len(image2)  == 0:
         products.image1 = products.image1
     else:
-        products.image1 = image2
+        format, img1 = image2.split(';base64,')
+        ext = format.split('/')[-1]
+        img_data2 = ContentFile(base64.b64decode(
+        img1), name=productname + '1.' + ext)
+        products.image1 = img_data2
 
-    if image3 == None:
+    if len(image3)  == 0:
         products.image2 = products.image2
     else:
-        products.image2 = image3
-    if image3 == None:
+        format, img1 = image3.split(';base64,')
+        ext = format.split('/')[-1]
+        img_data3 = ContentFile(base64.b64decode(
+        img1), name=productname + '1.' + ext)
+        products.image2 = img_data3
+    if len(image4)  == 0:
         products.image3 = products.image3
     else:
-        products.image3 = image4
+        format, img1 = image4.split(';base64,')
+        ext = format.split('/')[-1]
+        img_data4 = ContentFile(base64.b64decode(
+        img1), name=productname + '1.' + ext)
+        products.image3 = img_data4
 
     products.brand_name = Brand
     products.category_name = Category
@@ -480,20 +531,30 @@ def product_edit_submit(request, id):
 # Admin order managent
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def order_managment(request):
-    orders_details = Order.objects.all().order_by('-date')
-    paginator = Paginator(orders_details, 10)
-    page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
-    return render(request, 'adm_ordrmangment.html', {'order_dtl': page_obj})
+    if request.user.is_authenticated:
+        orders_details = Order.objects.all().order_by('-date')
+        paginator = Paginator(orders_details, 10)
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+        return render(request, 'adm_ordrmangment.html', {'order_dtl': page_obj})
+    else:
+        return redirect(admin_login)
 
 
 # def offer management
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def offer_manegment(request):
-    coupon = Coupon.objects.all()
-    return render(request,'admin_offer.html',{'coupon':coupon})
+    if request.user.is_authenticated:
+        print("user logged")
+        coupon = Coupon.objects.all()
+        return render(request,'admin_offer.html',{'coupon':coupon})
+    else:
+        print("user logout")
+        return redirect(admin_login)
 
 
 # coupon creation
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def coupon_creation(request):
     coupon_code = request.POST['coupon_code']
     percentage = request.POST['coupon_value']
@@ -515,6 +576,7 @@ def coupon_dlt(request,id):
 
 # coupon validation checking
 @csrf_exempt
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def coupon_checking(request):
     if request.method == 'POST':
         coupon_cod = request.POST['couponCode']
@@ -585,49 +647,53 @@ def coupon_checking(request):
 
 # admin product offer
 @csrf_exempt
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def product_offer(request):
-    product = Product.objects.all()
-    print(product)
-    prdct = Product_offer.objects.all() 
-
-    if request.method == 'POST':
-        print("enterd")
-        offername = request.POST['offer_name']
-        offervalue = request.POST['offer_value']
-        productname = request.POST['product_name']
-        expiry = request.POST['expiry']
-        
-        #taking integer from string
-        id = []
-        for word in productname.split():
-            if word.isdigit():
-                id.append(int(word))
-        print(id)
-
-        # convering string to integer// product id converted
-        strings = [str(integer) for integer in id]
-        a_string = "".join(strings)
-        prdId = int(a_string)
-        product_id = Product.objects.get(id = prdId)
-        product_offer = Product_offer.objects.create(product = product_id, offer_name = offername, discount_value = offervalue , expiry_date=expiry)
+    if request.user.is_authenticated:
+        product = Product.objects.all()
+        print(product)
         prdct = Product_offer.objects.all() 
-        for p in prdct:
-            offer_name = p.offer_name
-            offer_value = p.discount_value
-            prdct_name = p.product.productname
 
-        # discount price adding to the product
-        prd = Product.objects.filter(id = prdId)
-        for j in prd:
-            prdct_price = j.price
-            percentage = (prdct_price*offer_value)/100
-            discount_price = prdct_price - percentage
-            j.discount_price = discount_price
-            j.offer_name = offername
-            j.save()
-        return JsonResponse({"offrname": offer_name,"offer_value":offer_value,"prdct_name":prdct_name})
-    
-    return render(request,'product_offer.html',{'product': product,"offer": prdct})
+        if request.method == 'POST':
+            print("enterd")
+            offername = request.POST['offer_name']
+            offervalue = request.POST['offer_value']
+            productname = request.POST['product_name']
+            expiry = request.POST['expiry']
+            
+            #taking integer from string
+            id = []
+            for word in productname.split():
+                if word.isdigit():
+                    id.append(int(word))
+            print(id)
+
+            # convering string to integer// product id converted
+            strings = [str(integer) for integer in id]
+            a_string = "".join(strings)
+            prdId = int(a_string)
+            product_id = Product.objects.get(id = prdId)
+            product_offer = Product_offer.objects.create(product = product_id, offer_name = offername, discount_value = offervalue , expiry_date=expiry)
+            prdct = Product_offer.objects.all() 
+            for p in prdct:
+                offer_name = p.offer_name
+                offer_value = p.discount_value
+                prdct_name = p.product.productname
+
+            # discount price adding to the product
+            prd = Product.objects.filter(id = prdId)
+            for j in prd:
+                prdct_price = j.price
+                percentage = (prdct_price*offer_value)/100
+                discount_price = prdct_price - percentage
+                j.discount_price = discount_price
+                j.offer_name = offername
+                j.save()
+            return JsonResponse({"offrname": offer_name,"offer_value":offer_value,"prdct_name":prdct_name})
+        
+        return render(request,'product_offer.html',{'product': product,"offer": prdct})
+    else:
+        return redirect(admin_login)
 
 # produt offer delete
 @csrf_exempt
@@ -652,51 +718,55 @@ def prd_offer_dlt(request):
 
 # catogory offer
 @csrf_exempt
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def catogory_offer(request):
-    catg = category.objects.all()
-    catgry_offer = Categoryoffer.objects.all()
-    if request.method == 'POST':
-        offer_name = request.POST['offer_name']
-        offer_value = request.POST['offer_value']
-        catgryName = request.POST['catgryName']
-        expiry = request.POST['expiry']
-        print(offer_name)
-        print(offer_value)
-        print(catgryName)
-        print(expiry)
-        cats = category.objects.filter(category_name = catgryName)
-        id = 0
-        for cat in cats:
-            id = cat.id
-            catgry = category.objects.get(id = id)
-        Categoryoffer.objects.create(categoryName = catgry, offerName = offer_name, discountPercentage = offer_value, expiry = expiry)
-        success = "Offer Created successfully"
+    if request.user.is_authenticated:
+        catg = category.objects.all()
+        catgry_offer = Categoryoffer.objects.all()
+        if request.method == 'POST':
+            offer_name = request.POST['offer_name']
+            offer_value = request.POST['offer_value']
+            catgryName = request.POST['catgryName']
+            expiry = request.POST['expiry']
+            print(offer_name)
+            print(offer_value)
+            print(catgryName)
+            print(expiry)
+            cats = category.objects.filter(category_name = catgryName)
+            id = 0
+            for cat in cats:
+                id = cat.id
+                catgry = category.objects.get(id = id)
+            Categoryoffer.objects.create(categoryName = catgry, offerName = offer_name, discountPercentage = offer_value, expiry = expiry)
+            success = "Offer Created successfully"
 
-        catgry_ofr = Categoryoffer.objects.filter(offerName = offer_name)
-        for cgry in catgry_ofr:
-            value = cgry.discountPercentage
-        
-        products = Product.objects.filter(category_name = catgry)
-        for prd in products:
-            discount = 0
-            discount = prd.price - (prd.price * value/100)
-            print(discount)
-            # checking discount price none or not 
-            if prd.discount_price == None:
-                prd.discount_price = discount
-                prd.offer_name = offer_name
-                prd.save()
-            # checking discount price greater than discout value
-            elif prd.discount_price > discount:
-                prd.discount_price = discount
-                prd.offer_name = offer_name
-                prd.save()
+            catgry_ofr = Categoryoffer.objects.filter(offerName = offer_name)
+            for cgry in catgry_ofr:
+                value = cgry.discountPercentage
+            
+            products = Product.objects.filter(category_name = catgry)
+            for prd in products:
+                discount = 0
+                discount = prd.price - (prd.price * value/100)
+                print(discount)
+                # checking discount price none or not 
+                if prd.discount_price == None:
+                    prd.discount_price = discount
+                    prd.offer_name = offer_name
+                    prd.save()
+                # checking discount price greater than discout value
+                elif prd.discount_price > discount:
+                    prd.discount_price = discount
+                    prd.offer_name = offer_name
+                    prd.save()
 
-            else:
-                print("not saved")
-        return JsonResponse({'successca':success})
+                else:
+                    print("not saved")
+            return JsonResponse({'successca':success})
 
-    return render(request,"category_offer.html",{'category':catg, 'catgry_offer':catgry_offer})
+        return render(request,"category_offer.html",{'category':catg, 'catgry_offer':catgry_offer})
+    else:
+        return redirect(admin_login)
 
 
 # category offer delete
@@ -728,6 +798,7 @@ def ctgry_offer_dlt(request):
 
 # pdf downloader 
 @csrf_exempt
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def pdf_download(request):
 
     buffer = io.BytesIO()
@@ -759,26 +830,34 @@ def pdf_download(request):
 
 
 #sales report
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def sales_reprt(request):
-    if request.method == "POST":
-        print("setup")
-        frm = request.POST['from']
-        to = request.POST['to']
-        print(frm,to)
-        orders_details = Order.objects.filter(date__range=(frm, to))
-        return render(request,'sales_repot.html',{'orders_details':orders_details})
+    if request.user.is_authenticated:
+        if request.method == "POST":
+            print("setup")
+            frm = request.POST['from']
+            to = request.POST['to']
+            print(frm,to)
+            orders_details = Order.objects.filter(date__range=(frm, to))
+            return render(request,'sales_repot.html',{'orders_details':orders_details})
+        else:
+            print("moonji")
+            orders_details = Order.objects.all().order_by('-date')
+            paginator = Paginator(orders_details, 10)
+            page_number = request.GET.get('page')
+            return render(request,'sales_repot.html',{'orders_details':orders_details})
     else:
-        print("moonji")
-        orders_details = Order.objects.all().order_by('-date')
-        paginator = Paginator(orders_details, 10)
-        page_number = request.GET.get('page')
-        return render(request,'sales_repot.html',{'orders_details':orders_details})
+        return redirect(admin_login)
 
 
 # banners 
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def banners(request):
-    banners = BannerUpdate.objects.all()
-    return render(request,'banners.html', {'banners':banners})
+    if request.user.is_authenticated:
+        banners = BannerUpdate.objects.all()
+        return render(request,'banners.html', {'banners':banners})
+    else:
+        return redirect(admin_login)
 
 
 # banners submit
@@ -796,6 +875,32 @@ def banners_submit(request):
 def banner_dlt(request,id):
     BannerUpdate.objects.get(id = id).delete()
     return redirect(banners)
+
+#drop down category select in category side
+@csrf_exempt
+def catgery_select(request):
+    id = request.POST['id']
+    print(id)
+    cat = category.objects.get(id = id)
+    print(cat)
+    sub = subcategory.objects.filter(category_name =  cat)
+    
+    data = render_to_string('cat_list.html',{'cats':sub})
+    return JsonResponse({'data':data})
+
+# drop down category select brand
+@csrf_exempt
+def brand_select(request):
+    id = request.POST['id']
+    print(id)
+    cat = category.objects.get(id = id)
+    print(cat)
+    sub = subcategory.objects.filter(category_name =  cat)
+    
+    data = render_to_string('brand_list.html',{'cats':sub})
+    return JsonResponse({'data':data})
+    
+    
 
 
     
